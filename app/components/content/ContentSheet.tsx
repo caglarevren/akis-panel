@@ -1,13 +1,17 @@
 "use client";
 
-import { X } from "lucide-react";
+import { ArrowRight, X } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle } from "@/components/ui/sheet";
-import type { ContentFormOptions } from "@/app/types/content";
+import type { ContentFormOptions, ContentListItem } from "@/app/types/content";
+import type { ContentStatus } from "@/generated/prisma/enums";
+import { NEXT_STATUS } from "@/lib/content-status";
 import { ContentForm } from "./ContentForm";
 import type { SheetTarget } from "./ContentSheetProvider";
-import { StatusPill } from "./StatusPill";
+import { StatusMenu } from "./StatusMenu";
+import { useStatusChange } from "./useStatusChange";
 
 interface ContentSheetProps {
   open: boolean;
@@ -42,13 +46,12 @@ export function ContentSheet({ open, onOpenChange, target, session, options }: C
         </div>
 
         {content && (
-          <div className="mx-6 mb-1 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl bg-muted px-3.5 py-3">
-            <span className="text-[12.5px] font-medium text-muted-foreground">{t("status")}</span>
-            <StatusPill status={content.status} />
-            <span className="ml-auto text-xs text-subtle">
+          <>
+            <SheetStatus key={`${session}-status`} content={content} />
+            <p className="mx-6 mt-2 text-xs text-subtle">
               {t("created", { date: format.dateTime(content.createdAt, { day: "numeric", month: "long", year: "numeric" }) })}
-            </span>
-          </div>
+            </p>
+          </>
         )}
 
         {target && (
@@ -56,5 +59,41 @@ export function ContentSheet({ open, onOpenChange, target, session, options }: C
         )}
       </SheetContent>
     </Sheet>
+  );
+}
+
+// Status changes here apply immediately (they don't wait for "Save"), like
+// in the list. The sheet keeps its own copy because the content it was
+// opened with is a snapshot.
+function SheetStatus({ content }: { content: ContentListItem }) {
+  const t = useTranslations("StatusMenu");
+  const changeStatus = useStatusChange();
+  const [status, setStatus] = useState<ContentStatus>(content.status);
+  const [busy, setBusy] = useState(false);
+  const next = NEXT_STATUS[status];
+
+  async function change(to: ContentStatus) {
+    const previous = status;
+    if (to === previous) return;
+    setStatus(to);
+    setBusy(true);
+    const ok = await changeStatus(content, to, { onUndone: () => setStatus(previous) });
+    if (!ok) setStatus(previous);
+    setBusy(false);
+  }
+
+  return (
+    <div className="mx-6 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl bg-muted px-3.5 py-3">
+      <StatusMenu status={status} onChange={change} disabled={busy} />
+      <span className="flex-1" />
+      {next ? (
+        <Button type="button" size="sm" onClick={() => change(next)} disabled={busy} className="h-8 px-3">
+          {t(`next.${status as "DRAFT" | "IN_REVIEW"}`)}
+          <ArrowRight className="size-3.5" aria-hidden />
+        </Button>
+      ) : (
+        <span className="text-[12.5px] text-muted-foreground">{t("isPublished")}</span>
+      )}
+    </div>
   );
 }

@@ -30,7 +30,11 @@
 - URL slugs are English and identical in every locale (`/tr/clients`, `/de/contents`); no next-intl `pathnames`.
 - List filters live in the URL (`?q=`, `?status=`). Filter tabs are plain links (`SegmentedLinks`); search inputs debounce into `router.replace` and adopt external URL changes during render (see `ClientSearch.tsx`).
 - The content sheet is mounted once in `(app)/layout.tsx` via `ContentSheetProvider`; open it with `useContentSheet().openNew(clientId?)` / `openEdit(item)`. List rows carry every field the sheet needs (`ContentListItem`, `CONTENT_LIST_SELECT` + `toContentListItem` in `lib/db/contents.ts`), so opening never waits on the server.
-- `updateContent` never changes status; status changes get their own action so every transition writes an `Activity` row.
+- `updateContent` never changes status; status changes go through `changeContentStatus` (`app/actions/content-status.ts`) so every transition writes an `Activity` row. `publishedAt` and the activity's `createdAt` share one timestamp; `publishedAt` is null outside PUBLISHED.
+- Undo (`undoStatusChange`) deletes the activity row and reverts the status; only the author, within `UNDO_WINDOW_MS`, and only while it's the latest change. Show status changes through `useStatusChange()` (toast + undo) and `StatusMenu`; lists use `useOptimistic`.
+- `"use server"` files may only export async functions; shared constants for actions live in `lib/` (e.g. `lib/content-status.ts`).
+- Base UI menu radio/checkbox items keep the menu open by default; pass `closeOnClick` when a pick is final.
+- Content list filters: parse/serialize with `lib/content-filters.ts` (`parseContentFilters`, `filtersToQuery`, `buildContentWhere`); tab counts use `ignoreStatus`.
 - Shared content building blocks: `app/components/content/` (`StatusPill`, `StatusDot`, `StatusBar`, `PlatformBadge`, `PublishDay`, `status-styles.ts`). Reuse them instead of restyling statuses.
 - "Today", overdue and publish-day math go through `lib/dates.ts` (`today()`, `calendarDay()`, `daysBetween()`); publish days are formatted with `timeZone: "UTC"` because they are stored as UTC midnight.
 - Shell building blocks live in `app/components/shell/`: `PageHeader` (title, optional eyebrow/description/actions) opens every panel page.

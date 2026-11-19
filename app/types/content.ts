@@ -52,3 +52,15 @@ export type SaveContentResult =
       error: "validation" | "unauthorized" | "not-found" | "server-error";
       fieldErrors?: Partial<Record<ContentField, ContentFieldError>>;
     };
+
+export type StatusChangeResult =
+  | {
+      success: true;
+      // null when the content already had the requested status (no-op).
+      data: { activityId: string | null };
+    }
+  | { success: false; error: "unauthorized" | "invalid" | "not-found" | "server-error" };
+
+export type UndoStatusResult =
+  | { success: true }
+  | { success: false; error: "unauthorized" | "expired" | "server-error" };

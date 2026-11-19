@@ -4,10 +4,10 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { auth } from "@/auth";
 import { ClientCard } from "@/app/components/clients/ClientCard";
-import { ClientSearch } from "@/app/components/clients/ClientSearch";
 import { NewClientDialog } from "@/app/components/clients/NewClientDialog";
 import { EmptyState } from "@/app/components/shared/EmptyState";
 import { SegmentedLinks } from "@/app/components/shared/SegmentedLinks";
+import { UrlSearchInput } from "@/app/components/shared/UrlSearchInput";
 import { PageHeader } from "@/app/components/shell/PageHeader";
 import type { ClientStatusFilter } from "@/app/types/client";
 import { Link } from "@/i18n/navigation";
@@ -61,7 +61,7 @@ export default async function ClientsPage({ params, searchParams }: PageProps<"/
 
       <div className="mb-4 flex flex-wrap items-center gap-2.5">
         <Suspense>
-          <ClientSearch />
+          <UrlSearchInput label={t("searchLabel")} placeholder={t("searchPlaceholder")} />
         </Suspense>
         <SegmentedLinks
           label={t("filterLabel")}

@@ -201,5 +201,35 @@
       "server": "Kaydedilemedi. Biraz sonra tekrar deneyin.",
       "unauthorized": "Oturumunuz sona ermiş. Yeniden giriş yapın."
     }
+  },
+  "StatusMenu": {
+    "label": "Durumu değiştir",
+    "current": "Durum: {status}. Değiştirmek için açın.",
+    "next": {
+      "DRAFT": "Onaya gönder",
+      "IN_REVIEW": "Yayınla"
+    },
+    "isPublished": "Bu içerik yayında.",
+    "changed": "{title} → {status}",
+    "undo": "Geri al",
+    "undone": "Değişiklik geri alındı",
+    "undoExpired": "Bu değişiklik artık geri alınamıyor.",
+    "error": "Durum değiştirilemedi. Tekrar deneyin."
+  },
+  "ContentFilters": {
+    "searchPlaceholder": "Başlıkta ara",
+    "searchLabel": "İçeriklerde ara",
+    "statusLabel": "İçerik durumu",
+    "all": "Tümü",
+    "typeLabel": "Tür",
+    "allTypes": "Tüm türler",
+    "clientLabel": "Müşteri",
+    "allClients": "Tüm müşteriler",
+    "dueWeek": "Önümüzdeki 7 gün",
+    "overdue": "Gecikmiş",
+    "remove": "{name} filtresini kaldır",
+    "clear": "Filtreleri temizle",
+    "count": "{count} içerik",
+    "noResults": "Bu filtrelerle eşleşen içerik yok."
   }
 }

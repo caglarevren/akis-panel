@@ -102,3 +102,7 @@ export async function getClientDetail(id: string): Promise<ClientDetail | null> 
     contents: sortForList(client.contents.map(toContentListItem)),
   };
 }
+
+export async function getClientOptions(): Promise<{ id: string; name: string; isActive: boolean }[]> {
+  return prisma.client.findMany({ select: { id: true, name: true, isActive: true }, orderBy: { name: "asc" } });
+}

@@ -40,7 +40,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
       <body className="min-h-dvh">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <NextIntlClientProvider>{children}</NextIntlClientProvider>
-          <Toaster />
+          {/* Bottom-center keeps toasts clear of the content sheet footer buttons. */}
+          <Toaster position="bottom-center" />
         </ThemeProvider>
       </body>
     </html>

@@ -201,5 +201,35 @@
       "server": "Speichern fehlgeschlagen. Versuchen Sie es gleich noch einmal.",
       "unauthorized": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an."
     }
+  },
+  "StatusMenu": {
+    "label": "Status ändern",
+    "current": "Status: {status}. Zum Ändern öffnen.",
+    "next": {
+      "DRAFT": "Zur Freigabe senden",
+      "IN_REVIEW": "Veröffentlichen"
+    },
+    "isPublished": "Dieser Inhalt ist live.",
+    "changed": "{title} → {status}",
+    "undo": "Rückgängig",
+    "undone": "Änderung rückgängig gemacht",
+    "undoExpired": "Diese Änderung kann nicht mehr rückgängig gemacht werden.",
+    "error": "Der Status konnte nicht geändert werden. Versuchen Sie es erneut."
+  },
+  "ContentFilters": {
+    "searchPlaceholder": "Titel durchsuchen",
+    "searchLabel": "Inhalte durchsuchen",
+    "statusLabel": "Inhaltsstatus",
+    "all": "Alle",
+    "typeLabel": "Typ",
+    "allTypes": "Alle Typen",
+    "clientLabel": "Kunde",
+    "allClients": "Alle Kunden",
+    "dueWeek": "Nächste 7 Tage",
+    "overdue": "Überfällig",
+    "remove": "Filter „{name}“ entfernen",
+    "clear": "Filter zurücksetzen",
+    "count": "{count, plural, one {# Inhalt} other {# Inhalte}}",
+    "noResults": "Keine Inhalte passen zu diesen Filtern."
   }
 }

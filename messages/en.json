@@ -201,5 +201,35 @@
       "server": "Couldn't save. Try again in a moment.",
       "unauthorized": "Your session has expired. Sign in again."
     }
+  },
+  "StatusMenu": {
+    "label": "Change status",
+    "current": "Status: {status}. Open to change.",
+    "next": {
+      "DRAFT": "Send for review",
+      "IN_REVIEW": "Publish"
+    },
+    "isPublished": "This content is live.",
+    "changed": "{title} → {status}",
+    "undo": "Undo",
+    "undone": "Change undone",
+    "undoExpired": "This change can no longer be undone.",
+    "error": "The status couldn't be changed. Try again."
+  },
+  "ContentFilters": {
+    "searchPlaceholder": "Search titles",
+    "searchLabel": "Search content",
+    "statusLabel": "Content status",
+    "all": "All",
+    "typeLabel": "Type",
+    "allTypes": "All types",
+    "clientLabel": "Client",
+    "allClients": "All clients",
+    "dueWeek": "Next 7 days",
+    "overdue": "Overdue",
+    "remove": "Remove {name} filter",
+    "clear": "Clear filters",
+    "count": "{count, plural, one {# item} other {# items}}",
+    "noResults": "No content matches these filters."
   }
 }

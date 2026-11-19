@@ -2,17 +2,20 @@
 
 import { Search } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useTranslations } from "next-intl";
 import { useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { Input } from "@/components/ui/input";
 
 const DEBOUNCE_MS = 250;
 
+interface UrlSearchInputProps {
+  label: string;
+  placeholder: string;
+}
+
 // Keeps `?q=` in the URL in sync with the input, debounced, so the server
 // component re-renders the filtered list and the search survives reloads.
-export function ClientSearch() {
-  const t = useTranslations("Clients");
+export function UrlSearchInput({ label, placeholder }: UrlSearchInputProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -45,12 +48,12 @@ export function ClientSearch() {
   return (
     <label className="relative flex min-w-0 flex-[1_1_240px] items-center sm:max-w-[340px]">
       <Search className="pointer-events-none absolute left-3 size-4 text-subtle" aria-hidden />
-      <span className="sr-only">{t("searchLabel")}</span>
+      <span className="sr-only">{label}</span>
       <Input
         type="search"
         value={value}
         onChange={(event) => setValue(event.target.value)}
-        placeholder={t("searchPlaceholder")}
+        placeholder={placeholder}
         autoComplete="off"
         aria-busy={isPending || undefined}
         className="h-9 bg-card pl-9"
