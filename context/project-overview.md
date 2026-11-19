@@ -96,6 +96,6 @@ Activity  id, kind (CLIENT_CREATED | CONTENT_CREATED | STATUS_CHANGED), userId �
 | 5. İçerikler | Ekleme/düzenleme panelleri, doğrulama, testler | Tamamlandı |
 | 6. Durum ve filtreler | Ana aksiyon + menü, optimistic güncelleme, URL tabanlı filtreler, aktivite kaydı | Tamamlandı |
 | 7. Ana ekran | Özet kartları, 7 gün listesi, onay bekleyenler, son hareketler | Tamamlandı |
-| 8. Cila ve yayın | Boş/yüklenme/hata halleri, 4 dilde kontrol, erişilebilirlik, deploy | — |
+| 8. Cila ve yayın | Boş/yüklenme/hata halleri, 4 dilde kontrol, erişilebilirlik, deploy | Deploy yapıldı (Vercel Hobby); cila turu bekliyor |
 
 MVP sonrasına bırakılanlar: kanban görünümü, ⌘K komut paleti, dosya ekleri, giriş denemesi sınırı (Upstash rate limit).
