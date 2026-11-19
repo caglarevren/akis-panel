@@ -1,4 +1,4 @@
-# Akış
+# Kilit Grup
 
 Ajans hesap yöneticileri için müşteri ve içerik takip paneli.
 

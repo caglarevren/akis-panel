@@ -1,6 +1,6 @@
-# Akış
+# Kilit Grup
 
-Bir ajansın hesap yöneticilerinin kullandığı müşteri ve içerik takip paneli (MVP). Hesap yöneticileri müşteri ekler, müşterilere bağlı içerikleri (sosyal medya gönderisi, blog yazısı, web sayfası vb.) oluşturur ve düzenler, içeriklerin durumunu (taslak, onayda, yayında) takip eder. "Akış" geçici ürün adıdır.
+Bir ajansın hesap yöneticilerinin kullandığı müşteri ve içerik takip paneli (MVP). Hesap yöneticileri müşteri ekler, müşterilere bağlı içerikleri (sosyal medya gönderisi, blog yazısı, web sayfası vb.) oluşturur ve düzenler, içeriklerin durumunu (taslak, onayda, yayında) takip eder. Arayüzde görünen ürün adı "Kilit Grup"tur (tek kaynak: `lib/brand.ts` ve `messages/*.json` içindeki `Metadata.title`). Paket adı, GitHub repo adı ve Vercel adresi teknik olarak `akis-panel` olarak kaldı (eski çalışma adı); değiştirilmedi.
 
 @AGENTS.md
 
