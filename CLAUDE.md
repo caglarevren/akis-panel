@@ -30,6 +30,14 @@ npm run db:seed        # örnek veriyi yeniden yükler (sadece development): mü
 
 Proje bir iş başvurusu için hazırlanıyor; değerlendiriciler tek bir paylaşılan hesapla giriş yapıyor: **`pelin.kilit` / `123456`** (Pelin Kilit). Hesap `npm run db:seed` ile oluşturulur ve şifresi her seed'de bu değere sıfırlanır. Bilgilerin tek kaynağı `lib/demo-account.ts`; hem seed hem giriş ekranındaki "Demo hesabı" notu (tek tıkla doldurma butonuyla) buradan okur. Gerçek kullanıma geçilirse notu kaldırmak için giriş sayfasında `LoginForm`'a `demo` prop'unu vermemek yeterli. Giriş kullanıcı adı veya e-postayla yapılabiliyor. Diğer seed kullanıcılarının (Mert Demir, Elif Şahin) kullanılabilir şifresi yok; sadece sorumlu kişi olarak görünüyorlar. Müşteriler kilitgroup.com/faaliyet-alanlari sayfasındaki markalar; iletişim kişileri, e-postalar ve telefonlar uydurmadır.
 
+## Deploy (Vercel)
+
+- Canlı adres: https://akis-panel-nine.vercel.app (Vercel Hobby, hesap `caglarevren`, proje `akis-panel`). Klasör `vercel link` ile bağlı (`.vercel/`, git dışında).
+- Production ortam değişkenleri Vercel'de: `DATABASE_URL`, `DIRECT_URL` (Neon `production` branch'i), `AUTH_SECRET` (development'tan farklı), `AUTH_TRUST_HOST=true`.
+- `vercel.json` framework'ü `nextjs` olarak sabitliyor (CLI ile oluşturulan projede algılanmıyordu).
+- GitHub bağlı değil: deploy için `npx vercel@66.2.0 deploy --prod`. Production veritabanına şema değişikliği: production bağlantısıyla `npx prisma migrate deploy` (sadece kullanıcı açıkça isterse).
+- Bu makinenin ağından `*.vercel.app` adreslerine erişilemiyor (bağlantı sıfırlanıyor/zaman aşımı); canlı doğrulama için production build'i yerelde production değişkenleri + `AUTH_TRUST_HOST=true` ile `next start` ederek test et.
+
 ## Notlar
 
 - **npm 10.9.2 hatası:** Bu makinedeki npm sürümü, Vitest'in bağımlılık ağacını çözerken `Cannot read properties of null (reading 'edgesOut')` hatası veriyor (boş bir projede bile). Vitest ile ilgili paket kurulum/güncellemeleri için `npx npm@11.6.2 install ...` kullan.
