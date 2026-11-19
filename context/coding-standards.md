@@ -34,6 +34,7 @@
 - Undo (`undoStatusChange`) deletes the activity row and reverts the status; only the author, within `UNDO_WINDOW_MS`, and only while it's the latest change. Show status changes through `useStatusChange()` (toast + undo) and `StatusMenu`; lists use `useOptimistic`.
 - `"use server"` files may only export async functions; shared constants for actions live in `lib/` (e.g. `lib/content-status.ts`).
 - Base UI menu radio/checkbox items keep the menu open by default; pass `closeOnClick` when a pick is final.
+- Overview numbers that link to a filtered list must be computed with the same filter (`buildContentWhere`), so a card and its target list always agree (see `lib/db/overview.ts`).
 - Content list filters: parse/serialize with `lib/content-filters.ts` (`parseContentFilters`, `filtersToQuery`, `buildContentWhere`); tab counts use `ignoreStatus`.
 - Shared content building blocks: `app/components/content/` (`StatusPill`, `StatusDot`, `StatusBar`, `PlatformBadge`, `PublishDay`, `status-styles.ts`). Reuse them instead of restyling statuses.
 - "Today", overdue and publish-day math go through `lib/dates.ts` (`today()`, `calendarDay()`, `daysBetween()`); publish days are formatted with `timeZone: "UTC"` because they are stored as UTC midnight.

@@ -40,7 +40,29 @@
   },
   "Overview": {
     "greeting": "Merhaba, {name}",
-    "comingSoon": "Özet kartları, önümüzdeki 7 gün, onay bekleyenler ve son hareketler bu ekranda yer alacak."
+    "kpi": {
+      "activeClients": "Aktif müşteri",
+      "totalContents": "Toplam içerik",
+      "inReview": "Onay bekleyen",
+      "dueWeek": "7 gün içinde yayın"
+    },
+    "breakdown": "Durum dağılımı",
+    "overdue": "{count} içeriğin yayın tarihi geçti ama henüz yayında değil.",
+    "show": "Göster",
+    "week": "Önümüzdeki 7 gün",
+    "weekEmpty": "Önümüzdeki 7 günde planlanmış içerik yok.",
+    "viewAll": "Tümünü gör",
+    "review": "Onay bekleyenler",
+    "reviewEmpty": "Onay bekleyen içerik yok.",
+    "publish": "Yayınla",
+    "publishLabel": "{title} içeriğini yayınla",
+    "activity": "Son hareketler",
+    "activityEmpty": "Henüz hareket yok.",
+    "act": {
+      "CLIENT_CREATED": "{user}, <b>{name}</b> müşterisini ekledi",
+      "CONTENT_CREATED": "{user}, <b>{title}</b> içeriğini oluşturdu",
+      "STATUS_CHANGED": "{user}, <b>{title}</b> içeriğini <status>{to}</status> durumuna aldı"
+    }
   },
   "Clients": {
     "title": "Müşteriler",
@@ -73,9 +95,6 @@
     "emptyTitle": "Henüz içerik yok",
     "emptyDescription": "İlk içeriği ekleyin; her içerik bir müşteriye bağlıdır.",
     "noActiveClients": "İçerik eklemek için önce aktif bir müşteri ekleyin."
-  },
-  "Placeholder": {
-    "title": "Bu ekran hazırlanıyor"
   },
   "Dates": {
     "today": "Bugün",

@@ -40,7 +40,29 @@
   },
   "Overview": {
     "greeting": "Hallo, {name}",
-    "comingSoon": "Hier erscheinen Kennzahlen, die nächsten 7 Tage, Inhalte in Freigabe und die letzten Aktivitäten."
+    "kpi": {
+      "activeClients": "Aktive Kunden",
+      "totalContents": "Inhalte gesamt",
+      "inReview": "Warten auf Freigabe",
+      "dueWeek": "Fällig in 7 Tagen"
+    },
+    "breakdown": "Statusverteilung",
+    "overdue": "{count, plural, one {# Inhalt hat} other {# Inhalte haben}} das Veröffentlichungsdatum überschritten und {count, plural, one {ist} other {sind}} noch nicht live.",
+    "show": "Anzeigen",
+    "week": "Nächste 7 Tage",
+    "weekEmpty": "In den nächsten 7 Tagen ist nichts geplant.",
+    "viewAll": "Alle anzeigen",
+    "review": "Warten auf Freigabe",
+    "reviewEmpty": "Nichts wartet auf Freigabe.",
+    "publish": "Veröffentlichen",
+    "publishLabel": "{title} veröffentlichen",
+    "activity": "Letzte Aktivitäten",
+    "activityEmpty": "Noch keine Aktivitäten.",
+    "act": {
+      "CLIENT_CREATED": "{user} hat den Kunden <b>{name}</b> angelegt",
+      "CONTENT_CREATED": "{user} hat <b>{title}</b> erstellt",
+      "STATUS_CHANGED": "{user} hat <b>{title}</b> auf <status>{to}</status> gesetzt"
+    }
   },
   "Clients": {
     "title": "Kunden",
@@ -73,9 +95,6 @@
     "emptyTitle": "Noch keine Inhalte",
     "emptyDescription": "Legen Sie den ersten Inhalt an; jeder Inhalt gehört zu einem Kunden.",
     "noActiveClients": "Legen Sie zuerst einen aktiven Kunden an."
-  },
-  "Placeholder": {
-    "title": "Diese Seite ist in Arbeit"
   },
   "Dates": {
     "today": "Heute",

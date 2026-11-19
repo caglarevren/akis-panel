@@ -40,7 +40,29 @@
   },
   "Overview": {
     "greeting": "Hello, {name}",
-    "comingSoon": "Summary cards, the next 7 days, items awaiting review and recent activity will appear here."
+    "kpi": {
+      "activeClients": "Active clients",
+      "totalContents": "Total content",
+      "inReview": "Awaiting review",
+      "dueWeek": "Due in 7 days"
+    },
+    "breakdown": "Status breakdown",
+    "overdue": "{count, plural, one {# item is} other {# items are}} past the publish date and not yet live.",
+    "show": "Show",
+    "week": "Next 7 days",
+    "weekEmpty": "Nothing is scheduled for the next 7 days.",
+    "viewAll": "View all",
+    "review": "Awaiting review",
+    "reviewEmpty": "Nothing is waiting for review.",
+    "publish": "Publish",
+    "publishLabel": "Publish {title}",
+    "activity": "Recent activity",
+    "activityEmpty": "No activity yet.",
+    "act": {
+      "CLIENT_CREATED": "{user} added client <b>{name}</b>",
+      "CONTENT_CREATED": "{user} created <b>{title}</b>",
+      "STATUS_CHANGED": "{user} moved <b>{title}</b> to <status>{to}</status>"
+    }
   },
   "Clients": {
     "title": "Clients",
@@ -73,9 +95,6 @@
     "emptyTitle": "No content yet",
     "emptyDescription": "Add the first piece; every item belongs to a client.",
     "noActiveClients": "Add an active client before adding content."
-  },
-  "Placeholder": {
-    "title": "This screen is on its way"
   },
   "Dates": {
     "today": "Today",
