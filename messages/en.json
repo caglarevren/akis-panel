@@ -1,0 +1,34 @@
+{
+  "Metadata": {
+    "title": "Akış",
+    "description": "Client and content tracking panel for agency account managers."
+  },
+  "Common": {
+    "brandSub": "Agency content panel",
+    "language": "Language",
+    "languages": {
+      "tr": "Türkçe",
+      "en": "English",
+      "ru": "Русский",
+      "de": "Deutsch"
+    }
+  },
+  "Login": {
+    "title": "Sign in",
+    "description": "Sign in with your agency account to access the panel.",
+    "email": "Email",
+    "emailPlaceholder": "name@agency.com",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "submit": "Sign in",
+    "submitting": "Signing in",
+    "errorMissingFields": "Fill in both email and password.",
+    "errorInvalidCredentials": "Email or password is incorrect.",
+    "errorServer": "Signing in isn't possible right now. Try again in a moment."
+  },
+  "Home": {
+    "greeting": "Hello, {name}",
+    "description": "Setup is complete. Client and content screens arrive in the next phases.",
+    "signOut": "Sign out"
+  }
+}

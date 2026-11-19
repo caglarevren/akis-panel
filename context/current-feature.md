@@ -1,0 +1,13 @@
+# Current Feature
+
+## Status
+
+Not Started
+
+## Goals
+
+## Notes
+
+## History
+
+- 2026-11-19: **Faz 0: Proje kurulumu.** create-next-app ile Next.js 16.4.5 + React 19 + TypeScript kuruldu (`src/` yok). Bastur'daki 16.3.0 ve 16.4.4'e kadarki tüm sürümlerde kritik güvenlik açıkları (uzaktan kod çalıştırma dahil) olduğu için 16.4.5'e sabitlendi. Tailwind v4 + shadcn/ui (base-nova, neutral, Base UI); onaylanan prototipin (`context/prototype/akis-prototip.html`) renk token'ları açık/koyu tema ve `--status-*` token'larıyla `app/globals.css`'e taşındı. `shadcn add`'in eklediği `import { cn } from "cn"` ve `lib/utils.ts`'in `cn` paketine yönlendirmesi bastur'daki gibi `@/lib/utils` + clsx/tailwind-merge'e çevrildi, `cn` paketi kaldırıldı. next-intl ile tr (varsayılan)/en/ru/de, her zaman prefix'li; `(auth)` ve `(app)` route group'ları. NextAuth v5 Credentials + bcrypt + JWT (30 gün); `proxy.ts` tüm paneli koruyor (sadece `/login` açık), giriş yapmamış istekleri `callbackUrl` ile login'e, oturumlu kullanıcının `/login` ziyaretini ana sayfaya yönlendiriyor; `safeRedirect()` sadece site içi relative yollara izin veriyor; kullanıcı yokken de sahte bir bcrypt hash'e karşı karşılaştırma yapılarak (bastur denetimindeki timing açığı) e-posta varlığı yanıt süresinden anlaşılamıyor. Prisma 7 + Neon adapter, `User` modeli, `npm run db:create-user`. Neon'da `akis-panel` projesi (Frankfurt, Postgres 18) `production` (varsayılan) + `development` branch'leriyle oluşturuldu, `init` migration'ı development'a uygulandı. Vitest 4.1.12 (4.1.11'de orta seviye açık var); npm 10.9.2 Vitest'in bağımlılık ağacında `edgesOut` hatası verdiği için Vitest `npx npm@11.6.2` ile kuruldu (CLAUDE.md'de not). Testler: `lib/utils`, `lib/safe-redirect`, `app/actions/auth` (toplam 20). Giriş ekranı (4 dil, açık/koyu, mobil) ve giriş sonrası placeholder ana sayfa. `npx tsc --noEmit`, `npm run lint`, `npm run test` (20/20), `npm run build` temiz. Playwright ile doğrulandı: `/` → `/tr` → login yönlendirme zinciri, boş form hatası, hatalı şifrede "E-posta veya şifre hatalı" + e-postanın korunması + şifrenin temizlenmesi, doğru şifreyle callbackUrl'e dönüş, oturumluyken `/login`'in ana sayfaya yönlendirmesi, `session.user.id`'nin dolu olması, çıkış sonrası session'ın temizlenmesi, dil değiştirici, 390px'te yatay taşma olmaması. Development branch'inde demo hesap: `ayse@akis.dev`. Bilinen dev uyarısı: dil değiştirildiğinde next-themes 0.4.6'nın tema betiği React 19'da `Encountered a script tag` konsol hatası veriyor (ilk yüklemede yok, işlevi etkilemiyor); tema değiştirici eklenirken (Faz 3) ele alınacak. Giriş denemesi sınırı (Upstash) MVP sonrasına bırakıldı.

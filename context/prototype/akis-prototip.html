@@ -1,0 +1,908 @@
+<title>Akış İçerik Paneli</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: app shell — sticky sidebar + scrolling work area; summary first, detail in sheets/dialogs over the list */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --surface-2:#f1f3f6; --surface-3:#e8ebf0;
+  --border:#e3e6ec; --border-strong:#cdd2db;
+  --fg:#111318; --muted:#5b6170; --subtle:#8b919d;
+  --accent:#4b45d6; --accent-hover:#3d37c0; --accent-fg:#ffffff; --accent-soft:#ecebfd;
+  --draft:#5f6673; --draft-bg:#eef0f3;
+  --review:#9f5606; --review-bg:#fdf0db;
+  --pub:#157043; --pub-bg:#e2f4e9;
+  --danger:#c4302a; --danger-bg:#fdeceb;
+  --shadow-sm:0 1px 2px rgba(16,18,24,.06);
+  --shadow:0 1px 2px rgba(16,18,24,.04),0 10px 30px rgba(16,18,24,.07);
+  --shadow-lg:0 30px 80px rgba(16,18,24,.22);
+  --scrim:rgba(17,19,24,.34);
+  --font:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b0c10; --surface:#121419; --surface-2:#181b21; --surface-3:#20242c;
+  --border:#23272f; --border-strong:#353a46;
+  --fg:#eceef3; --muted:#9ba1ad; --subtle:#6c7280;
+  --accent:#8e8bff; --accent-hover:#a6a3ff; --accent-fg:#0b0c10; --accent-soft:rgba(142,139,255,.14);
+  --draft:#a7adb9; --draft-bg:#1f2229;
+  --review:#f2b45a; --review-bg:rgba(242,180,90,.12);
+  --pub:#5ad493; --pub-bg:rgba(90,212,147,.12);
+  --danger:#ff7d74; --danger-bg:rgba(255,125,116,.12);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  --shadow-lg:0 30px 80px rgba(0,0,0,.6);
+  --scrim:rgba(0,0,0,.55);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0b0c10; --surface:#121419; --surface-2:#181b21; --surface-3:#20242c;
+  --border:#23272f; --border-strong:#353a46;
+  --fg:#eceef3; --muted:#9ba1ad; --subtle:#6c7280;
+  --accent:#8e8bff; --accent-hover:#a6a3ff; --accent-fg:#0b0c10; --accent-soft:rgba(142,139,255,.14);
+  --draft:#a7adb9; --draft-bg:#1f2229;
+  --review:#f2b45a; --review-bg:rgba(242,180,90,.12);
+  --pub:#5ad493; --pub-bg:rgba(90,212,147,.12);
+  --danger:#ff7d74; --danger-bg:rgba(255,125,116,.12);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  --shadow-lg:0 30px 80px rgba(0,0,0,.6);
+  --scrim:rgba(0,0,0,.55);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--fg);font:14px/1.5 var(--font);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.min{min-width:0}
+.trunc{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.num{font-variant-numeric:tabular-nums}
+.sub{color:var(--muted);font-size:12.5px}
+.muted{color:var(--subtle)}
+
+/* shell */
+.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:20px;
+  padding:18px 14px 16px max(14px,env(safe-area-inset-left,0px));border-right:1px solid var(--border);background:var(--surface);z-index:30}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 6px}
+.logo{width:30px;height:30px;border-radius:8px;background:var(--fg);color:var(--bg);display:grid;place-items:center;font-weight:700;font-size:15px;letter-spacing:-.02em}
+.brand-name{font-weight:600;font-size:15px;letter-spacing:-.01em;line-height:1.2}
+.brand-sub{font-size:12px;color:var(--subtle);line-height:1.3}
+.nav{display:grid;gap:2px}
+.nav-item{display:flex;align-items:center;gap:10px;height:36px;padding:0 10px;border-radius:8px;color:var(--muted);font-weight:500;transition:background .15s,color .15s}
+.nav-item:hover{background:var(--surface-2);color:var(--fg)}
+.nav-item[aria-current="page"]{background:var(--surface-2);color:var(--fg)}
+.nav-item[aria-current="page"] svg{color:var(--accent)}
+.nav-badge{margin-left:auto;font:500 11px/1 var(--mono);padding:4px 6px;border-radius:6px;background:var(--review-bg);color:var(--review)}
+.side-foot{margin-top:auto;display:grid;gap:12px}
+.proto{justify-self:start;font-size:11px;line-height:1.3;color:var(--subtle);border:1px dashed var(--border-strong);border-radius:6px;padding:3px 8px}
+.prefs{display:flex;gap:8px;align-items:center}
+.prefs .select{flex:1}
+.me{display:flex;align-items:center;gap:10px;padding:10px 6px 2px;border-top:1px solid var(--border)}
+.me-name{font-weight:500;font-size:13px;line-height:1.3}
+.topbar{display:none}
+.nav-scrim{display:none}
+.main{min-width:0}
+.page{max-width:1240px;margin:0 auto;padding-block:30px 72px;
+  padding-left:max(clamp(16px,4vw,40px),env(safe-area-inset-left,0px));
+  padding-right:max(clamp(16px,4vw,40px),env(safe-area-inset-right,0px))}
+
+/* primitives */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:36px;padding:0 14px;border-radius:9px;
+  border:1px solid var(--border);background:var(--surface);color:var(--fg);font-weight:500;cursor:pointer;white-space:nowrap;
+  box-shadow:var(--shadow-sm);transition:background .15s,border-color .15s,transform .1s}
+.btn:hover{border-color:var(--border-strong);background:var(--surface-2)}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--accent);border-color:transparent;color:var(--accent-fg)}
+.btn-primary:hover{background:var(--accent-hover);border-color:transparent}
+.btn-ghost{background:transparent;border-color:transparent;box-shadow:none;color:var(--muted)}
+.btn-ghost:hover{background:var(--surface-2);color:var(--fg);border-color:transparent}
+.btn-sm{height:30px;padding:0 10px;font-size:13px;border-radius:8px}
+.icon-btn{width:36px;height:36px;display:inline-grid;place-items:center;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;flex:none}
+.icon-btn:hover{color:var(--fg);background:var(--surface-2)}
+.input,.select select,textarea.input{width:100%;height:36px;border:1px solid var(--border);border-radius:9px;background:var(--surface);padding:0 11px;
+  transition:border-color .15s,box-shadow .15s;outline:none}
+textarea.input{height:auto;min-height:110px;padding:9px 11px;resize:vertical;line-height:1.5}
+.input::placeholder,textarea.input::placeholder{color:var(--subtle)}
+.input:focus,.select select:focus,textarea.input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.input[aria-invalid="true"],.select select[aria-invalid="true"]{border-color:var(--danger);box-shadow:0 0 0 3px var(--danger-bg)}
+.select{position:relative;display:inline-block;min-width:0}
+.select select{appearance:none;-webkit-appearance:none;padding-right:32px;cursor:pointer}
+.select::after{content:"";position:absolute;right:13px;top:50%;width:6px;height:6px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.select.sm select{height:36px;font-size:13px}
+.search{position:relative;display:flex;align-items:center;flex:1 1 240px;max-width:340px;min-width:0}
+.search svg{position:absolute;left:11px;color:var(--subtle);pointer-events:none}
+.search .input{padding-left:34px}
+.seg{display:inline-flex;gap:2px;padding:3px;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.seg button{display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 10px;border:0;border-radius:7px;background:transparent;color:var(--muted);font-weight:500;font-size:13px;cursor:pointer;white-space:nowrap}
+.seg button:hover{color:var(--fg)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--fg);box-shadow:var(--shadow-sm)}
+.seg .n{font:500 11px/1 var(--mono);color:var(--subtle)}
+.mdot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--st);flex:none}
+.st-DRAFT{--st:var(--draft);--st-bg:var(--draft-bg)}
+.st-REVIEW{--st:var(--review);--st-bg:var(--review-bg)}
+.st-PUBLISHED{--st:var(--pub);--st-bg:var(--pub-bg)}
+.pill{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 9px 0 9px;border-radius:999px;font-size:12.5px;font-weight:500;
+  color:var(--st);background:var(--st-bg);border:1px solid transparent;white-space:nowrap}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+button.pill{cursor:pointer;padding-right:6px;transition:border-color .15s}
+button.pill:hover,button.pill[aria-expanded="true"]{border-color:color-mix(in srgb,var(--st) 40%,transparent)}
+button.pill svg{opacity:.7}
+.plat{flex:none;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--border);
+  font:500 10.5px/1 var(--mono);color:var(--muted);letter-spacing:-.02em}
+.sw{display:inline-block;width:9px;height:9px;border-radius:3px;background:var(--c);flex:none}
+.av{flex:none;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:9.5px;font-weight:600;letter-spacing:.02em;vertical-align:middle}
+.av.md{width:32px;height:32px;font-size:11.5px}
+.av.xs{width:18px;height:18px;font-size:8.5px}
+.cav{flex:none;width:40px;height:40px;border-radius:10px;background:var(--c);color:#fff;display:grid;place-items:center;font-weight:600;font-size:14px;letter-spacing:.01em}
+.cav.lg{width:52px;height:52px;border-radius:13px;font-size:17px}
+.badge{display:inline-flex;align-items:center;height:20px;padding:0 7px;border-radius:6px;font-size:11px;font-weight:500;background:var(--surface-3);color:var(--muted);vertical-align:middle}
+
+/* page head */
+.page-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px}
+.eyebrow{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--subtle);font-weight:500;margin-bottom:6px}
+.page-head h1,.dhead h1{font-size:26px;line-height:1.2;font-weight:600;letter-spacing:-.025em}
+.lede{color:var(--muted);margin-top:4px;max-width:62ch}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
+.toolbar .select{flex:0 1 190px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px;min-height:28px}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 6px 0 10px;border-radius:8px;background:var(--accent-soft);color:var(--accent);font-size:12.5px;font-weight:500;border:0;cursor:pointer}
+.chip svg{opacity:.8}
+.count{font-size:12.5px;color:var(--subtle);margin-left:auto}
+.linkbtn{border:0;background:none;color:var(--muted);font-size:12.5px;font-weight:500;cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--border-strong);padding:4px}
+.linkbtn:hover{color:var(--fg)}
+
+/* dashboard */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.kpi{display:grid;gap:6px;text-align:left;padding:18px 20px;border-radius:14px;border:1px solid var(--border);background:var(--surface);cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s}
+.kpi:hover{border-color:var(--border-strong);box-shadow:var(--shadow);transform:translateY(-1px)}
+.kpi-l{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);font-weight:500}
+.kpi-v{font-size:32px;line-height:1.15;font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.attn{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px 10px 14px;border-radius:12px;background:var(--danger-bg);color:var(--danger);margin-bottom:16px;font-weight:500;font-size:13.5px}
+.attn span{flex:1 1 240px}
+.attn .btn{color:var(--danger);border-color:transparent;background:var(--surface)}
+.dash{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);grid-template-areas:"week review" "week act";gap:18px;align-items:start}
+.p-week{grid-area:week}.p-review{grid-area:review}.p-act{grid-area:act}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;min-width:0}
+.panel-h{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border)}
+.panel-h h2{font-size:14px;font-weight:600;letter-spacing:-.01em}
+.panel-b{padding:16px 18px}
+.stack{display:flex;gap:2px;height:10px;border-radius:999px;overflow:hidden;background:var(--surface-2)}
+.stack.sm{height:6px}
+.stack i{display:block;background:var(--st);min-width:3px}
+.dist{display:grid;gap:10px;margin:0 0 22px}
+.dist .stack{height:8px}
+.dist-l{display:flex;flex-wrap:wrap;gap:4px 22px}
+.dist-i{display:inline-flex;align-items:center;gap:7px;border:0;background:none;padding:2px 0;color:var(--muted);font-size:13px;cursor:pointer}
+.dist-i:hover{color:var(--fg)}
+.dist-i b{font:500 13px/1 var(--mono);color:var(--fg)}
+.dist-i span{font:400 12px/1 var(--mono);color:var(--subtle)}
+.wl{display:grid;padding:6px 0 10px}
+.wl-g{display:grid;grid-template-columns:minmax(0,9.5em) minmax(0,1fr);gap:14px;padding:12px 20px;border-top:1px solid var(--border)}
+.wl-g:first-child{border-top:0}
+.wl-d{display:grid;gap:1px;align-content:start;padding-top:7px}
+.wl-dn{font-weight:500;font-size:13px;text-transform:capitalize}
+.wl-dd{font:400 12px/1.3 var(--mono);color:var(--subtle)}
+.wl-d.today .wl-dn{color:var(--accent)}
+.wl ul{list-style:none;margin:0;padding:0;display:grid;gap:2px;min-width:0}
+.wl-i{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,auto);align-items:center;gap:10px;width:100%;padding:7px 10px;margin:0 -10px;border:0;border-radius:8px;background:none;text-align:left;cursor:pointer;width:calc(100% + 20px)}
+.wl-i:hover{background:var(--surface-2)}
+.wl-t{font-weight:500;font-size:13.5px}
+.wl-c{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);max-width:14em;min-width:0}
+.rv{list-style:none;margin:0;padding:8px}
+.rv li{display:flex;align-items:center;gap:12px;padding:8px 12px;border-radius:10px}
+.rv li:hover{background:var(--surface-2)}
+.rv-main{flex:1;display:flex;align-items:center;gap:11px;min-width:0;border:0;background:none;text-align:left;cursor:pointer;padding:2px}
+.rv-t{font-weight:500;font-size:13.5px}
+.rv-m{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);min-width:0}
+.act{list-style:none;margin:0;padding:8px 20px 14px;display:grid}
+.act li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:12px;padding:11px 0;border-bottom:1px solid var(--border)}
+.act li:last-child{border-bottom:0}
+.act-x{font-size:13px;line-height:1.45;color:var(--muted)}
+.act-x b{color:var(--fg);font-weight:500}
+.act-x em{font-style:normal;font-weight:500;color:var(--st)}
+.act-x button{all:unset;cursor:pointer}
+.act-x button:hover b{text-decoration:underline;text-underline-offset:2px}
+.act-t{font-size:11.5px;color:var(--subtle);margin-top:2px}
+.empty-s{padding:26px 18px;text-align:center;color:var(--subtle);font-size:13px}
+
+/* rows */
+.rows{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.row{display:grid;grid-template-columns:minmax(0,2.8fr) minmax(0,1.3fr) minmax(0,1fr) 160px;gap:20px;align-items:center;
+  padding:14px 20px;border-top:1px solid var(--border);cursor:pointer;transition:background .12s}
+.rows .row:first-child{border-top:0}
+.row:hover{background:var(--surface-2)}
+.row:focus-visible{outline-offset:-2px}
+.row-head{cursor:default;padding-block:9px;background:var(--surface-2);font-size:12px;font-weight:500;color:var(--subtle);letter-spacing:.02em}
+.row-head:hover{background:var(--surface-2)}
+.rows.no-client .row{grid-template-columns:minmax(0,3fr) minmax(0,1fr) 160px}
+.c-title{order:1;display:flex;align-items:center;gap:11px;min-width:0}
+.c-client{order:2;display:flex;align-items:center;gap:8px;min-width:0;color:var(--fg)}
+.c-date{order:4;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.c-status{order:5}
+.br{display:none}
+.ttl{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.date{font:400 12.5px/1.2 var(--mono);color:var(--fg)}
+.date.od{color:var(--danger)}
+.od-tag{font-size:11px;font-weight:500;color:var(--danger);background:var(--danger-bg);padding:2px 6px;border-radius:5px}
+.empty{display:grid;justify-items:center;gap:10px;padding:56px 20px;text-align:center}
+.empty-ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--surface-2);color:var(--subtle)}
+.empty p{color:var(--muted)}
+
+/* clients */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:16px}
+.ccard{display:grid;gap:18px;padding:20px;border-radius:14px;border:1px solid var(--border);background:var(--surface);transition:border-color .15s,box-shadow .15s,transform .15s}
+.ccard:hover{border-color:var(--border-strong);box-shadow:var(--shadow);transform:translateY(-1px)}
+.ccard.off{opacity:.72}
+.cc-top{display:flex;gap:12px;align-items:center;min-width:0}
+.cc-name{font-weight:600;font-size:15px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;min-width:0}
+.cc-counts{display:flex;align-items:center;gap:12px;margin-top:9px;font:500 12px/1 var(--mono);color:var(--muted)}
+.cc-counts span{display:inline-flex;align-items:center;gap:5px}
+.cc-counts .tot{margin-left:auto;font-family:var(--font);font-weight:400;color:var(--subtle)}
+.cc-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:12px;border-top:1px solid var(--border);font-size:12.5px;min-width:0}
+.cc-foot .who{display:flex;align-items:center;gap:7px;color:var(--fg);min-width:0}
+.crumb{margin-bottom:14px}
+.crumb a{display:inline-flex;align-items:center;gap:4px;color:var(--muted);font-size:13px;font-weight:500}
+.crumb a:hover{color:var(--fg)}
+.dhead{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;padding:20px;border:1px solid var(--border);border-radius:14px;background:var(--surface);margin-bottom:18px}
+.dh-main{display:flex;gap:14px;align-items:center;min-width:0}
+.info{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0;padding-top:18px;border-top:1px solid var(--border)}
+.info dt{font-size:12px;color:var(--subtle);margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.info dd{margin:0;font-weight:500;overflow-wrap:anywhere}
+
+/* overlays */
+.scrim{position:fixed;inset:0;background:var(--scrim);backdrop-filter:blur(2px);opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s;z-index:40}
+.scrim.open{opacity:1;visibility:visible}
+.sheet{position:fixed;top:0;right:0;bottom:0;width:min(540px,100%);display:flex;flex-direction:column;background:var(--surface);border-left:1px solid var(--border);
+  box-shadow:var(--shadow-lg);transform:translateX(102%);visibility:hidden;transition:transform .26s cubic-bezier(.2,.8,.2,1),visibility .26s;z-index:50;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-right:env(safe-area-inset-right,0px)}
+.sheet.open{transform:none;visibility:visible}
+.sh-h{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px 22px 14px}
+.sh-h h2{font-size:18px;font-weight:600;letter-spacing:-.02em}
+.sh-status{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 22px 4px;padding:12px 14px;border-radius:12px;background:var(--surface-2)}
+.sh-status .lbl{font-size:12.5px;color:var(--muted);font-weight:500}
+.sh-status .grow{flex:1}
+.sh-b{flex:1;overflow-y:auto;padding:16px 22px 24px;display:grid;gap:16px;align-content:start}
+.sh-f{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;padding:14px 22px;border-top:1px solid var(--border);background:var(--surface)}
+.sh-f .meta{margin-right:auto;font-size:12px;color:var(--subtle)}
+.field{display:grid;gap:6px;min-width:0}
+.field label,.field .lab{font-size:13px;font-weight:500}
+.field .opt{color:var(--subtle);font-weight:400}
+.field .select{display:block}
+.err{font-size:12px;color:var(--danger);min-height:0}
+.err:empty{display:none}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.dialog{position:fixed;left:50%;top:50%;width:min(520px,calc(100% - 32px));max-height:calc(100% - 48px);overflow:auto;background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;box-shadow:var(--shadow-lg);z-index:50;opacity:0;visibility:hidden;transform:translate(-50%,-47%) scale(.98);transition:opacity .18s,transform .2s,visibility .2s}
+.dialog.open{opacity:1;visibility:visible;transform:translate(-50%,-50%)}
+.dl-h{padding:20px 22px 0}
+.dl-h h2{font-size:18px;font-weight:600;letter-spacing:-.02em}
+.dl-b{padding:18px 22px;display:grid;gap:14px}
+.dl-f{display:flex;justify-content:flex-end;gap:8px;padding:14px 22px;border-top:1px solid var(--border)}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}
+.swatch{width:28px;height:28px;border-radius:8px;border:0;background:var(--c);cursor:pointer;display:grid;place-items:center;color:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.swatch[aria-pressed="true"]{outline:2px solid var(--fg);outline-offset:2px}
+.menu{position:fixed;z-index:60;min-width:210px;padding:5px;border-radius:12px;background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow)}
+.menu-lbl{font-size:11.5px;color:var(--subtle);font-weight:500;padding:6px 9px 4px}
+.menu-item{display:flex;align-items:center;gap:9px;width:100%;height:34px;padding:0 9px;border:0;border-radius:8px;background:none;cursor:pointer;text-align:left;font-weight:500;font-size:13.5px}
+.menu-item:hover,.menu-item:focus-visible{background:var(--surface-2);outline:none}
+.menu-item svg{margin-left:auto;color:var(--accent)}
+.toasts{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));display:grid;gap:8px;z-index:70;width:min(380px,calc(100% - 32px))}
+.toast{display:flex;align-items:center;gap:12px;padding:11px 12px 11px 14px;border-radius:12px;background:var(--fg);color:var(--bg);box-shadow:var(--shadow-lg);font-size:13.5px;animation:tin .22s cubic-bezier(.2,.8,.2,1)}
+.toast span{flex:1;min-width:0}
+.toast button{border:0;background:none;color:inherit;font-weight:600;cursor:pointer;opacity:.85;padding:4px 6px;border-radius:6px}
+.toast button:hover{opacity:1;text-decoration:underline}
+@keyframes tin{from{opacity:0;transform:translateY(8px)}}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}}
+.page>*{animation:fade .25s ease-out both}
+
+@media (max-width:1080px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dash{grid-template-columns:minmax(0,1fr);grid-template-areas:"week" "review" "act"}
+  .info{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .sidebar{position:fixed;top:0;bottom:0;left:0;height:auto;width:min(290px,86vw);transform:translateX(-102%);visibility:hidden;transition:transform .24s cubic-bezier(.2,.8,.2,1),visibility .24s;
+    padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:45;box-shadow:var(--shadow-lg)}
+  .sidebar.open{transform:none;visibility:visible}
+  .nav-scrim{display:block;position:fixed;inset:0;background:var(--scrim);opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s;z-index:44}
+  .nav-scrim.open{opacity:1;visibility:visible}
+  .topbar{display:flex;align-items:center;gap:10px;position:sticky;top:env(safe-area-inset-top,0px);z-index:20;height:56px;background:var(--surface);border-bottom:1px solid var(--border);
+    padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+  .topbar .brand-name{flex:1}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--surface)}
+  .page{padding-block:22px 64px}
+  .only-d{display:none!important}
+}
+@media (min-width:901px){.only-m{display:none!important}}
+@media (max-width:760px){
+  .row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:12px 14px}
+  .row-head{display:none}
+  .c-title{flex:1 1 0}
+  .c-status{order:2}
+  .br{display:block;order:3;flex-basis:100%;height:0}
+  .c-client{order:4;margin-left:41px}
+  .c-date{order:5}
+  .c-client,.c-date{font-size:12.5px;color:var(--muted)}
+  .c-date::before{content:"·";margin-right:8px;color:var(--subtle)}
+  .no-client .c-date{margin-left:41px}
+  .no-client .c-date::before{content:none}
+  .wl-g{grid-template-columns:minmax(0,1fr);gap:4px;padding:12px 16px}
+  .wl-d{display:flex;gap:8px;align-items:baseline;padding-top:0}
+  .wl-i{grid-template-columns:auto minmax(0,1fr)}
+  .wl-c{grid-column:2;max-width:none}
+  .dhead{grid-template-columns:1fr}
+  .page-head h1,.dhead h1{font-size:22px}
+  .grid2{grid-template-columns:1fr}
+  .search{max-width:none;flex-basis:100%}
+  .toolbar .select{flex:1 1 140px}
+  .kpi-v{font-size:27px}
+}
+@media (max-width:420px){.info{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+</style>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar" aria-label="Navigation"></aside>
+  <div class="nav-scrim" id="navScrim" data-action="close-nav"></div>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="page" id="main"></main>
+  </div>
+</div>
+<div class="scrim" id="scrim" data-action="scrim"></div>
+<aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></aside>
+<div class="dialog" id="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle"></div>
+<div class="menu" id="menu" role="menu" hidden></div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+const I18N={
+tr:{brandSub:'Ajans içerik paneli',nav_dashboard:'Ana ekran',nav_clients:'Müşteriler',nav_contents:'İçerikler',proto:'Prototip · örnek veri',language:'Dil',theme:'Temayı değiştir',role:'Hesap yöneticisi',menu:'Menüyü aç',
+st_DRAFT:'Taslak',st_REVIEW:'Onayda',st_PUBLISHED:'Yayında',ty_SOCIAL:'Sosyal medya',ty_BLOG:'Blog yazısı',ty_WEB:'Web sayfası',ty_OTHER:'Diğer',pf_blog:'Şirket blogu',pf_website:'Web sitesi',pf_newsletter:'E-bülten',
+next_DRAFT:'Onaya gönder',next_REVIEW:'Yayınla',changeStatus:'Durumu değiştir',undo:'Geri al',
+hello:'Merhaba, {name}',dashSub:'Ajansın içerik akışı bugün böyle görünüyor.',kpi_clients:'Aktif müşteri',kpi_total:'Toplam içerik',kpi_review:'Onay bekleyen',kpi_week:'7 gün içinde yayın',
+hint_inactive:'{n} pasif müşteri',hint_recent:'Son 30 günde +{n}',hint_earliest:'En yakını: {d}',hint_none:'Bekleyen yok',hint_overdue:'{n} içerik gecikmiş',hint_noOverdue:'Gecikme yok',
+attn_overdue:'{n} içeriğin yayın tarihi geçti ama henüz yayında değil.',show:'Göster',p_week:'Önümüzdeki 7 gün',p_breakdown:'Durum dağılımı',p_byType:'Türe göre',p_review:'Onay bekleyenler',p_activity:'Son hareketler',viewAll:'Tümünü gör',today:'Bugün',empty_review:'Onay bekleyen içerik yok.',empty_day:'Plan yok',
+act_created:'{user}, <b>{title}</b> içeriğini oluşturdu',act_status:'{user}, <b>{title}</b> içeriğini <em class="st-{s}">{to}</em> durumuna aldı',act_client:'{user}, <b>{name}</b> müşterisini ekledi',
+clients_sub:'Ajansın çalıştığı markalar ve içeriklerinin durumu.',search_clients:'Müşteri ara',newClient:'Yeni müşteri',f_all:'Tümü',f_active:'Aktif',f_inactive:'Pasif',nextUp:'Sıradaki yayın',nothingScheduled:'Planlı yayın yok',contentLbl:'İçerik',inactiveBadge:'Pasif',empty_clients:'Aramanızla eşleşen müşteri yok.',
+dlg_desc:'Müşteriyi ekledikten sonra ona içerik bağlayabilirsiniz.',f_name:'Müşteri adı',f_namePh:'Örn. Lumen Kahve',f_sector:'Sektör',f_contact:'Yetkili kişi',f_email:'E-posta',f_phone:'Telefon',f_color:'Marka rengi',f_owner:'Sorumlu yönetici',optional:'isteğe bağlı',err_required:'Bu alan zorunlu.',err_email:'Geçerli bir e-posta adresi girin.',err_dup:'Bu isimde bir müşteri zaten var.',cancel:'Vazgeç',addClient:'Müşteriyi ekle',toast_client:'{name} eklendi',
+backClients:'Müşteriler',newContent:'Yeni içerik',empty_client:'Bu müşteri için henüz içerik yok.',empty_client_cta:'İlk içeriği ekle',empty_tab:'Bu durumda içerik yok.',notFound:'Müşteri bulunamadı.',
+contents_sub:'Tüm müşterilerin içerikleri tek listede.',search_contents:'Başlıkta ara',allTypes:'Tüm türler',allClients:'Tüm müşteriler',clear:'Filtreleri temizle',chip_week:'Önümüzdeki 7 gün',chip_overdue:'Gecikmiş',showing:'{n} içerik listeleniyor',col_title:'Başlık',col_client:'Müşteri',col_type:'Tür',col_date:'Yayın tarihi',col_status:'Durum',noDate:'Tarih yok',overdue:'Gecikti',empty_filtered:'Bu filtrelerle eşleşen içerik yok.',
+sheet_new:'Yeni içerik',sheet_edit:'İçeriği düzenle',f_title:'Başlık',f_titlePh:'Örn. Kasım kampanyası karusel gönderisi',f_client:'Müşteri',f_selectClient:'Müşteri seçin',f_type:'Tür',f_platform:'Platform',f_date:'Yayın tarihi',f_assignee:'Sorumlu',f_notes:'Notlar ve metin',f_notesPh:'Brief, metin taslağı veya müşteri geri bildirimi',
+saveDraft:'Taslak olarak kaydet',saveReview:'Kaydet ve onaya gönder',saveChanges:'Değişiklikleri kaydet',created_on:'Oluşturuldu: {d}',toast_saved:'Değişiklikler kaydedildi',toast_created:'İçerik oluşturuldu',close:'Kapat',isPublished:'Bu içerik yayında.',status:'Durum',statusNote:'Durum değişikliği hemen uygulanır.'},
+en:{brandSub:'Agency content panel',nav_dashboard:'Overview',nav_clients:'Clients',nav_contents:'Content',proto:'Prototype · sample data',language:'Language',theme:'Toggle theme',role:'Account manager',menu:'Open menu',
+st_DRAFT:'Draft',st_REVIEW:'In review',st_PUBLISHED:'Published',ty_SOCIAL:'Social media',ty_BLOG:'Blog post',ty_WEB:'Web page',ty_OTHER:'Other',pf_blog:'Company blog',pf_website:'Website',pf_newsletter:'Newsletter',
+next_DRAFT:'Send for review',next_REVIEW:'Publish',changeStatus:'Change status',undo:'Undo',
+hello:'Hello, {name}',dashSub:'Here is where your agency’s content stands today.',kpi_clients:'Active clients',kpi_total:'Total content',kpi_review:'Awaiting review',kpi_week:'Due in 7 days',
+hint_inactive:'{n} inactive',hint_recent:'+{n} in the last 30 days',hint_earliest:'Earliest: {d}',hint_none:'Nothing waiting',hint_overdue:'{n} overdue',hint_noOverdue:'Nothing overdue',
+attn_overdue:'{n} items are past their publish date and still not published.',show:'Show',p_week:'Next 7 days',p_breakdown:'Status breakdown',p_byType:'By type',p_review:'Awaiting review',p_activity:'Recent activity',viewAll:'View all',today:'Today',empty_review:'Nothing is waiting for review.',empty_day:'Nothing planned',
+act_created:'{user} created <b>{title}</b>',act_status:'{user} moved <b>{title}</b> to <em class="st-{s}">{to}</em>',act_client:'{user} added client <b>{name}</b>',
+clients_sub:'Brands your agency works with and where their content stands.',search_clients:'Search clients',newClient:'New client',f_all:'All',f_active:'Active',f_inactive:'Inactive',nextUp:'Next up',nothingScheduled:'Nothing scheduled',contentLbl:'Content',inactiveBadge:'Inactive',empty_clients:'No clients match your search.',
+dlg_desc:'Once the client is added you can attach content to it.',f_name:'Client name',f_namePh:'e.g. Lumen Kahve',f_sector:'Industry',f_contact:'Contact person',f_email:'Email',f_phone:'Phone',f_color:'Brand color',f_owner:'Account manager',optional:'optional',err_required:'This field is required.',err_email:'Enter a valid email address.',err_dup:'A client with this name already exists.',cancel:'Cancel',addClient:'Add client',toast_client:'{name} added',
+backClients:'Clients',newContent:'New content',empty_client:'No content for this client yet.',empty_client_cta:'Add the first piece',empty_tab:'No content in this status.',notFound:'Client not found.',
+contents_sub:'Every client’s content in one list.',search_contents:'Search titles',allTypes:'All types',allClients:'All clients',clear:'Clear filters',chip_week:'Next 7 days',chip_overdue:'Overdue',showing:'Showing {n}',col_title:'Title',col_client:'Client',col_type:'Type',col_date:'Publish date',col_status:'Status',noDate:'No date',overdue:'Overdue',empty_filtered:'No content matches these filters.',
+sheet_new:'New content',sheet_edit:'Edit content',f_title:'Title',f_titlePh:'e.g. November campaign carousel',f_client:'Client',f_selectClient:'Select a client',f_type:'Type',f_platform:'Platform',f_date:'Publish date',f_assignee:'Assignee',f_notes:'Notes and copy',f_notesPh:'Brief, draft copy or client feedback',
+saveDraft:'Save as draft',saveReview:'Save and send for review',saveChanges:'Save changes',created_on:'Created {d}',toast_saved:'Changes saved',toast_created:'Content created',close:'Close',isPublished:'This content is live.',status:'Status',statusNote:'Status changes apply immediately.'},
+ru:{brandSub:'Контент-панель агентства',nav_dashboard:'Обзор',nav_clients:'Клиенты',nav_contents:'Контент',proto:'Прототип · демо-данные',language:'Язык',theme:'Сменить тему',role:'Менеджер по работе с клиентами',menu:'Открыть меню',
+st_DRAFT:'Черновик',st_REVIEW:'На согласовании',st_PUBLISHED:'Опубликовано',ty_SOCIAL:'Соцсети',ty_BLOG:'Статья в блоге',ty_WEB:'Веб-страница',ty_OTHER:'Другое',pf_blog:'Блог компании',pf_website:'Сайт',pf_newsletter:'Рассылка',
+next_DRAFT:'На согласование',next_REVIEW:'Опубликовать',changeStatus:'Изменить статус',undo:'Отменить',
+hello:'Здравствуйте, {name}',dashSub:'Так выглядит контент агентства на сегодня.',kpi_clients:'Активные клиенты',kpi_total:'Всего материалов',kpi_review:'Ждут согласования',kpi_week:'Выйдут за 7 дней',
+hint_inactive:'Неактивных: {n}',hint_recent:'+{n} за 30 дней',hint_earliest:'Ближайший: {d}',hint_none:'Ничего не ждёт',hint_overdue:'Просрочено: {n}',hint_noOverdue:'Просрочек нет',
+attn_overdue:'Просрочено материалов: {n}. Дата публикации прошла, но они не опубликованы.',show:'Показать',p_week:'Ближайшие 7 дней',p_breakdown:'Статусы',p_byType:'По типам',p_review:'Ждут согласования',p_activity:'Последние действия',viewAll:'Показать все',today:'Сегодня',empty_review:'Нет материалов на согласовании.',empty_day:'Пусто',
+act_created:'{user} создаёт <b>{title}</b>',act_status:'{user}: <b>{title}</b> → <em class="st-{s}">{to}</em>',act_client:'{user} добавляет клиента <b>{name}</b>',
+clients_sub:'Бренды, с которыми работает агентство, и статус их материалов.',search_clients:'Поиск клиентов',newClient:'Новый клиент',f_all:'Все',f_active:'Активные',f_inactive:'Неактивные',nextUp:'Следующая публикация',nothingScheduled:'Ничего не запланировано',contentLbl:'Материалы',inactiveBadge:'Неактивен',empty_clients:'Нет клиентов по вашему запросу.',
+dlg_desc:'После добавления к клиенту можно привязывать материалы.',f_name:'Название клиента',f_namePh:'Напр. Lumen Kahve',f_sector:'Отрасль',f_contact:'Контактное лицо',f_email:'Эл. почта',f_phone:'Телефон',f_color:'Цвет бренда',f_owner:'Ответственный менеджер',optional:'необязательно',err_required:'Обязательное поле.',err_email:'Введите корректный адрес эл. почты.',err_dup:'Клиент с таким названием уже есть.',cancel:'Отмена',addClient:'Добавить клиента',toast_client:'Клиент {name} добавлен',
+backClients:'Клиенты',newContent:'Новый материал',empty_client:'У этого клиента пока нет материалов.',empty_client_cta:'Добавить первый материал',empty_tab:'Нет материалов с этим статусом.',notFound:'Клиент не найден.',
+contents_sub:'Материалы всех клиентов в одном списке.',search_contents:'Поиск по названию',allTypes:'Все типы',allClients:'Все клиенты',clear:'Сбросить фильтры',chip_week:'Ближайшие 7 дней',chip_overdue:'Просроченные',showing:'Показано: {n}',col_title:'Название',col_client:'Клиент',col_type:'Тип',col_date:'Дата публикации',col_status:'Статус',noDate:'Без даты',overdue:'Просрочено',empty_filtered:'Нет материалов по этим фильтрам.',
+sheet_new:'Новый материал',sheet_edit:'Редактирование',f_title:'Название',f_titlePh:'Напр. карусель для ноябрьской кампании',f_client:'Клиент',f_selectClient:'Выберите клиента',f_type:'Тип',f_platform:'Площадка',f_date:'Дата публикации',f_assignee:'Исполнитель',f_notes:'Заметки и текст',f_notesPh:'Бриф, черновик текста или отзыв клиента',
+saveDraft:'Сохранить черновик',saveReview:'Сохранить и отправить',saveChanges:'Сохранить изменения',created_on:'Создано {d}',toast_saved:'Изменения сохранены',toast_created:'Материал создан',close:'Закрыть',isPublished:'Материал опубликован.',status:'Статус',statusNote:'Статус меняется сразу.'},
+de:{brandSub:'Content-Panel der Agentur',nav_dashboard:'Übersicht',nav_clients:'Kunden',nav_contents:'Inhalte',proto:'Prototyp · Beispieldaten',language:'Sprache',theme:'Design wechseln',role:'Account Manager',menu:'Menü öffnen',
+st_DRAFT:'Entwurf',st_REVIEW:'In Freigabe',st_PUBLISHED:'Veröffentlicht',ty_SOCIAL:'Social Media',ty_BLOG:'Blogartikel',ty_WEB:'Webseite',ty_OTHER:'Sonstiges',pf_blog:'Firmenblog',pf_website:'Website',pf_newsletter:'Newsletter',
+next_DRAFT:'Zur Freigabe senden',next_REVIEW:'Veröffentlichen',changeStatus:'Status ändern',undo:'Rückgängig',
+hello:'Hallo, {name}',dashSub:'So steht der Content Ihrer Agentur heute.',kpi_clients:'Aktive Kunden',kpi_total:'Inhalte gesamt',kpi_review:'Warten auf Freigabe',kpi_week:'Fällig in 7 Tagen',
+hint_inactive:'{n} inaktiv',hint_recent:'+{n} in den letzten 30 Tagen',hint_earliest:'Nächster: {d}',hint_none:'Nichts offen',hint_overdue:'{n} überfällig',hint_noOverdue:'Nichts überfällig',
+attn_overdue:'{n} Inhalte haben ihr Veröffentlichungsdatum überschritten und sind noch nicht live.',show:'Anzeigen',p_week:'Nächste 7 Tage',p_breakdown:'Statusverteilung',p_byType:'Nach Typ',p_review:'Warten auf Freigabe',p_activity:'Letzte Aktivitäten',viewAll:'Alle anzeigen',today:'Heute',empty_review:'Nichts wartet auf Freigabe.',empty_day:'Nichts geplant',
+act_created:'{user} hat <b>{title}</b> erstellt',act_status:'{user} hat <b>{title}</b> auf <em class="st-{s}">{to}</em> gesetzt',act_client:'{user} hat den Kunden <b>{name}</b> angelegt',
+clients_sub:'Marken, mit denen Ihre Agentur arbeitet, und der Stand ihrer Inhalte.',search_clients:'Kunden suchen',newClient:'Neuer Kunde',f_all:'Alle',f_active:'Aktiv',f_inactive:'Inaktiv',nextUp:'Als Nächstes',nothingScheduled:'Nichts geplant',contentLbl:'Inhalte',inactiveBadge:'Inaktiv',empty_clients:'Keine Kunden passen zu Ihrer Suche.',
+dlg_desc:'Nach dem Anlegen können Sie dem Kunden Inhalte zuordnen.',f_name:'Kundenname',f_namePh:'z. B. Lumen Kahve',f_sector:'Branche',f_contact:'Ansprechpartner',f_email:'E-Mail',f_phone:'Telefon',f_color:'Markenfarbe',f_owner:'Account Manager',optional:'optional',err_required:'Dieses Feld ist erforderlich.',err_email:'Geben Sie eine gültige E-Mail-Adresse ein.',err_dup:'Ein Kunde mit diesem Namen existiert bereits.',cancel:'Abbrechen',addClient:'Kunde anlegen',toast_client:'{name} angelegt',
+backClients:'Kunden',newContent:'Neuer Inhalt',empty_client:'Für diesen Kunden gibt es noch keine Inhalte.',empty_client_cta:'Ersten Inhalt anlegen',empty_tab:'Keine Inhalte in diesem Status.',notFound:'Kunde nicht gefunden.',
+contents_sub:'Die Inhalte aller Kunden in einer Liste.',search_contents:'Titel durchsuchen',allTypes:'Alle Typen',allClients:'Alle Kunden',clear:'Filter zurücksetzen',chip_week:'Nächste 7 Tage',chip_overdue:'Überfällig',showing:'{n} angezeigt',col_title:'Titel',col_client:'Kunde',col_type:'Typ',col_date:'Veröffentlichung',col_status:'Status',noDate:'Kein Datum',overdue:'Überfällig',empty_filtered:'Keine Inhalte passen zu diesen Filtern.',
+sheet_new:'Neuer Inhalt',sheet_edit:'Inhalt bearbeiten',f_title:'Titel',f_titlePh:'z. B. Karussell zur Novemberkampagne',f_client:'Kunde',f_selectClient:'Kunde auswählen',f_type:'Typ',f_platform:'Plattform',f_date:'Veröffentlichungsdatum',f_assignee:'Zuständig',f_notes:'Notizen und Text',f_notesPh:'Briefing, Textentwurf oder Kundenfeedback',
+saveDraft:'Als Entwurf speichern',saveReview:'Speichern und zur Freigabe',saveChanges:'Änderungen speichern',created_on:'Erstellt am {d}',toast_saved:'Änderungen gespeichert',toast_created:'Inhalt erstellt',close:'Schließen',isPublished:'Dieser Inhalt ist live.',status:'Status',statusNote:'Statusänderungen gelten sofort.'}
+};
+const LOCALES={tr:'tr-TR',en:'en-GB',ru:'ru-RU',de:'de-DE'};
+const LANG_NAMES={tr:'Türkçe',en:'English',ru:'Русский',de:'Deutsch'};
+const STATUSES=['DRAFT','REVIEW','PUBLISHED'];
+const TYPES=['SOCIAL','BLOG','WEB','OTHER'];
+const PLATFORMS={SOCIAL:['instagram','linkedin','x','tiktok','facebook'],BLOG:['blog','medium'],WEB:['website'],OTHER:['newsletter']};
+const PF_ABBR={instagram:'IG',linkedin:'in',x:'X',tiktok:'TT',facebook:'FB',blog:'BL',medium:'M',website:'WEB',newsletter:'NL'};
+const PF_NAME={instagram:'Instagram',linkedin:'LinkedIn',x:'X',tiktok:'TikTok',facebook:'Facebook',medium:'Medium'};
+const COLORS=['#C2410C','#1D4ED8','#0F766E','#0E7490','#4D7C0F','#57534E','#A16207','#BE185D'];
+const DAY=864e5;
+const today=(()=>{const d=new Date();d.setHours(0,0,0,0);return d})();
+const addDays=n=>new Date(today.getTime()+n*DAY);
+const ME='u1';
+
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+
+const USERS=[{id:'u1',name:'Ayşe Kaya'},{id:'u2',name:'Mert Demir'},{id:'u3',name:'Elif Şahin'},{id:'u4',name:'Can Yıldız'}];
+const CLIENTS=[
+ {id:'c1',name:'Lumen Kahve',sector:'Yiyecek & İçecek',contact:'Zeynep Arslan',email:'zeynep@lumenkahve.com',phone:'+90 532 410 22 18',color:COLORS[0],owner:'u1',active:true},
+ {id:'c2',name:'Atlas Lojistik',sector:'Lojistik',contact:'Burak Öztürk',email:'burak.ozturk@atlaslojistik.com.tr',phone:'+90 216 555 40 10',color:COLORS[1],owner:'u2',active:true},
+ {id:'c3',name:'Nova Diş Kliniği',sector:'Sağlık',contact:'Dr. Selin Aydın',email:'selin@novadis.com',phone:'+90 242 333 12 90',color:COLORS[2],owner:'u1',active:true},
+ {id:'c4',name:'Mavi Yalı Otel',sector:'Turizm',contact:'Hakan Koç',email:'hakan@maviyali.com',phone:'+90 252 614 70 70',color:COLORS[3],owner:'u3',active:true},
+ {id:'c5',name:'Kuzey Outdoor',sector:'Perakende',contact:'Deniz Kılıç',email:'deniz@kuzeyoutdoor.com',phone:'+90 212 290 18 44',color:COLORS[4],owner:'u4',active:true},
+ {id:'c6',name:'Pera Hukuk',sector:'Hukuk',contact:'Av. Ece Tan',email:'ece.tan@perahukuk.com',phone:'+90 212 244 05 61',color:COLORS[5],owner:'u2',active:true},
+ {id:'c7',name:'Fidan Organik',sector:'Tarım & Gıda',contact:'Murat Eren',email:'murat@fidanorganik.com',phone:'+90 232 470 33 08',color:COLORS[6],owner:'u3',active:false},
+ {id:'c8',name:'Orbit Yazılım',sector:'Teknoloji',contact:'Kaan Polat',email:'kaan@orbityazilim.io',phone:'+90 216 999 72 15',color:COLORS[7],owner:'u4',active:true}
+];
+const SEED=[
+ ['c1','SOCIAL','instagram','Kış menüsü lansman karuseli','REVIEW',1,'u1','5 kare karusel. Son karede şube haritası. Müşteri fiyatları cuma günü teyit edecek.'],
+ ['c1','SOCIAL','instagram','Barista ile 60 saniye (reels)','DRAFT',4,'u1','Çekim 22 Kasım, Kadıköy şubesi.'],
+ ['c1','BLOG','blog','Evde filtre kahve demleme rehberi','PUBLISHED',-6,'u1'],
+ ['c1','SOCIAL','tiktok','Latte art denemeleri','DRAFT',null,'u3'],
+ ['c2','SOCIAL','linkedin','Yeni Gebze aktarma merkezi duyurusu','REVIEW',2,'u2','Basın bülteniyle aynı gün çıkmalı.'],
+ ['c2','BLOG','blog','2027’de soğuk zincir lojistiğini neler bekliyor?','DRAFT',9,'u2'],
+ ['c2','WEB','website','Hizmetler sayfası yenileme','REVIEW',-1,'u2','Müşteri ikinci revizyonu bekliyor.'],
+ ['c2','SOCIAL','linkedin','Filo yenileme: 40 elektrikli araç','PUBLISHED',-12,'u2'],
+ ['c3','SOCIAL','instagram','Diş beyazlatma hakkında 5 yanlış bilgi','PUBLISHED',-3,'u1'],
+ ['c3','BLOG','blog','İmplant tedavisi kaç seans sürer?','REVIEW',3,'u1','Hekim onayı gerekli.'],
+ ['c3','WEB','website','Online randevu sayfası','DRAFT',14,'u4'],
+ ['c3','SOCIAL','facebook','Hasta yorumları derlemesi','DRAFT',0,'u1'],
+ ['c4','SOCIAL','instagram','Yılbaşı konaklama paketi','REVIEW',5,'u3'],
+ ['c4','WEB','website','Oda ve süitler sayfası','PUBLISHED',-20,'u3'],
+ ['c4','OTHER','newsletter','Aralık e-bülteni','DRAFT',11,'u3'],
+ ['c4','SOCIAL','instagram','Spa merkezi tanıtım videosu','PUBLISHED',-2,'u3'],
+ ['c5','SOCIAL','instagram','Kış kampı ekipman listesi','PUBLISHED',-1,'u4'],
+ ['c5','BLOG','blog','Doğru uyku tulumu nasıl seçilir?','DRAFT',6,'u4'],
+ ['c5','SOCIAL','tiktok','Black Friday geri sayımı','REVIEW',8,'u4'],
+ ['c5','WEB','website','Black Friday kampanya sayfası','REVIEW',6,'u4','İndirim oranları henüz kesinleşmedi.'],
+ ['c6','SOCIAL','linkedin','KVKK’da 2026 değişiklikleri','PUBLISHED',-9,'u2'],
+ ['c6','BLOG','blog','Kira artışında güncel yasal sınırlar','REVIEW',-2,'u2'],
+ ['c6','WEB','website','Ekibimiz sayfası','DRAFT',null,'u2'],
+ ['c7','BLOG','blog','Organik sertifika süreci adım adım','PUBLISHED',-30,'u3'],
+ ['c7','SOCIAL','instagram','Hasat zamanı: zeytin','PUBLISHED',-25,'u3'],
+ ['c8','SOCIAL','linkedin','Orbit 3.0 sürüm notları','REVIEW',1,'u4'],
+ ['c8','BLOG','medium','Monolitten mikroservise: 18 ayın dersleri','DRAFT',12,'u4'],
+ ['c8','WEB','website','Fiyatlandırma sayfası','PUBLISHED',-15,'u1'],
+ ['c8','SOCIAL','x','Webinar duyurusu: yapay zekâ ile test','DRAFT',3,'u4'],
+ ['c1','WEB','website','Franchise başvuru sayfası','DRAFT',16,'u1'],
+ ['c3','SOCIAL','instagram','Çocuklarda ilk diş muayenesi','REVIEW',0,'u1'],
+ ['c2','OTHER','newsletter','Müşteri bülteni: Kasım','PUBLISHED',-4,'u2']
+];
+
+const state={
+  lang:(()=>{const s=store.get('akis-lang');return I18N[s]?s:'tr'})(),
+  clients:CLIENTS.map(c=>({...c})),
+  contents:SEED.map((r,i)=>({id:'k'+(i+1),clientId:r[0],type:r[1],platform:r[2],title:r[3],status:r[4],date:r[5]==null?null:addDays(r[5]),assigneeId:r[6],notes:r[7]||'',
+    createdAt:new Date(Date.now()-(((i*7)%38)+2)*DAY),publishedAt:r[4]==='PUBLISHED'&&r[5]!=null?addDays(r[5]):null})),
+  activity:[],
+  filters:{q:'',status:'',type:'',client:'',week:false,overdue:false},
+  cq:'',cfilter:'all',ctab:'',ctabClient:null,route:'dashboard',param:null
+};
+const mins=m=>new Date(Date.now()-m*60000);
+state.activity=[
+ [12,'u1','status','k1','REVIEW'],[48,'u4','status','k26','REVIEW'],[130,'u3','created','k15'],[190,'u4','status','k17','PUBLISHED'],
+ [310,'u2','status','k22','REVIEW'],[1560,'u3','status','k16','PUBLISHED'],[1820,'u1','created','k31'],[3000,'u2','status','k5','REVIEW']
+].map((a,i)=>({id:'a'+i,at:mins(a[0]),userId:a[1],kind:a[2],contentId:a[3],to:a[4]}));
+
+let uidN=100;const uid=p=>p+(++uidN);
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function t(k,v){let s=(I18N[state.lang]&&I18N[state.lang][k])??I18N.tr[k]??k;if(v)for(const x in v)s=s.split('{'+x+'}').join(v[x]);return s}
+const loc=()=>LOCALES[state.lang];
+const fmtD=(d,o)=>new Intl.DateTimeFormat(loc(),o||{day:'numeric',month:'short'}).format(d);
+const fmtN=n=>new Intl.NumberFormat(loc()).format(n);
+function relDay(d){const diff=Math.round((d-today)/DAY);if(diff===0)return t('today');if(Math.abs(diff)===1)return new Intl.RelativeTimeFormat(loc(),{numeric:'auto'}).format(diff,'day');return fmtD(d)}
+function ago(at){const s=(Date.now()-at)/1000,r=new Intl.RelativeTimeFormat(loc(),{numeric:'auto'});if(s<60)return r.format(0,'second');if(s<3600)return r.format(-Math.round(s/60),'minute');if(s<86400)return r.format(-Math.round(s/3600),'hour');return r.format(-Math.round(s/86400),'day')}
+const toISO=d=>d?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`:'';
+const fromISO=s=>{if(!s)return null;const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const userById=id=>USERS.find(u=>u.id===id);
+const clientById=id=>state.clients.find(c=>c.id===id);
+const contentById=id=>state.contents.find(c=>c.id===id);
+const initials=n=>n.replace(/^(Dr\.|Av\.)\s*/,'').split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toLocaleUpperCase('tr');
+const isOverdue=c=>c.date&&c.date<today&&c.status!=='PUBLISHED';
+const pfName=p=>PF_NAME[p]||t('pf_'+p);
+const byDate=(a,b)=>(a.date?+a.date:Infinity)-(b.date?+b.date:Infinity);
+function sortContents(list){const open=list.filter(c=>c.status!=='PUBLISHED').sort(byDate);const pub=list.filter(c=>c.status==='PUBLISHED').sort((a,b)=>(b.date||0)-(a.date||0));return open.concat(pub)}
+const countBy=list=>{const o={DRAFT:0,REVIEW:0,PUBLISHED:0};list.forEach(c=>o[c.status]++);return o};
+
+const P={home:'<path d="M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.8c1.9.7 3.1 2.5 3.5 5.2"/>',
+file:'<path d="M14 3H6.5a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V7.5z"/><path d="M14 3v4.5h4.5M8.5 13h7M8.5 16.5h5"/>',plus:'<path d="M12 5v14M5 12h14"/>',search:'<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+chev:'<path d="m6 9 6 6 6-6"/>',chevL:'<path d="m15 6-6 6 6 6"/>',x:'<path d="M6 6l12 12M18 6 6 18"/>',sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/>',
+moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',check:'<path d="m5 12.5 4.5 4.5L19 7.5"/>',arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/>',phone:'<path d="M5 4h3.5l2 5L8 10.5a11 11 0 0 0 5.5 5.5L15 13.5l5 2V19a1 1 0 0 1-1 1A15 15 0 0 1 4 5a1 1 0 0 1 1-1z"/>',
+user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.2-6 8-6s7 2 8 6"/>',alert:'<circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.01"/>',inbox:'<path d="M3.5 13.5 6 5h12l2.5 8.5V19a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1z"/><path d="M3.5 13.5H9a3 3 0 0 0 6 0h5.5"/>',
+star:'<path d="M12 4v4M12 16v4M4 12h4M16 12h4"/>'};
+const ic=(n,s=16)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]}</svg>`;
+const avatar=(u,sz='')=>`<span class="av ${sz}" title="${esc(u.name)}">${initials(u.name)}</span>`;
+const sw=c=>`<span class="sw" style="--c:${c.color}"></span>`;
+function pill(s,id){const inner=`<span class="dot"></span>${t('st_'+s)}`;
+  return id?`<button type="button" class="pill st-${s}" data-action="status-menu" data-id="${id}" aria-haspopup="menu" aria-expanded="false" aria-label="${esc(t('changeStatus')+': '+t('st_'+s))}">${inner}${ic('chev',13)}</button>`:`<span class="pill st-${s}">${inner}</span>`}
+function dateCell(c){if(!c.date)return `<span class="muted">${t('noDate')}</span>`;const od=isOverdue(c);
+  return `<span class="date ${od?'od':''}">${esc(relDay(c.date))}</span>${od?`<span class="od-tag">${t('overdue')}</span>`:''}`}
+
+/* ---------- shell ---------- */
+const mq=matchMedia('(prefers-color-scheme: dark)');
+const isDark=()=>{const a=document.documentElement.dataset.theme;return a?a==='dark':mq.matches};
+(function(){const th=store.get('akis-theme');if(th==='dark'||th==='light')document.documentElement.dataset.theme=th})();
+
+function renderShell(){
+  const rv=state.contents.filter(c=>c.status==='REVIEW').length;
+  const cur=state.route==='client'?'clients':state.route;
+  const me=userById(ME);
+  const themeBtn=`<button type="button" class="icon-btn" data-action="theme" aria-label="${t('theme')}" title="${t('theme')}">${ic(isDark()?'sun':'moon',17)}</button>`;
+  $('#sidebar').innerHTML=`
+   <div class="brand"><span class="logo">A</span><div class="min" style="flex:1"><div class="brand-name">Akış</div><div class="brand-sub">${t('brandSub')}</div></div>
+     <button type="button" class="icon-btn only-m" data-action="close-nav" aria-label="${t('close')}">${ic('x',18)}</button></div>
+   <nav class="nav">${[['dashboard','home'],['clients','users'],['contents','file']].map(([k,i])=>`<a href="#${k}" class="nav-item" data-action="nav" ${cur===k?'aria-current="page"':''}>${ic(i,18)}<span>${t('nav_'+k)}</span>${k==='contents'&&rv?`<span class="nav-badge" title="${t('st_REVIEW')}">${rv}</span>`:''}</a>`).join('')}</nav>
+   <div class="side-foot">
+     <p class="proto">${t('proto')}</p>
+     <div class="prefs"><span class="select sm"><label class="sr" for="lang">${t('language')}</label><select id="lang">${Object.keys(LANG_NAMES).map(l=>`<option value="${l}" ${l===state.lang?'selected':''}>${LANG_NAMES[l]}</option>`).join('')}</select></span>${themeBtn}</div>
+     <div class="me">${avatar(me,'md')}<div class="min"><div class="me-name">${esc(me.name)}</div><div class="sub">${t('role')}</div></div></div>
+   </div>`;
+  $('#topbar').innerHTML=`<button type="button" class="icon-btn" data-action="open-nav" aria-label="${t('menu')}">${ic('menu',18)}</button><span class="brand-name">Akış</span>${themeBtn}`;
+  document.documentElement.lang=state.lang;
+}
+
+/* ---------- dashboard ---------- */
+function viewDashboard(){
+  const C=state.contents,me=userById(ME);
+  const active=state.clients.filter(c=>c.active).length;
+  const review=sortContents(C.filter(c=>c.status==='REVIEW'));
+  const week=C.filter(c=>c.date&&c.date>=today&&c.date<addDays(7)&&c.status!=='PUBLISHED');
+  const overdue=C.filter(isOverdue);
+  const kpis=[['clients',t('kpi_clients'),active],['total',t('kpi_total'),C.length],['review',t('kpi_review'),review.length,'<i class="mdot st-REVIEW"></i>'],['week',t('kpi_week'),week.length]];
+  const cnt=countBy(C),total=C.length||1;
+  const groups=[...Array(7)].map((_,i)=>{const d=addDays(i);return{d,i,items:C.filter(c=>c.date&&+c.date===+d).sort((x,y)=>STATUSES.indexOf(x.status)-STATUSES.indexOf(y.status))}}).filter(g=>g.items.length);
+  const acts=state.activity.slice().sort((x,y)=>y.at-x.at).slice(0,5);
+  const dayLabel=g=>g.i<2?relDay(g.d):fmtD(g.d,{weekday:'long'});
+  return `
+  <header class="page-head"><div><p class="eyebrow">${esc(fmtD(today,{weekday:'long',day:'numeric',month:'long'}))}</p><h1>${esc(t('hello',{name:me.name.split(' ')[0]}))}</h1></div>
+    <button type="button" class="btn btn-primary" data-action="new-content">${ic('plus',16)}${t('newContent')}</button></header>
+  <section class="kpis">${kpis.map(k=>`<button type="button" class="kpi" data-action="kpi" data-kpi="${k[0]}"><span class="kpi-l">${k[3]||''}${k[1]}</span><span class="kpi-v">${fmtN(k[2])}</span></button>`).join('')}</section>
+  <section class="dist" aria-label="${t('p_breakdown')}"><div class="stack">${STATUSES.map(s=>cnt[s]?`<i class="st-${s}" style="flex:${cnt[s]}"></i>`:'').join('')}</div>
+    <div class="dist-l">${STATUSES.map(s=>`<button type="button" class="dist-i" data-action="kpi" data-kpi="status" data-v="${s}"><i class="mdot st-${s}"></i>${t('st_'+s)}<b>${cnt[s]}</b><span>${Math.round(cnt[s]/total*100)}%</span></button>`).join('')}</div></section>
+  ${overdue.length?`<div class="attn" role="status">${ic('alert',18)}<span>${t('attn_overdue',{n:overdue.length})}</span><button type="button" class="btn btn-sm" data-action="kpi" data-kpi="overdue">${t('show')}${ic('arrow',14)}</button></div>`:''}
+  <div class="dash">
+    <section class="panel p-week"><div class="panel-h"><h2>${t('p_week')}</h2><button type="button" class="linkbtn" data-action="kpi" data-kpi="week">${t('viewAll')}</button></div>
+      ${groups.length?`<div class="wl">${groups.map(g=>`<div class="wl-g"><div class="wl-d ${g.i===0?'today':''}"><span class="wl-dn">${esc(dayLabel(g))}</span><span class="wl-dd num">${esc(fmtD(g.d))}</span></div>
+        <ul>${g.items.map(c=>{const cl=clientById(c.clientId);return `<li><button type="button" class="wl-i" data-action="open-content" data-id="${c.id}"><i class="mdot st-${c.status}" title="${t('st_'+c.status)}"></i><span class="sr">${t('st_'+c.status)}</span><span class="wl-t trunc">${esc(c.title)}</span><span class="wl-c">${sw(cl)}<span class="trunc">${esc(cl.name)}</span></span></button></li>`}).join('')}</ul></div>`).join('')}</div>`:`<p class="empty-s">${t('empty_day')}</p>`}
+    </section>
+    <section class="panel p-review"><div class="panel-h"><h2>${t('p_review')} <span class="sub num">· ${review.length}</span></h2><button type="button" class="linkbtn" data-action="kpi" data-kpi="review">${t('viewAll')}</button></div>
+      ${review.length?`<ul class="rv">${review.slice(0,5).map(c=>{const cl=clientById(c.clientId);return `<li>
+        <button type="button" class="rv-main" data-action="open-content" data-id="${c.id}"><span class="min" style="display:grid;gap:3px"><span class="rv-t trunc">${esc(c.title)}</span><span class="rv-m">${sw(cl)}<span class="trunc">${esc(cl.name)}</span><span>·</span>${dateCell(c)}</span></span></button>
+        <button type="button" class="btn btn-sm" data-action="quick-status" data-id="${c.id}" data-to="PUBLISHED">${t('next_REVIEW')}</button></li>`}).join('')}</ul>`:`<p class="empty-s">${t('empty_review')}</p>`}
+    </section>
+    <section class="panel p-act"><div class="panel-h"><h2>${t('p_activity')}</h2></div>
+      <ul class="act">${acts.map(x=>{const u=userById(x.userId);let txt='';
+        if(x.kind==='client'){const cl=clientById(x.clientId);txt=`<a href="#client-${cl.id}">${t('act_client',{user:esc(u.name),name:esc(cl.name)})}</a>`}
+        else{const c=contentById(x.contentId);if(!c)return '';txt=`<button type="button" data-action="open-content" data-id="${c.id}">${t(x.kind==='created'?'act_created':'act_status',{user:esc(u.name),title:esc(c.title),to:t('st_'+x.to),s:x.to})}</button>`}
+        return `<li>${avatar(u)}<div class="min"><div class="act-x">${txt}</div><div class="act-t">${esc(ago(x.at))}</div></div></li>`}).join('')}</ul>
+    </section>
+  </div>`;
+}
+
+/* ---------- clients ---------- */
+function viewClients(){
+  return `<header class="page-head"><div><h1>${t('nav_clients')}</h1><p class="lede">${t('clients_sub')}</p></div>
+    <button type="button" class="btn btn-primary" data-action="new-client">${ic('plus',16)}${t('newClient')}</button></header>
+  <div class="toolbar"><label class="search">${ic('search',16)}<input class="input" id="cq" type="search" autocomplete="off" placeholder="${t('search_clients')}" aria-label="${t('search_clients')}" value="${esc(state.cq)}"></label><div class="seg" id="cseg" role="group"></div></div>
+  <div id="cgrid"></div>`;
+}
+function fillClients(){
+  const q=state.cq.trim().toLocaleLowerCase('tr');
+  const base=state.clients.filter(c=>!q||(c.name+' '+c.sector+' '+c.contact).toLocaleLowerCase('tr').includes(q));
+  const groups={all:base,active:base.filter(c=>c.active),inactive:base.filter(c=>!c.active)};
+  $('#cseg').innerHTML=Object.keys(groups).map(k=>`<button type="button" data-action="cfilter" data-v="${k}" aria-pressed="${state.cfilter===k}">${t('f_'+k)}<span class="n">${groups[k].length}</span></button>`).join('');
+  const list=groups[state.cfilter];
+  $('#cgrid').innerHTML=list.length?`<div class="cgrid">${list.map(cardHTML).join('')}</div>`:emptyHTML('search',t('empty_clients'));
+}
+function cardHTML(cl){
+  const cs=state.contents.filter(c=>c.clientId===cl.id),cnt=countBy(cs),owner=userById(cl.owner);
+  const next=cs.filter(c=>c.date&&c.date>=today&&c.status!=='PUBLISHED').sort(byDate)[0];
+  return `<a class="ccard ${cl.active?'':'off'}" href="#client-${cl.id}">
+    <div class="cc-top"><span class="cav" style="--c:${cl.color}">${initials(cl.name)}</span><div class="min"><div class="cc-name"><span class="trunc">${esc(cl.name)}</span>${cl.active?'':`<span class="badge">${t('inactiveBadge')}</span>`}</div><div class="sub trunc">${esc(cl.sector||'—')}</div></div></div>
+    <div><div class="stack sm">${STATUSES.map(s=>cnt[s]?`<i class="st-${s}" style="flex:${cnt[s]}"></i>`:'').join('')}</div>
+      <div class="cc-counts"><span class="tot">${t('contentLbl')} · ${cs.length}</span></div></div>
+    <div class="cc-foot"><span class="who">${avatar(owner,'xs')}<span class="trunc">${esc(owner.name)}</span></span><span class="sub trunc">${next?`${t('nextUp')}: ${esc(relDay(next.date))}`:t('nothingScheduled')}</span></div>
+  </a>`;
+}
+function emptyHTML(icon,msg,cta){return `<div class="rows"><div class="empty"><span class="empty-ic">${ic(icon,22)}</span><p>${msg}</p>${cta||''}</div></div>`}
+
+/* ---------- client detail ---------- */
+function viewClient(id){
+  const cl=clientById(id);
+  if(!cl)return `<nav class="crumb"><a href="#clients">${ic('chevL',15)}${t('backClients')}</a></nav>${emptyHTML('users',t('notFound'))}`;
+  if(state.ctabClient!==id){state.ctab='';state.ctabClient=id}
+  const owner=userById(cl.owner);
+  return `<nav class="crumb"><a href="#clients">${ic('chevL',15)}${t('backClients')}</a></nav>
+  <section class="dhead">
+    <div class="dh-main"><span class="cav lg" style="--c:${cl.color}">${initials(cl.name)}</span><div class="min"><h1>${esc(cl.name)} ${cl.active?'':`<span class="badge">${t('inactiveBadge')}</span>`}</h1><p class="lede">${esc(cl.sector||'—')}</p></div></div>
+    <button type="button" class="btn btn-primary" data-action="new-content" data-client="${cl.id}">${ic('plus',16)}${t('newContent')}</button>
+    <dl class="info">
+      <div><dt>${ic('user',13)}${t('f_contact')}</dt><dd>${esc(cl.contact||'—')}</dd></div>
+      <div><dt>${ic('mail',13)}${t('f_email')}</dt><dd>${esc(cl.email||'—')}</dd></div>
+      <div><dt>${ic('phone',13)}${t('f_phone')}</dt><dd class="num">${esc(cl.phone||'—')}</dd></div>
+      <div><dt>${ic('users',13)}${t('f_owner')}</dt><dd style="display:flex;align-items:center;gap:7px">${avatar(owner,'xs')}${esc(owner.name)}</dd></div>
+    </dl>
+  </section>
+  <div class="toolbar"><div class="seg" id="tseg" role="group"></div></div>
+  <div id="clist"></div>`;
+}
+function fillClient(){
+  const cl=clientById(state.param);if(!cl)return;
+  const cs=state.contents.filter(c=>c.clientId===cl.id),cnt=countBy(cs);
+  $('#tseg').innerHTML=[['',t('f_all'),cs.length]].concat(STATUSES.map(s=>[s,t('st_'+s),cnt[s]])).map(([v,l,n])=>`<button type="button" data-action="ctab" data-v="${v}" aria-pressed="${state.ctab===v}">${v?`<i class="mdot st-${v}"></i>`:''}${l}<span class="n">${n}</span></button>`).join('');
+  const list=sortContents(cs.filter(c=>!state.ctab||c.status===state.ctab));
+  if(!cs.length){$('#clist').innerHTML=emptyHTML('inbox',t('empty_client'),`<button type="button" class="btn btn-primary btn-sm" data-action="new-content" data-client="${cl.id}">${ic('plus',15)}${t('empty_client_cta')}</button>`);return}
+  $('#clist').innerHTML=list.length?rowsHTML(list,false):emptyHTML('inbox',t('empty_tab'));
+}
+
+/* ---------- contents ---------- */
+function viewContents(){
+  const f=state.filters;
+  return `<header class="page-head"><div><h1>${t('nav_contents')}</h1><p class="lede">${t('contents_sub')}</p></div>
+    <button type="button" class="btn btn-primary" data-action="new-content">${ic('plus',16)}${t('newContent')}</button></header>
+  <div class="toolbar">
+    <label class="search">${ic('search',16)}<input class="input" id="q" type="search" autocomplete="off" placeholder="${t('search_contents')}" aria-label="${t('search_contents')}" value="${esc(f.q)}"></label>
+    <div class="seg" id="sseg" role="group"></div>
+    <span class="select"><label class="sr" for="fType">${t('col_type')}</label><select id="fType"><option value="">${t('allTypes')}</option>${TYPES.map(ty=>`<option value="${ty}" ${f.type===ty?'selected':''}>${t('ty_'+ty)}</option>`).join('')}</select></span>
+    <span class="select"><label class="sr" for="fClient">${t('col_client')}</label><select id="fClient"><option value="">${t('allClients')}</option>${state.clients.map(c=>`<option value="${c.id}" ${f.client===c.id?'selected':''}>${esc(c.name)}</option>`).join('')}</select></span>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div id="list"></div>`;
+}
+function fillContents(){
+  const f=state.filters,q=f.q.trim().toLocaleLowerCase('tr');
+  const base=state.contents.filter(c=>(!q||c.title.toLocaleLowerCase('tr').includes(q))&&(!f.type||c.type===f.type)&&(!f.client||c.clientId===f.client)
+    &&(!f.week||(c.date&&c.date>=today&&c.date<addDays(7)&&c.status!=='PUBLISHED'))&&(!f.overdue||isOverdue(c)));
+  const cnt=countBy(base);
+  $('#sseg').innerHTML=[['',t('f_all'),base.length]].concat(STATUSES.map(s=>[s,t('st_'+s),cnt[s]])).map(([v,l,n])=>`<button type="button" data-action="f-status" data-v="${v}" aria-pressed="${f.status===v}">${v?`<i class="mdot st-${v}"></i>`:''}${l}<span class="n">${n}</span></button>`).join('');
+  const list=sortContents(base.filter(c=>!f.status||c.status===f.status));
+  const any=f.q||f.status||f.type||f.client||f.week||f.overdue;
+  $('#chips').innerHTML=(f.week?`<button type="button" class="chip" data-action="chip-x" data-k="week">${t('chip_week')}${ic('x',13)}</button>`:'')+(f.overdue?`<button type="button" class="chip" data-action="chip-x" data-k="overdue">${t('chip_overdue')}${ic('x',13)}</button>`:'')
+    +(any?`<button type="button" class="linkbtn" data-action="f-clear">${t('clear')}</button>`:'')+`<span class="count">${t('showing',{n:list.length})}</span>`;
+  $('#list').innerHTML=list.length?rowsHTML(list,true):emptyHTML('search',t('empty_filtered'),any?`<button type="button" class="btn btn-sm" data-action="f-clear">${t('clear')}</button>`:'');
+}
+function rowsHTML(list,withClient){
+  const head=`<div class="row row-head" aria-hidden="true"><div class="c-title">${t('col_title')}</div>${withClient?`<div class="c-client">${t('col_client')}</div>`:''}<div class="c-date">${t('col_date')}</div><div class="c-status">${t('col_status')}</div></div>`;
+  return `<div class="rows ${withClient?'':'no-client'}">${head}${list.map(c=>{const cl=clientById(c.clientId);return `
+   <div class="row" role="button" tabindex="0" data-action="open-content" data-id="${c.id}" aria-label="${esc(c.title)}">
+     <div class="c-title"><span class="plat" title="${esc(pfName(c.platform))}">${PF_ABBR[c.platform]}</span><div class="ttl min">${esc(c.title)}</div></div>
+     <div class="c-status">${pill(c.status,c.id)}</div><span class="br"></span>
+     ${withClient?`<div class="c-client">${sw(cl)}<span class="trunc">${esc(cl.name)}</span></div>`:''}
+     <div class="c-date">${dateCell(c)}</div>
+   </div>`}).join('')}</div>`;
+}
+
+/* ---------- router ---------- */
+function render(){
+  const h=(location.hash||'').slice(1)||'dashboard';
+  let route=h,param=null;
+  if(h.startsWith('client-')){route='client';param=h.slice(7)}
+  if(!['dashboard','clients','contents','client'].includes(route))route='dashboard';
+  state.route=route;state.param=param;
+  const m=$('#main');
+  if(route==='dashboard')m.innerHTML=viewDashboard();
+  else if(route==='clients'){m.innerHTML=viewClients();fillClients()}
+  else if(route==='contents'){m.innerHTML=viewContents();fillContents()}
+  else{m.innerHTML=viewClient(param);fillClient()}
+  renderShell();
+}
+function refresh(){
+  if(state.route==='contents'){fillContents();renderShell()}
+  else if(state.route==='client'){fillClient();renderShell()}
+  else if(state.route==='clients'){fillClients();renderShell()}
+  else{const y=scrollY;render();scrollTo(0,y)}
+  if(sheetCtx&&sheetCtx.id)renderSheetStatus();
+}
+function go(route){if(location.hash==='#'+route)render();else location.hash=route}
+window.addEventListener('hashchange',()=>{closeMenu();render();scrollTo(0,0)});
+
+/* ---------- status ---------- */
+function changeStatus(id,to){
+  const c=contentById(id);if(!c||c.status===to)return;
+  const from=c.status,prevPub=c.publishedAt;
+  c.status=to;if(to==='PUBLISHED')c.publishedAt=new Date();
+  const act={id:uid('a'),at:new Date(),userId:ME,kind:'status',contentId:id,to};
+  state.activity.push(act);
+  refresh();
+  toast(`${esc(c.title)} → <b>${t('st_'+to)}</b>`,()=>{c.status=from;c.publishedAt=prevPub;state.activity=state.activity.filter(x=>x!==act);refresh()});
+}
+
+/* ---------- menu ---------- */
+const menuEl=$('#menu');let menuFor=null;
+function openMenu(anchor,id){
+  if(menuFor===id&&!menuEl.hidden){closeMenu();return}
+  closeMenu();
+  const c=contentById(id);
+  menuEl.innerHTML=`<div class="menu-lbl">${t('changeStatus')}</div>`+STATUSES.map(s=>`<button type="button" role="menuitemradio" aria-checked="${c.status===s}" class="menu-item" data-action="set-status" data-id="${id}" data-to="${s}"><i class="mdot st-${s}"></i>${t('st_'+s)}${c.status===s?ic('check',15):''}</button>`).join('');
+  menuEl.hidden=false;
+  const r=anchor.getBoundingClientRect(),mw=menuEl.offsetWidth,mh=menuEl.offsetHeight;
+  let left=Math.max(8,Math.min(r.left,innerWidth-mw-8)),top=r.bottom+6;
+  if(top+mh>innerHeight-8)top=Math.max(8,r.top-mh-6);
+  menuEl.style.left=left+'px';menuEl.style.top=top+'px';
+  anchor.setAttribute('aria-expanded','true');menuFor=id;menuEl._anchor=anchor;
+  (menuEl.querySelector('[aria-checked="true"]')||menuEl.querySelector('.menu-item')).focus();
+}
+function closeMenu(){if(menuEl.hidden)return;menuEl.hidden=true;if(menuEl._anchor)menuEl._anchor.setAttribute('aria-expanded','false');menuFor=null}
+window.addEventListener('scroll',closeMenu,{passive:true,capture:true});
+window.addEventListener('resize',closeMenu);
+
+/* ---------- toast ---------- */
+function toast(html,undo){
+  const el=document.createElement('div');el.className='toast';
+  el.innerHTML=`<span>${html}</span>${undo?`<button type="button">${t('undo')}</button>`:''}`;
+  if(undo)el.querySelector('button').onclick=()=>{undo();el.remove()};
+  $('#toasts').appendChild(el);setTimeout(()=>el.remove(),5200);
+  while($('#toasts').children.length>3)$('#toasts').firstChild.remove();
+}
+
+/* ---------- sheet ---------- */
+let sheetCtx=null,lastFocus=null;
+const sheet=$('#sheet'),scrim=$('#scrim'),dialog=$('#dialog');
+function openSheet(id,presetClient){
+  lastFocus=document.activeElement;closeMenu();
+  const c=id?contentById(id):null;
+  sheetCtx={id:id||null};
+  const type=c?c.type:'SOCIAL';
+  const opt=(v,l,s)=>`<option value="${v}" ${s?'selected':''}>${esc(l)}</option>`;
+  sheet.innerHTML=`
+   <div class="sh-h"><div class="min"><h2 id="sheetTitle">${c?t('sheet_edit'):t('sheet_new')}</h2>${c?`<p class="sub">${esc(clientById(c.clientId).name)}</p>`:''}</div>
+     <button type="button" class="icon-btn" data-action="close-sheet" aria-label="${t('close')}">${ic('x',18)}</button></div>
+   ${c?`<div class="sh-status" id="shStatus"></div>`:''}
+   <form class="sh-b" id="sheetForm" novalidate>
+     <div class="field"><label for="sTitle">${t('f_title')}</label><input class="input" id="sTitle" value="${c?esc(c.title):''}" placeholder="${t('f_titlePh')}" maxlength="160"><p class="err" id="e-sTitle"></p></div>
+     <div class="field"><label for="sClient">${t('f_client')}</label><span class="select"><select id="sClient">${opt('',t('f_selectClient'),!c&&!presetClient)}${state.clients.filter(x=>x.active||(c&&c.clientId===x.id)||presetClient===x.id).map(x=>opt(x.id,x.name,(c?c.clientId:presetClient)===x.id)).join('')}</select></span><p class="err" id="e-sClient"></p></div>
+     <div class="grid2">
+       <div class="field"><label for="sType">${t('f_type')}</label><span class="select"><select id="sType">${TYPES.map(ty=>opt(ty,t('ty_'+ty),ty===type)).join('')}</select></span></div>
+       <div class="field"><label for="sPlatform">${t('f_platform')}</label><span class="select"><select id="sPlatform">${platformOptions(type,c&&c.platform)}</select></span></div>
+     </div>
+     <div class="grid2">
+       <div class="field"><label for="sDate">${t('f_date')} <span class="opt">· ${t('optional')}</span></label><input class="input num" type="date" id="sDate" value="${c?toISO(c.date):''}"></div>
+       <div class="field"><label for="sAssignee">${t('f_assignee')}</label><span class="select"><select id="sAssignee">${USERS.map(u=>opt(u.id,u.name,(c?c.assigneeId:ME)===u.id)).join('')}</select></span></div>
+     </div>
+     <div class="field"><label for="sNotes">${t('f_notes')} <span class="opt">· ${t('optional')}</span></label><textarea class="input" id="sNotes" rows="6" placeholder="${t('f_notesPh')}">${c?esc(c.notes):''}</textarea></div>
+   </form>
+   <div class="sh-f">${c?`<span class="meta">${t('created_on',{d:esc(fmtD(c.createdAt,{day:'numeric',month:'long'}))})}</span>
+       <button type="button" class="btn btn-ghost" data-action="close-sheet">${t('cancel')}</button><button type="button" class="btn btn-primary" data-action="save-content" data-mode="edit">${t('saveChanges')}</button>`
+     :`<button type="button" class="btn btn-ghost" data-action="close-sheet">${t('cancel')}</button><button type="button" class="btn" data-action="save-content" data-mode="DRAFT">${t('saveDraft')}</button><button type="button" class="btn btn-primary" data-action="save-content" data-mode="REVIEW">${t('saveReview')}</button>`}</div>`;
+  if(c)renderSheetStatus();
+  sheet.classList.add('open');scrim.classList.add('open');
+  setTimeout(()=>$('#sTitle').focus({preventScroll:true}),60);
+}
+function platformOptions(type,sel){return PLATFORMS[type].map(p=>`<option value="${p}" ${p===sel?'selected':''}>${esc(pfName(p))}</option>`).join('')}
+function renderSheetStatus(){
+  const el=$('#shStatus');if(!el)return;const c=contentById(sheetCtx.id);
+  el.innerHTML=`<span class="lbl">${t('status')}</span>${pill(c.status,c.id)}<span class="grow"></span>`+(c.status==='PUBLISHED'
+    ?`<span class="sub">${t('isPublished')}</span>`
+    :`<button type="button" class="btn btn-primary btn-sm" data-action="sheet-next">${t('next_'+c.status)}${ic('arrow',14)}</button>`);
+}
+function closeSheet(){sheet.classList.remove('open');if(!dialog.classList.contains('open'))scrim.classList.remove('open');sheetCtx=null;closeMenu();if(lastFocus&&document.contains(lastFocus))lastFocus.focus({preventScroll:true})}
+function setErr(id,msg){const f=$('#'+id),e=$('#e-'+id);if(e)e.textContent=msg||'';if(f){msg?f.setAttribute('aria-invalid','true'):f.removeAttribute('aria-invalid')}}
+function saveContent(mode){
+  const title=$('#sTitle').value.trim(),clientId=$('#sClient').value;
+  setErr('sTitle',title?'':t('err_required'));setErr('sClient',clientId?'':t('err_required'));
+  if(!title||!clientId){(title?$('#sClient'):$('#sTitle')).focus();return}
+  const data={title,clientId,type:$('#sType').value,platform:$('#sPlatform').value,date:fromISO($('#sDate').value),assigneeId:$('#sAssignee').value,notes:$('#sNotes').value.trim()};
+  if(mode==='edit'){Object.assign(contentById(sheetCtx.id),data);closeSheet();refresh();toast(t('toast_saved'));return}
+  const c={id:uid('k'),status:mode,createdAt:new Date(),publishedAt:null,...data};
+  state.contents.push(c);
+  state.activity.push({id:uid('a'),at:new Date(),userId:ME,kind:'created',contentId:c.id});
+  if(mode==='REVIEW')state.activity.push({id:uid('a'),at:new Date(Date.now()+1),userId:ME,kind:'status',contentId:c.id,to:'REVIEW'});
+  closeSheet();refresh();toast(`${t('toast_created')} · <b>${t('st_'+mode)}</b>`);
+}
+
+/* ---------- client dialog ---------- */
+let dlgColor=COLORS[0];
+function openClientDialog(){
+  lastFocus=document.activeElement;closeMenu();dlgColor=COLORS[state.clients.length%COLORS.length];
+  dialog.innerHTML=`<div class="dl-h"><h2 id="dialogTitle">${t('newClient')}</h2><p class="sub" style="margin-top:4px">${t('dlg_desc')}</p></div>
+   <form class="dl-b" id="clientForm" novalidate>
+     <div class="field"><label for="dName">${t('f_name')}</label><input class="input" id="dName" placeholder="${t('f_namePh')}" maxlength="80"><p class="err" id="e-dName"></p></div>
+     <div class="grid2">
+       <div class="field"><label for="dSector">${t('f_sector')} <span class="opt">· ${t('optional')}</span></label><input class="input" id="dSector" maxlength="60"></div>
+       <div class="field"><label for="dOwner">${t('f_owner')}</label><span class="select"><select id="dOwner">${USERS.map(u=>`<option value="${u.id}" ${u.id===ME?'selected':''}>${esc(u.name)}</option>`).join('')}</select></span></div>
+     </div>
+     <div class="field"><label for="dContact">${t('f_contact')} <span class="opt">· ${t('optional')}</span></label><input class="input" id="dContact" maxlength="80"></div>
+     <div class="grid2">
+       <div class="field"><label for="dEmail">${t('f_email')} <span class="opt">· ${t('optional')}</span></label><input class="input" id="dEmail" type="email" inputmode="email" maxlength="120"><p class="err" id="e-dEmail"></p></div>
+       <div class="field"><label for="dPhone">${t('f_phone')} <span class="opt">· ${t('optional')}</span></label><input class="input num" id="dPhone" type="tel" inputmode="tel" maxlength="20"></div>
+     </div>
+     <div class="field"><span class="lab" id="colorLbl">${t('f_color')}</span><div class="swatches" role="group" aria-labelledby="colorLbl" id="swatches">${swatchesHTML()}</div></div>
+   </form>
+   <div class="dl-f"><button type="button" class="btn btn-ghost" data-action="close-dialog">${t('cancel')}</button><button type="button" class="btn btn-primary" data-action="save-client">${t('addClient')}</button></div>`;
+  dialog.classList.add('open');scrim.classList.add('open');
+  setTimeout(()=>$('#dName').focus(),60);
+}
+const swatchesHTML=()=>COLORS.map(c=>`<button type="button" class="swatch" style="--c:${c}" data-action="swatch" data-v="${c}" aria-pressed="${c===dlgColor}" aria-label="${c}">${c===dlgColor?ic('check',14):''}</button>`).join('');
+function closeDialog(){dialog.classList.remove('open');if(!sheet.classList.contains('open'))scrim.classList.remove('open');if(lastFocus&&document.contains(lastFocus))lastFocus.focus({preventScroll:true})}
+function saveClient(){
+  const name=$('#dName').value.trim(),email=$('#dEmail').value.trim();
+  let bad=null;
+  if(!name){setErr('dName',t('err_required'));bad=bad||'dName'}
+  else if(state.clients.some(c=>c.name.toLocaleLowerCase('tr')===name.toLocaleLowerCase('tr'))){setErr('dName',t('err_dup'));bad=bad||'dName'}
+  else setErr('dName','');
+  if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){setErr('dEmail',t('err_email'));bad=bad||'dEmail'}else setErr('dEmail','');
+  if(bad){$('#'+bad).focus();return}
+  const cl={id:uid('c'),name,sector:$('#dSector').value.trim(),contact:$('#dContact').value.trim(),email,phone:$('#dPhone').value.trim(),color:dlgColor,owner:$('#dOwner').value,active:true};
+  state.clients.push(cl);
+  state.activity.push({id:uid('a'),at:new Date(),userId:ME,kind:'client',clientId:cl.id});
+  lastFocus=null;closeDialog();toast(t('toast_client',{name:`<b>${esc(name)}</b>`}));go('client-'+cl.id);
+}
+
+/* ---------- events ---------- */
+function setNav(open){$('#sidebar').classList.toggle('open',open);$('#navScrim').classList.toggle('open',open)}
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-action]');
+  if(!menuEl.hidden&&!e.target.closest('#menu')&&!(el&&el.dataset.action==='status-menu'))closeMenu();
+  if(!el)return;
+  const a=el.dataset.action,id=el.dataset.id,f=state.filters;
+  switch(a){
+    case 'nav':setNav(false);break;
+    case 'open-nav':setNav(true);break;
+    case 'close-nav':setNav(false);break;
+    case 'theme':{const n=isDark()?'light':'dark';document.documentElement.dataset.theme=n;store.set('akis-theme',n);renderShell();break}
+    case 'open-content':openSheet(id);break;
+    case 'new-content':openSheet(null,el.dataset.client);break;
+    case 'status-menu':e.stopPropagation();openMenu(el,id);break;
+    case 'set-status':closeMenu();changeStatus(id,el.dataset.to);if(menuEl._anchor&&document.contains(menuEl._anchor))menuEl._anchor.focus({preventScroll:true});break;
+    case 'quick-status':changeStatus(id,el.dataset.to);break;
+    case 'sheet-next':{const c=contentById(sheetCtx.id);changeStatus(c.id,c.status==='DRAFT'?'REVIEW':'PUBLISHED');break}
+    case 'kpi':{const k=el.dataset.kpi;if(k==='clients'){state.cfilter='active';state.cq='';go('clients');break}
+      Object.assign(f,{q:'',status:'',type:'',client:'',week:false,overdue:false});
+      if(k==='review')f.status='REVIEW';if(k==='week')f.week=true;if(k==='overdue')f.overdue=true;if(k==='status')f.status=el.dataset.v;
+      go('contents');break}
+    case 'f-status':f.status=el.dataset.v;fillContents();break;
+    case 'chip-x':f[el.dataset.k]=false;fillContents();break;
+    case 'f-clear':Object.assign(f,{q:'',status:'',type:'',client:'',week:false,overdue:false});render();break;
+    case 'cfilter':state.cfilter=el.dataset.v;fillClients();break;
+    case 'ctab':state.ctab=el.dataset.v;fillClient();break;
+    case 'new-client':openClientDialog();break;
+    case 'close-sheet':closeSheet();break;
+    case 'close-dialog':closeDialog();break;
+    case 'scrim':if(dialog.classList.contains('open'))closeDialog();else closeSheet();break;
+    case 'save-content':saveContent(el.dataset.mode);break;
+    case 'save-client':saveClient();break;
+    case 'swatch':dlgColor=el.dataset.v;$('#swatches').innerHTML=swatchesHTML();$(`#swatches [data-v="${dlgColor}"]`).focus();break;
+  }
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){if(!menuEl.hidden){const an=menuEl._anchor;closeMenu();if(an)an.focus();return}if(dialog.classList.contains('open'))return closeDialog();if(sheet.classList.contains('open'))return closeSheet();setNav(false);return}
+  const r=e.target.closest&&e.target.closest('[role="button"][data-action]');
+  if(r&&e.target===r&&(e.key==='Enter'||e.key===' ')){e.preventDefault();r.click()}
+  if(!menuEl.hidden&&(e.key==='ArrowDown'||e.key==='ArrowUp')){const items=[...menuEl.querySelectorAll('.menu-item')];const i=items.indexOf(document.activeElement);items[(i+(e.key==='ArrowDown'?1:-1)+items.length)%items.length].focus();e.preventDefault()}
+  if(e.key==='Enter'&&e.target.closest&&e.target.closest('#clientForm')&&e.target.tagName==='INPUT'){e.preventDefault();saveClient()}
+});
+document.addEventListener('input',e=>{
+  if(e.target.id==='q'){state.filters.q=e.target.value;fillContents()}
+  else if(e.target.id==='cq'){state.cq=e.target.value;fillClients()}
+  else if(e.target.id==='sTitle'&&e.target.value.trim())setErr('sTitle','');
+  else if(e.target.id==='dName'&&e.target.value.trim())setErr('dName','');
+  else if(e.target.id==='dEmail')setErr('dEmail','');
+});
+document.addEventListener('change',e=>{
+  const id=e.target.id;
+  if(id==='fType'){state.filters.type=e.target.value;fillContents()}
+  else if(id==='fClient'){state.filters.client=e.target.value;fillContents()}
+  else if(id==='sType'){$('#sPlatform').innerHTML=platformOptions(e.target.value)}
+  else if(id==='sClient'&&e.target.value)setErr('sClient','');
+  else if(id==='lang'){state.lang=e.target.value;store.set('akis-lang',state.lang);if(sheet.classList.contains('open'))closeSheet();if(dialog.classList.contains('open'))closeDialog();render()}
+});
+document.addEventListener('submit',e=>e.preventDefault());
+mq.addEventListener&&mq.addEventListener('change',renderShell);
+
+render();
+})();
+</script>

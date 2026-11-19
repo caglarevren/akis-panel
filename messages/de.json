@@ -1,0 +1,34 @@
+{
+  "Metadata": {
+    "title": "Akış",
+    "description": "Kunden- und Content-Tracking-Panel für Account Manager der Agentur."
+  },
+  "Common": {
+    "brandSub": "Content-Panel der Agentur",
+    "language": "Sprache",
+    "languages": {
+      "tr": "Türkçe",
+      "en": "English",
+      "ru": "Русский",
+      "de": "Deutsch"
+    }
+  },
+  "Login": {
+    "title": "Anmelden",
+    "description": "Melden Sie sich mit Ihrem Agentur-Konto an, um das Panel zu öffnen.",
+    "email": "E-Mail",
+    "emailPlaceholder": "name@agentur.de",
+    "password": "Passwort",
+    "passwordPlaceholder": "Passwort eingeben",
+    "submit": "Anmelden",
+    "submitting": "Anmeldung läuft",
+    "errorMissingFields": "Bitte E-Mail und Passwort ausfüllen.",
+    "errorInvalidCredentials": "E-Mail oder Passwort ist falsch.",
+    "errorServer": "Die Anmeldung ist gerade nicht möglich. Versuchen Sie es gleich noch einmal."
+  },
+  "Home": {
+    "greeting": "Hallo, {name}",
+    "description": "Die Einrichtung ist abgeschlossen. Kunden- und Inhaltsseiten folgen in den nächsten Phasen.",
+    "signOut": "Abmelden"
+  }
+}

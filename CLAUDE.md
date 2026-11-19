@@ -1,0 +1,36 @@
+# Akış
+
+Bir ajansın hesap yöneticilerinin kullandığı müşteri ve içerik takip paneli (MVP). Hesap yöneticileri müşteri ekler, müşterilere bağlı içerikleri (sosyal medya gönderisi, blog yazısı, web sayfası vb.) oluşturur ve düzenler, içeriklerin durumunu (taslak, onayda, yayında) takip eder. "Akış" geçici ürün adıdır.
+
+@AGENTS.md
+
+## Context Files
+
+Projenin tüm içeriğini anlamak için lütfen aşağıdakileri oku:
+
+- @context/project-overview.md
+- @context/coding-standards.md
+- @context/ai-interaction.md
+- @context/current-feature.md
+
+## Commands
+
+```bash
+npm run dev            # dev server (Turbopack), http://localhost:3000
+npm run build          # production build
+npm run start          # production build'i çalıştırır
+npm run lint           # ESLint (flat config, eslint-config-next)
+npm run test           # unit testler (Vitest): sadece server action'lar ve utility'ler
+npm run test:watch     # unit testler, watch modu
+npm run db:create-user -- --email=... --password=... --name="..."   # hesap yöneticisi oluşturur/şifresini günceller
+```
+
+## Notlar
+
+- **npm 10.9.2 hatası:** Bu makinedeki npm sürümü, Vitest'in bağımlılık ağacını çözerken `Cannot read properties of null (reading 'edgesOut')` hatası veriyor (boş bir projede bile). Vitest ile ilgili paket kurulum/güncellemeleri için `npx npm@11.6.2 install ...` kullan.
+## Neon MCP
+
+- Project: `akis-panel` (project id `frosty-leaf-35311796`, region `aws-eu-central-1`).
+- Default branch for all Neon MCP reads/writes: `development` (branch id `br-raspy-credit-bhb0itfs`). Always pass this `branchId` explicitly on `run_sql` / `get_database_tables` / etc. — the project's default branch is `production`.
+- Never run anything against the `production` branch (branch id `br-fragrant-dust-bhl0bsm0`) — reads or writes — unless the user explicitly names "production" in the request. If a task seems like it needs production, ask first.
+- Local `.env` points at `development`. Prisma 7 is pinned on purpose; ignore the CLI's "major update available" banner.

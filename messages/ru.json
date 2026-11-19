@@ -1,0 +1,34 @@
+{
+  "Metadata": {
+    "title": "Akış",
+    "description": "Панель учёта клиентов и контента для менеджеров агентства."
+  },
+  "Common": {
+    "brandSub": "Контент-панель агентства",
+    "language": "Язык",
+    "languages": {
+      "tr": "Türkçe",
+      "en": "English",
+      "ru": "Русский",
+      "de": "Deutsch"
+    }
+  },
+  "Login": {
+    "title": "Вход",
+    "description": "Войдите с учётной записью агентства, чтобы открыть панель.",
+    "email": "Эл. почта",
+    "emailPlaceholder": "name@agency.com",
+    "password": "Пароль",
+    "passwordPlaceholder": "Введите пароль",
+    "submit": "Войти",
+    "submitting": "Выполняется вход",
+    "errorMissingFields": "Заполните эл. почту и пароль.",
+    "errorInvalidCredentials": "Неверная эл. почта или пароль.",
+    "errorServer": "Сейчас войти не удаётся. Повторите попытку чуть позже."
+  },
+  "Home": {
+    "greeting": "Здравствуйте, {name}",
+    "description": "Настройка завершена. Экраны клиентов и контента появятся на следующих этапах.",
+    "signOut": "Выйти"
+  }
+}

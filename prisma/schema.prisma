@@ -1,0 +1,22 @@
+// Faz 0: only the account-manager login. Client/Content/ContentActivity
+// models arrive in Faz 2 (see context/project-overview.md).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Account managers. Single role: every user sees every client.
+// Accounts are created out-of-band via `npm run db:create-user`.
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

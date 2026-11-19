@@ -1,0 +1,34 @@
+{
+  "Metadata": {
+    "title": "Akış",
+    "description": "Ajans hesap yöneticileri için müşteri ve içerik takip paneli."
+  },
+  "Common": {
+    "brandSub": "Ajans içerik paneli",
+    "language": "Dil",
+    "languages": {
+      "tr": "Türkçe",
+      "en": "English",
+      "ru": "Русский",
+      "de": "Deutsch"
+    }
+  },
+  "Login": {
+    "title": "Giriş yap",
+    "description": "Panele erişmek için ajans hesabınızla giriş yapın.",
+    "email": "E-posta",
+    "emailPlaceholder": "ornek@ajans.com",
+    "password": "Şifre",
+    "passwordPlaceholder": "Şifrenizi girin",
+    "submit": "Giriş yap",
+    "submitting": "Giriş yapılıyor",
+    "errorMissingFields": "E-posta ve şifre alanlarını doldurun.",
+    "errorInvalidCredentials": "E-posta veya şifre hatalı.",
+    "errorServer": "Şu anda giriş yapılamıyor. Biraz sonra tekrar deneyin."
+  },
+  "Home": {
+    "greeting": "Merhaba, {name}",
+    "description": "Kurulum tamamlandı. Müşteri ve içerik ekranları sonraki fazlarda eklenecek.",
+    "signOut": "Çıkış yap"
+  }
+}
