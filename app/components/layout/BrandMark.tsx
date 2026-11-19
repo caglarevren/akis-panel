@@ -19,7 +19,8 @@ export function BrandMark({ subtitle, homeLink = false, onNavigate }: BrandMarkP
       </span>
       <div className="leading-tight">
         <div className="text-[15px] font-semibold tracking-tight">{BRAND_NAME}</div>
-        {subtitle && <div className="text-xs text-subtle">{subtitle}</div>}
+        {/* muted (not subtle): on the sign-in page this sits on the tinted glow, where subtle drops under 4.5:1 */}
+        {subtitle && <div className="text-xs text-muted-foreground">{subtitle}</div>}
       </div>
     </>
   );
@@ -31,7 +32,7 @@ export function BrandMark({ subtitle, homeLink = false, onNavigate }: BrandMarkP
       href="/"
       onClick={onNavigate}
       className={cn(
-        "-m-1 flex items-center gap-2.5 rounded-lg p-1 outline-none transition-opacity hover:opacity-80 focus-visible:ring-3 focus-visible:ring-ring/40",
+        "-m-1 flex w-fit items-center gap-2.5 rounded-lg p-1 outline-none transition-opacity hover:opacity-80 focus-visible:ring-3 focus-visible:ring-ring/40",
       )}
     >
       {content}

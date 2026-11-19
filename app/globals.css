@@ -174,7 +174,8 @@
 }
 
 /* The language switcher shares the card tone on the sign-in page. */
-.auth-backdrop select {
+.auth-backdrop select,
+.auth-backdrop header button {
   background-color: var(--auth-card);
 }
 

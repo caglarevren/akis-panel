@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { BrandMark } from "@/app/components/layout/BrandMark";
 import { LocaleSwitcher } from "@/app/components/layout/LocaleSwitcher";
 import { LoginForm } from "@/app/components/auth/LoginForm";
+import { ThemeToggle } from "@/app/components/shell/ThemeToggle";
 import { routing } from "@/i18n/routing";
 import { DEMO_ACCOUNT } from "@/lib/demo-account";
 
@@ -29,7 +30,10 @@ export default async function LoginPage({ params, searchParams }: PageProps<"/[l
     <div className="auth-backdrop flex min-h-dvh flex-col px-4">
       <header className="mx-auto flex w-full max-w-5xl items-center justify-between py-5">
         <BrandMark subtitle={t("Common.brandSub")} />
-        <LocaleSwitcher />
+        <div className="flex items-center gap-2">
+          <LocaleSwitcher />
+          <ThemeToggle />
+        </div>
       </header>
       <main className="flex flex-1 items-center justify-center pb-24">
         <div className="w-full max-w-sm">
