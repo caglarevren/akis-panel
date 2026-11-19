@@ -1,6 +1,7 @@
 import "server-only";
 import { prisma } from "@/lib/prisma";
 import { sortForList } from "@/lib/content-sort";
+import { CONTENT_LIST_SELECT, toContentListItem } from "@/lib/db/contents";
 import { today } from "@/lib/dates";
 import type {
   ClientDetail,
@@ -83,17 +84,7 @@ export async function getClientDetail(id: string): Promise<ClientDetail | null> 
     where: { id },
     include: {
       owner: { select: { name: true } },
-      contents: {
-        select: {
-          id: true,
-          title: true,
-          type: true,
-          platform: true,
-          status: true,
-          publishDate: true,
-          assignee: { select: { name: true } },
-        },
-      },
+      contents: { select: CONTENT_LIST_SELECT },
     },
   });
   if (!client) return null;
@@ -108,8 +99,6 @@ export async function getClientDetail(id: string): Promise<ClientDetail | null> 
     brandColor: client.brandColor,
     isActive: client.isActive,
     ownerName: client.owner.name,
-    contents: sortForList(
-      client.contents.map(({ assignee, ...content }) => ({ ...content, assigneeName: assignee.name })),
-    ),
+    contents: sortForList(client.contents.map(toContentListItem)),
   };
 }

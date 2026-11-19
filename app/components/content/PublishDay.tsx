@@ -18,7 +18,7 @@ export function PublishDay({ date, status, showOverdue = true, mono = true, clas
   const t = useTranslations();
   const format = useFormatter();
 
-  if (!date) return <span className={cn("text-subtle", className)}>{t("ClientDetail.noDate")}</span>;
+  if (!date) return <span className={cn("text-subtle", className)}>{t("ContentList.noDate")}</span>;
 
   const diff = daysBetween(today(), date);
   const label =
@@ -38,7 +38,7 @@ export function PublishDay({ date, status, showOverdue = true, mono = true, clas
       </time>
       {overdue && (
         <span className="rounded-[5px] bg-destructive/10 px-1.5 py-0.5 text-[11px] font-medium text-destructive">
-          {t("ClientDetail.overdue")}
+          {t("ContentList.overdue")}
         </span>
       )}
     </span>

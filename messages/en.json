@@ -69,7 +69,10 @@
   "Contents": {
     "title": "Content",
     "description": "Every client's content in one list.",
-    "comingSoon": "The content list, filters and status changes will appear here."
+    "newContent": "New content",
+    "emptyTitle": "No content yet",
+    "emptyDescription": "Add the first piece; every item belongs to a client.",
+    "noActiveClients": "Add an active client before adding content."
   },
   "Placeholder": {
     "title": "This screen is on its way"
@@ -112,17 +115,8 @@
     "contents": "Content",
     "emptyContents": "No content for this client yet.",
     "emptyTab": "No content in this status.",
-    "columns": {
-      "title": "Title",
-      "type": "Type",
-      "date": "Publish date",
-      "status": "Status"
-    },
-    "noDate": "No date",
-    "overdue": "Overdue",
     "notFound": "Client not found",
-    "notFoundDescription": "It may have been deleted, or the link is wrong.",
-    "assignee": "Assignee: {name}"
+    "notFoundDescription": "It may have been deleted, or the link is wrong."
   },
   "ClientForm": {
     "title": "New client",
@@ -152,6 +146,59 @@
       "invalidOwner": "The selected account manager no longer exists.",
       "invalidColor": "Pick a color from the list.",
       "server": "The client couldn't be added. Try again in a moment.",
+      "unauthorized": "Your session has expired. Sign in again."
+    }
+  },
+  "ContentList": {
+    "columns": {
+      "title": "Title",
+      "client": "Client",
+      "type": "Type",
+      "date": "Publish date",
+      "status": "Status"
+    },
+    "noDate": "No date",
+    "overdue": "Overdue",
+    "assignee": "Assignee: {name}",
+    "open": "Open {title}"
+  },
+  "ContentForm": {
+    "newTitle": "New content",
+    "editTitle": "Edit content",
+    "title": "Title",
+    "titlePlaceholder": "e.g. November campaign carousel",
+    "client": "Client",
+    "selectClient": "Select a client",
+    "inactiveSuffix": "(inactive)",
+    "type": "Type",
+    "platform": "Platform",
+    "publishDate": "Publish date",
+    "assignee": "Assignee",
+    "notes": "Notes and copy",
+    "notesPlaceholder": "Brief, draft copy or client feedback",
+    "optional": "optional",
+    "status": "Status",
+    "created": "Created {date}",
+    "cancel": "Cancel",
+    "close": "Close",
+    "saveDraft": "Save as draft",
+    "saveReview": "Save and send for review",
+    "saveChanges": "Save changes",
+    "saving": "Saving",
+    "toastCreatedDraft": "Saved as draft",
+    "toastCreatedReview": "Sent for review",
+    "toastSaved": "Changes saved",
+    "errors": {
+      "required": "This field is required.",
+      "tooLong": "This is too long.",
+      "invalidPlatform": "Pick a platform that fits this type.",
+      "invalidType": "Pick a valid type.",
+      "invalidDate": "Enter a valid date.",
+      "invalidClient": "The selected client no longer exists.",
+      "inactiveClient": "Content can't be added to an inactive client.",
+      "invalidAssignee": "The selected person no longer exists.",
+      "notFound": "This content no longer exists; it may have been deleted.",
+      "server": "Couldn't save. Try again in a moment.",
       "unauthorized": "Your session has expired. Sign in again."
     }
   }

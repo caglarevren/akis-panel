@@ -69,7 +69,10 @@
   "Contents": {
     "title": "Inhalte",
     "description": "Die Inhalte aller Kunden in einer Liste.",
-    "comingSoon": "Hier erscheinen die Inhaltsliste, Filter und Statusänderungen."
+    "newContent": "Neuer Inhalt",
+    "emptyTitle": "Noch keine Inhalte",
+    "emptyDescription": "Legen Sie den ersten Inhalt an; jeder Inhalt gehört zu einem Kunden.",
+    "noActiveClients": "Legen Sie zuerst einen aktiven Kunden an."
   },
   "Placeholder": {
     "title": "Diese Seite ist in Arbeit"
@@ -112,17 +115,8 @@
     "contents": "Inhalte",
     "emptyContents": "Für diesen Kunden gibt es noch keine Inhalte.",
     "emptyTab": "Keine Inhalte in diesem Status.",
-    "columns": {
-      "title": "Titel",
-      "type": "Typ",
-      "date": "Veröffentlichung",
-      "status": "Status"
-    },
-    "noDate": "Kein Datum",
-    "overdue": "Überfällig",
     "notFound": "Kunde nicht gefunden",
-    "notFoundDescription": "Er wurde möglicherweise gelöscht, oder der Link ist falsch.",
-    "assignee": "Zuständig: {name}"
+    "notFoundDescription": "Er wurde möglicherweise gelöscht, oder der Link ist falsch."
   },
   "ClientForm": {
     "title": "Neuer Kunde",
@@ -152,6 +146,59 @@
       "invalidOwner": "Der ausgewählte Account Manager existiert nicht mehr.",
       "invalidColor": "Wählen Sie eine Farbe aus der Liste.",
       "server": "Der Kunde konnte nicht angelegt werden. Versuchen Sie es gleich noch einmal.",
+      "unauthorized": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an."
+    }
+  },
+  "ContentList": {
+    "columns": {
+      "title": "Titel",
+      "client": "Kunde",
+      "type": "Typ",
+      "date": "Veröffentlichung",
+      "status": "Status"
+    },
+    "noDate": "Kein Datum",
+    "overdue": "Überfällig",
+    "assignee": "Zuständig: {name}",
+    "open": "{title} öffnen"
+  },
+  "ContentForm": {
+    "newTitle": "Neuer Inhalt",
+    "editTitle": "Inhalt bearbeiten",
+    "title": "Titel",
+    "titlePlaceholder": "z. B. Karussell zur Novemberkampagne",
+    "client": "Kunde",
+    "selectClient": "Kunde auswählen",
+    "inactiveSuffix": "(inaktiv)",
+    "type": "Typ",
+    "platform": "Plattform",
+    "publishDate": "Veröffentlichungsdatum",
+    "assignee": "Zuständig",
+    "notes": "Notizen und Text",
+    "notesPlaceholder": "Briefing, Textentwurf oder Kundenfeedback",
+    "optional": "optional",
+    "status": "Status",
+    "created": "Erstellt am {date}",
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "saveDraft": "Als Entwurf speichern",
+    "saveReview": "Speichern und zur Freigabe",
+    "saveChanges": "Änderungen speichern",
+    "saving": "Wird gespeichert",
+    "toastCreatedDraft": "Als Entwurf gespeichert",
+    "toastCreatedReview": "Zur Freigabe gesendet",
+    "toastSaved": "Änderungen gespeichert",
+    "errors": {
+      "required": "Dieses Feld ist erforderlich.",
+      "tooLong": "Dieser Wert ist zu lang.",
+      "invalidPlatform": "Wählen Sie eine passende Plattform für diesen Typ.",
+      "invalidType": "Wählen Sie einen gültigen Typ.",
+      "invalidDate": "Geben Sie ein gültiges Datum ein.",
+      "invalidClient": "Der ausgewählte Kunde existiert nicht mehr.",
+      "inactiveClient": "Inaktiven Kunden können keine Inhalte hinzugefügt werden.",
+      "invalidAssignee": "Die ausgewählte Person existiert nicht mehr.",
+      "notFound": "Dieser Inhalt existiert nicht mehr; er wurde möglicherweise gelöscht.",
+      "server": "Speichern fehlgeschlagen. Versuchen Sie es gleich noch einmal.",
       "unauthorized": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an."
     }
   }

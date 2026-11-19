@@ -5,6 +5,15 @@ const { findMany, findUnique, groupBy } = vi.hoisted(() => ({
   findUnique: vi.fn(),
   groupBy: vi.fn(),
 }));
+vi.mock("@/lib/db/contents", () => ({
+  CONTENT_LIST_SELECT: {},
+  toContentListItem: ({ assignee, client, ...rest }: { assignee: { name: string }; client: { name: string; brandColor: string } }) => ({
+    ...rest,
+    assigneeName: assignee.name,
+    clientName: client.name,
+    clientColor: client.brandColor,
+  }),
+}));
 vi.mock("@/lib/prisma", () => ({
   prisma: { client: { findMany, findUnique }, content: { groupBy } },
 }));
@@ -80,8 +89,8 @@ describe("getClientDetail", () => {
       contactEmail: null,
       contactPhone: null,
       contents: [
-        { id: "p", title: "P", type: "BLOG_POST", platform: "BLOG", status: "PUBLISHED", publishDate: null, assignee: { name: "Mert" } },
-        { id: "d", title: "D", type: "WEB_PAGE", platform: "WEBSITE", status: "DRAFT", publishDate: null, assignee: { name: "Elif" } },
+        { id: "p", title: "P", type: "BLOG_POST", platform: "BLOG", status: "PUBLISHED", publishDate: null, assignee: { name: "Mert" }, client: { name: "a", brandColor: "#C2410C" } },
+        { id: "d", title: "D", type: "WEB_PAGE", platform: "WEBSITE", status: "DRAFT", publishDate: null, assignee: { name: "Elif" }, client: { name: "a", brandColor: "#C2410C" } },
       ],
     });
     const detail = await getClientDetail("a");

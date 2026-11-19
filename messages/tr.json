@@ -69,7 +69,10 @@
   "Contents": {
     "title": "İçerikler",
     "description": "Tüm müşterilerin içerikleri tek listede.",
-    "comingSoon": "İçerik listesi, filtreler ve durum değişikliği bu ekranda yer alacak."
+    "newContent": "Yeni içerik",
+    "emptyTitle": "Henüz içerik yok",
+    "emptyDescription": "İlk içeriği ekleyin; her içerik bir müşteriye bağlıdır.",
+    "noActiveClients": "İçerik eklemek için önce aktif bir müşteri ekleyin."
   },
   "Placeholder": {
     "title": "Bu ekran hazırlanıyor"
@@ -112,17 +115,8 @@
     "contents": "İçerikler",
     "emptyContents": "Bu müşteri için henüz içerik yok.",
     "emptyTab": "Bu durumda içerik yok.",
-    "columns": {
-      "title": "Başlık",
-      "type": "Tür",
-      "date": "Yayın tarihi",
-      "status": "Durum"
-    },
-    "noDate": "Tarih yok",
-    "overdue": "Gecikti",
     "notFound": "Müşteri bulunamadı",
-    "notFoundDescription": "Silinmiş olabilir ya da bağlantı hatalı.",
-    "assignee": "Sorumlu: {name}"
+    "notFoundDescription": "Silinmiş olabilir ya da bağlantı hatalı."
   },
   "ClientForm": {
     "title": "Yeni müşteri",
@@ -152,6 +146,59 @@
       "invalidOwner": "Seçilen yönetici bulunamadı.",
       "invalidColor": "Listeden bir renk seçin.",
       "server": "Müşteri eklenemedi. Biraz sonra tekrar deneyin.",
+      "unauthorized": "Oturumunuz sona ermiş. Yeniden giriş yapın."
+    }
+  },
+  "ContentList": {
+    "columns": {
+      "title": "Başlık",
+      "client": "Müşteri",
+      "type": "Tür",
+      "date": "Yayın tarihi",
+      "status": "Durum"
+    },
+    "noDate": "Tarih yok",
+    "overdue": "Gecikti",
+    "assignee": "Sorumlu: {name}",
+    "open": "{title} içeriğini aç"
+  },
+  "ContentForm": {
+    "newTitle": "Yeni içerik",
+    "editTitle": "İçeriği düzenle",
+    "title": "Başlık",
+    "titlePlaceholder": "Örn. Kasım kampanyası karusel gönderisi",
+    "client": "Müşteri",
+    "selectClient": "Müşteri seçin",
+    "inactiveSuffix": "(pasif)",
+    "type": "Tür",
+    "platform": "Platform",
+    "publishDate": "Yayın tarihi",
+    "assignee": "Sorumlu",
+    "notes": "Notlar ve metin",
+    "notesPlaceholder": "Brief, metin taslağı veya müşteri geri bildirimi",
+    "optional": "isteğe bağlı",
+    "status": "Durum",
+    "created": "Oluşturuldu: {date}",
+    "cancel": "Vazgeç",
+    "close": "Kapat",
+    "saveDraft": "Taslak olarak kaydet",
+    "saveReview": "Kaydet ve onaya gönder",
+    "saveChanges": "Değişiklikleri kaydet",
+    "saving": "Kaydediliyor",
+    "toastCreatedDraft": "İçerik taslak olarak kaydedildi",
+    "toastCreatedReview": "İçerik onaya gönderildi",
+    "toastSaved": "Değişiklikler kaydedildi",
+    "errors": {
+      "required": "Bu alan zorunlu.",
+      "tooLong": "Bu alan çok uzun.",
+      "invalidPlatform": "Bu tür için geçerli bir platform seçin.",
+      "invalidType": "Geçerli bir tür seçin.",
+      "invalidDate": "Geçerli bir tarih girin.",
+      "invalidClient": "Seçilen müşteri bulunamadı.",
+      "inactiveClient": "Pasif bir müşteriye içerik eklenemez.",
+      "invalidAssignee": "Seçilen kişi bulunamadı.",
+      "notFound": "Bu içerik artık yok; silinmiş olabilir.",
+      "server": "Kaydedilemedi. Biraz sonra tekrar deneyin.",
       "unauthorized": "Oturumunuz sona ermiş. Yeniden giriş yapın."
     }
   }

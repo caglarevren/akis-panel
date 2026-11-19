@@ -3,7 +3,8 @@ import { ChevronLeft, FileText, Mail, Phone, User, Users } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 import { ClientAvatar } from "@/app/components/clients/ClientAvatar";
-import { ClientContentList } from "@/app/components/clients/ClientContentList";
+import { ContentList } from "@/app/components/content/ContentList";
+import { NewContentButton } from "@/app/components/content/NewContentButton";
 import { StatusDot } from "@/app/components/content/StatusPill";
 import { STATUS_ORDER } from "@/app/components/content/status-styles";
 import { EmptyState } from "@/app/components/shared/EmptyState";
@@ -80,7 +81,10 @@ export default async function ClientDetailPage({ params, searchParams }: PagePro
         </dl>
       </section>
 
-      <h2 className="mb-3 text-base font-semibold tracking-tight">{t("ClientDetail.contents")}</h2>
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <h2 className="text-base font-semibold tracking-tight">{t("ClientDetail.contents")}</h2>
+        {client.isActive && <NewContentButton clientId={client.id} />}
+      </div>
       {client.contents.length === 0 ? (
         <EmptyState icon={FileText} description={t("ClientDetail.emptyContents")} />
       ) : (
@@ -102,7 +106,7 @@ export default async function ClientDetailPage({ params, searchParams }: PagePro
             />
           </div>
           {visible.length > 0 ? (
-            <ClientContentList contents={visible} />
+            <ContentList contents={visible} />
           ) : (
             <EmptyState icon={FileText} description={t("ClientDetail.emptyTab")} />
           )}

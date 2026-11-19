@@ -1,4 +1,5 @@
-import type { ContentStatus, ContentType, Platform } from "@/generated/prisma/enums";
+import type { ContentStatus } from "@/generated/prisma/enums";
+import type { ContentListItem } from "@/app/types/content";
 
 export type StatusCounts = Record<ContentStatus, number>;
 
@@ -23,16 +24,6 @@ export interface ClientList {
   filterCounts: Record<ClientStatusFilter, number>;
 }
 
-export interface ClientContentRow {
-  id: string;
-  title: string;
-  type: ContentType;
-  platform: Platform;
-  status: ContentStatus;
-  publishDate: Date | null;
-  assigneeName: string;
-}
-
 export interface ClientDetail {
   id: string;
   name: string;
@@ -43,7 +34,7 @@ export interface ClientDetail {
   brandColor: string;
   isActive: boolean;
   ownerName: string;
-  contents: ClientContentRow[];
+  contents: ContentListItem[];
 }
 
 export interface AccountManagerOption {
