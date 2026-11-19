@@ -6,6 +6,7 @@ const mocks = vi.hoisted(() => ({
   findUser: vi.fn(),
   createClient: vi.fn(),
   createActivity: vi.fn(),
+  deleteClient: vi.fn(),
   revalidatePath: vi.fn(),
 }));
 
@@ -15,14 +16,14 @@ vi.mock("@/lib/prisma", () => {
   const tx = { client: { create: mocks.createClient }, activity: { create: mocks.createActivity } };
   return {
     prisma: {
-      client: { findFirst: mocks.findFirst },
+      client: { findFirst: mocks.findFirst, delete: mocks.deleteClient },
       user: { findUnique: mocks.findUser },
       $transaction: (fn: (t: typeof tx) => unknown) => fn(tx),
     },
   };
 });
 
-import { createClient } from "./clients";
+import { createClient, deleteClient } from "./clients";
 
 function form(fields: Record<string, string>) {
   const data = new FormData();
@@ -84,5 +85,35 @@ describe("createClient", () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
     mocks.createClient.mockRejectedValueOnce(new Error("boom"));
     await expect(createClient(null, form(VALID))).resolves.toEqual({ success: false, error: "server-error" });
+  });
+});
+
+describe("deleteClient", () => {
+  beforeEach(() => {
+    Object.values(mocks).forEach((mock) => mock.mockReset());
+    mocks.auth.mockResolvedValue({ user: { id: "u1" } });
+  });
+
+  it("refuses without a session", async () => {
+    mocks.auth.mockResolvedValueOnce(null);
+    await expect(deleteClient("c1")).resolves.toEqual({ success: false, error: "unauthorized" });
+    expect(mocks.deleteClient).not.toHaveBeenCalled();
+  });
+
+  it("deletes the client without revalidating its own page", async () => {
+    await expect(deleteClient("c1")).resolves.toEqual({ success: true });
+    expect(mocks.deleteClient).toHaveBeenCalledWith({ where: { id: "c1" } });
+    expect(mocks.revalidatePath).not.toHaveBeenCalled();
+  });
+
+  it("returns not-found when it is already gone", async () => {
+    mocks.deleteClient.mockRejectedValueOnce(Object.assign(new Error("missing"), { code: "P2025" }));
+    await expect(deleteClient("c1")).resolves.toEqual({ success: false, error: "not-found" });
+  });
+
+  it("reports unexpected failures as server-error", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    mocks.deleteClient.mockRejectedValueOnce(new Error("boom"));
+    await expect(deleteClient("c1")).resolves.toEqual({ success: false, error: "server-error" });
   });
 });

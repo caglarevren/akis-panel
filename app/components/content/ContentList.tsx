@@ -7,6 +7,7 @@ import type { ContentListItem } from "@/app/types/content";
 import type { ContentStatus } from "@/generated/prisma/enums";
 import { cn } from "@/lib/utils";
 import { useContentSheet } from "./ContentSheetProvider";
+import { DeleteContentButton } from "./DeleteContentButton";
 import { PlatformBadge } from "./PlatformBadge";
 import { PublishDay } from "./PublishDay";
 import { StatusMenu } from "./StatusMenu";
@@ -17,8 +18,8 @@ interface ContentListProps {
   showClient?: boolean;
 }
 
-const GRID_WITH_CLIENT = "md:grid-cols-[minmax(0,2.8fr)_minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)_170px]";
-const GRID_WITHOUT_CLIENT = "md:grid-cols-[minmax(0,3fr)_minmax(0,1.1fr)_minmax(0,1.1fr)_170px]";
+const GRID_WITH_CLIENT = "md:grid-cols-[minmax(0,2.8fr)_minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)_200px]";
+const GRID_WITHOUT_CLIENT = "md:grid-cols-[minmax(0,3fr)_minmax(0,1.1fr)_minmax(0,1.1fr)_200px]";
 
 // The title button is stretched over the whole row (after:inset-0), so the
 // row opens the sheet anywhere you click; the status menu sits above it as
@@ -90,8 +91,9 @@ export function ContentList({ contents, showClient = false }: ContentListProps) 
               <PublishDay date={content.publishDate} status={content.status} />
             </span>
 
-            <span className="relative z-10 col-start-2 row-start-1 md:col-start-auto md:row-start-auto">
+            <span className="relative z-10 col-start-2 row-start-1 flex items-center justify-end gap-1 md:col-start-auto md:row-start-auto md:justify-between">
               <StatusMenu status={content.status} onChange={(status) => onStatusChange(content, status)} />
+              <DeleteContentButton content={content} variant="icon" />
             </span>
 
             <span className="col-span-2 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 pl-[42px] text-[12.5px] text-muted-foreground md:hidden">

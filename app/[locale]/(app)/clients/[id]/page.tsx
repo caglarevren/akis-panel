@@ -3,6 +3,7 @@ import { ChevronLeft, FileText, Mail, Phone, User, Users } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 import { ClientAvatar } from "@/app/components/clients/ClientAvatar";
+import { DeleteClientButton } from "@/app/components/clients/DeleteClientButton";
 import { ContentList } from "@/app/components/content/ContentList";
 import { NewContentButton } from "@/app/components/content/NewContentButton";
 import { StatusDot } from "@/app/components/content/StatusPill";
@@ -59,19 +60,22 @@ export default async function ClientDetailPage({ params, searchParams }: PagePro
     <>
       {back}
       <section className="mb-6 rounded-2xl border border-border bg-card p-5">
-        <div className="flex min-w-0 items-center gap-4">
-          <ClientAvatar name={client.name} color={client.brandColor} size="lg" />
-          <div className="min-w-0">
-            <h1 className="flex flex-wrap items-center gap-2 text-[22px] leading-tight font-semibold tracking-tight sm:text-[26px]">
-              <span className="min-w-0 break-words">{client.name}</span>
-              {!client.isActive && (
-                <span className="rounded-md bg-muted px-1.5 py-0.5 text-xs font-medium text-muted-foreground">
-                  {t("Clients.inactiveBadge")}
-                </span>
-              )}
-            </h1>
-            <p className="mt-0.5 text-muted-foreground">{client.sector ?? "—"}</p>
+        <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
+          <div className="flex min-w-0 items-center gap-4">
+            <ClientAvatar name={client.name} color={client.brandColor} size="lg" />
+            <div className="min-w-0">
+              <h1 className="flex flex-wrap items-center gap-2 text-[22px] leading-tight font-semibold tracking-tight sm:text-[26px]">
+                <span className="min-w-0 break-words">{client.name}</span>
+                {!client.isActive && (
+                  <span className="rounded-md bg-muted px-1.5 py-0.5 text-xs font-medium text-muted-foreground">
+                    {t("Clients.inactiveBadge")}
+                  </span>
+                )}
+              </h1>
+              <p className="mt-0.5 text-muted-foreground">{client.sector ?? "—"}</p>
+            </div>
           </div>
+          <DeleteClientButton client={{ id: client.id, name: client.name }} contentCount={client.contents.length} />
         </div>
         <dl className="mt-5 grid gap-4 border-t border-border pt-5 sm:grid-cols-2 lg:grid-cols-4">
           <InfoItem icon={<User className="size-3.5" />} label={t("ClientDetail.contactName")} value={client.contactName} />

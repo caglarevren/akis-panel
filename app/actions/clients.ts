@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { validateClientForm } from "@/lib/validation/client";
 import type { CreateClientResult } from "@/app/types/client";
+import type { DeleteResult } from "@/app/types/content";
 
 function isUniqueViolation(error: unknown): boolean {
   return typeof error === "object" && error !== null && "code" in error && error.code === "P2002";
@@ -47,6 +48,25 @@ export async function createClient(_prev: CreateClientResult | null, formData: F
       return { success: false, error: "validation", fieldErrors: { name: "duplicate" } };
     }
     console.error("createClient failed", error);
+    return { success: false, error: "server-error" };
+  }
+}
+
+// Permanent. The client's contents and all activity rows go with it (ON DELETE
+// CASCADE). Deliberately no revalidatePath: the caller is on this client's own
+// page, and refreshing it first would flash a "not found" screen. The caller
+// navigates away and then refreshes the router, which also updates the layout.
+export async function deleteClient(clientId: string): Promise<DeleteResult> {
+  if (!(await auth())?.user?.id) return { success: false, error: "unauthorized" };
+
+  try {
+    await prisma.client.delete({ where: { id: clientId } });
+    return { success: true };
+  } catch (error) {
+    if (typeof error === "object" && error !== null && "code" in error && error.code === "P2025") {
+      return { success: false, error: "not-found" };
+    }
+    console.error("deleteClient failed", error);
     return { success: false, error: "server-error" };
   }
 }

@@ -8,6 +8,7 @@ import { createContent, updateContent } from "@/app/actions/contents";
 import { NativeSelect } from "@/app/components/shared/NativeSelect";
 import { Button } from "@/components/ui/button";
 import { SheetClose } from "@/components/ui/sheet";
+import { DeleteContentButton } from "./DeleteContentButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -227,6 +228,7 @@ export function ContentForm({ target, options, onDone }: ContentFormProps) {
       </div>
 
       <div className="flex flex-wrap items-center justify-end gap-2 border-t border-border px-6 py-4">
+        {editing && <DeleteContentButton content={editing} onDeleted={onDone} />}
         <SheetClose render={<Button type="button" variant="ghost" className="h-9" />}>{t("ContentForm.cancel")}</SheetClose>
         {editing ? (
           <SubmitButton intent="save" pending={pending} active={intent} onPick={setIntent} primary label={t("ContentForm.saveChanges")} savingLabel={t("ContentForm.saving")} />

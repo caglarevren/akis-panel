@@ -6,6 +6,7 @@ const mocks = vi.hoisted(() => ({
   findUser: vi.fn(),
   findContent: vi.fn(),
   updateContent: vi.fn(),
+  deleteContent: vi.fn(),
   createContent: vi.fn(),
   createActivity: vi.fn(),
   revalidatePath: vi.fn(),
@@ -19,13 +20,13 @@ vi.mock("@/lib/prisma", () => {
     prisma: {
       client: { findUnique: mocks.findClient },
       user: { findUnique: mocks.findUser },
-      content: { findUnique: mocks.findContent, update: mocks.updateContent },
+      content: { findUnique: mocks.findContent, update: mocks.updateContent, delete: mocks.deleteContent },
       $transaction: (fn: (t: typeof tx) => unknown) => fn(tx),
     },
   };
 });
 
-import { createContent, updateContent } from "./contents";
+import { createContent, deleteContent, updateContent } from "./contents";
 
 function form(fields: Record<string, string>) {
   const data = new FormData();
@@ -119,5 +120,31 @@ describe("updateContent", () => {
     mocks.findClient.mockResolvedValueOnce({ isActive: false });
     const result = await updateContent("k1", null, form({ ...VALID, clientId: "c9" }));
     expect(result).toEqual({ success: false, error: "validation", fieldErrors: { clientId: "inactive-client" } });
+  });
+});
+
+describe("deleteContent", () => {
+  it("refuses without a session", async () => {
+    mocks.auth.mockResolvedValueOnce(null);
+    await expect(deleteContent("k1")).resolves.toEqual({ success: false, error: "unauthorized" });
+    expect(mocks.deleteContent).not.toHaveBeenCalled();
+  });
+
+  it("deletes the content and refreshes the panel", async () => {
+    await expect(deleteContent("k1")).resolves.toEqual({ success: true });
+    expect(mocks.deleteContent).toHaveBeenCalledWith({ where: { id: "k1" } });
+    expect(mocks.revalidatePath).toHaveBeenCalledWith("/", "layout");
+  });
+
+  it("returns not-found when it is already gone", async () => {
+    mocks.deleteContent.mockRejectedValueOnce(Object.assign(new Error("missing"), { code: "P2025" }));
+    await expect(deleteContent("k1")).resolves.toEqual({ success: false, error: "not-found" });
+    expect(mocks.revalidatePath).not.toHaveBeenCalled();
+  });
+
+  it("reports unexpected failures as server-error", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    mocks.deleteContent.mockRejectedValueOnce(new Error("boom"));
+    await expect(deleteContent("k1")).resolves.toEqual({ success: false, error: "server-error" });
   });
 });

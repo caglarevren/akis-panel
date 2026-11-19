@@ -91,7 +91,8 @@
     "noResults": "No clients match your search.",
     "noResultsInFilter": "No clients in this filter.",
     "clearSearch": "Clear search",
-    "nextUpLabel": "Next up"
+    "nextUpLabel": "Next up",
+    "deleteLabel": "Delete client {name}"
   },
   "Contents": {
     "title": "Content",
@@ -140,7 +141,17 @@
     "emptyContents": "No content for this client yet.",
     "emptyTab": "No content in this status.",
     "notFound": "Client not found",
-    "notFoundDescription": "It may have been deleted, or the link is wrong."
+    "notFoundDescription": "It may have been deleted, or the link is wrong.",
+    "delete": "Delete client",
+    "deleteConfirm": "Delete",
+    "deleting": "Deleting",
+    "deleteTitle": "Delete {name}?",
+    "deleteDescriptionEmpty": "The client will be permanently deleted. This can't be undone.",
+    "deleteDescription": "The client and its {count, plural, one {# content item} other {# content items}} will be permanently deleted, along with their activity history. This can't be undone.",
+    "deleted": "{name} deleted",
+    "deleteError": "The client couldn't be deleted. Try again in a moment.",
+    "deleteNotFound": "This client no longer exists.",
+    "deleteUnauthorized": "Your session has expired. Sign in again."
   },
   "ClientForm": {
     "title": "New client",
@@ -184,7 +195,8 @@
     "noDate": "No date",
     "overdue": "Overdue",
     "assignee": "Assignee: {name}",
-    "open": "Open {title}"
+    "open": "Open {title}",
+    "deleteLabel": "Delete {title}"
   },
   "ContentForm": {
     "newTitle": "New content",
@@ -224,7 +236,12 @@
       "notFound": "This content no longer exists; it may have been deleted.",
       "server": "Couldn't save. Try again in a moment.",
       "unauthorized": "Your session has expired. Sign in again."
-    }
+    },
+    "delete": "Delete",
+    "deleteTitle": "Delete this content?",
+    "deleteDescription": "“{title}” and its activity history will be permanently deleted. This can't be undone.",
+    "deleting": "Deleting",
+    "toastDeleted": "Content deleted"
   },
   "StatusMenu": {
     "label": "Change status",

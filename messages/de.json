@@ -91,7 +91,8 @@
     "noResults": "Keine Kunden passen zu Ihrer Suche.",
     "noResultsInFilter": "In diesem Filter gibt es keine Kunden.",
     "clearSearch": "Suche zurücksetzen",
-    "nextUpLabel": "Als Nächstes"
+    "nextUpLabel": "Als Nächstes",
+    "deleteLabel": "Kunde {name} löschen"
   },
   "Contents": {
     "title": "Inhalte",
@@ -140,7 +141,17 @@
     "emptyContents": "Für diesen Kunden gibt es noch keine Inhalte.",
     "emptyTab": "Keine Inhalte in diesem Status.",
     "notFound": "Kunde nicht gefunden",
-    "notFoundDescription": "Er wurde möglicherweise gelöscht, oder der Link ist falsch."
+    "notFoundDescription": "Er wurde möglicherweise gelöscht, oder der Link ist falsch.",
+    "delete": "Kunde löschen",
+    "deleteConfirm": "Löschen",
+    "deleting": "Wird gelöscht",
+    "deleteTitle": "{name} löschen?",
+    "deleteDescriptionEmpty": "Der Kunde wird endgültig gelöscht. Das kann nicht rückgängig gemacht werden.",
+    "deleteDescription": "Der Kunde und {count, plural, one {# Inhalt} other {# Inhalte}} werden samt Aktivitätsverlauf endgültig gelöscht. Das kann nicht rückgängig gemacht werden.",
+    "deleted": "{name} gelöscht",
+    "deleteError": "Der Kunde konnte nicht gelöscht werden. Versuchen Sie es gleich noch einmal.",
+    "deleteNotFound": "Dieser Kunde existiert nicht mehr.",
+    "deleteUnauthorized": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an."
   },
   "ClientForm": {
     "title": "Neuer Kunde",
@@ -184,7 +195,8 @@
     "noDate": "Kein Datum",
     "overdue": "Überfällig",
     "assignee": "Zuständig: {name}",
-    "open": "{title} öffnen"
+    "open": "{title} öffnen",
+    "deleteLabel": "{title} löschen"
   },
   "ContentForm": {
     "newTitle": "Neuer Inhalt",
@@ -224,7 +236,12 @@
       "notFound": "Dieser Inhalt existiert nicht mehr; er wurde möglicherweise gelöscht.",
       "server": "Speichern fehlgeschlagen. Versuchen Sie es gleich noch einmal.",
       "unauthorized": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an."
-    }
+    },
+    "delete": "Löschen",
+    "deleteTitle": "Inhalt löschen?",
+    "deleteDescription": "„{title}“ und der Aktivitätsverlauf werden endgültig gelöscht. Das kann nicht rückgängig gemacht werden.",
+    "deleting": "Wird gelöscht",
+    "toastDeleted": "Inhalt gelöscht"
   },
   "StatusMenu": {
     "label": "Status ändern",

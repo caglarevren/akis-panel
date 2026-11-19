@@ -91,7 +91,8 @@
     "noResults": "Aramanızla eşleşen müşteri yok.",
     "noResultsInFilter": "Bu filtrede müşteri yok.",
     "clearSearch": "Aramayı temizle",
-    "nextUpLabel": "Sıradaki yayın"
+    "nextUpLabel": "Sıradaki yayın",
+    "deleteLabel": "{name} müşterisini sil"
   },
   "Contents": {
     "title": "İçerikler",
@@ -140,7 +141,17 @@
     "emptyContents": "Bu müşteri için henüz içerik yok.",
     "emptyTab": "Bu durumda içerik yok.",
     "notFound": "Müşteri bulunamadı",
-    "notFoundDescription": "Silinmiş olabilir ya da bağlantı hatalı."
+    "notFoundDescription": "Silinmiş olabilir ya da bağlantı hatalı.",
+    "delete": "Müşteriyi sil",
+    "deleteConfirm": "Sil",
+    "deleting": "Siliniyor",
+    "deleteTitle": "{name} silinsin mi?",
+    "deleteDescriptionEmpty": "Müşteri kalıcı olarak silinecek. Bu işlem geri alınamaz.",
+    "deleteDescription": "Müşteri ve {count} içeriği, hareket geçmişiyle birlikte kalıcı olarak silinecek. Bu işlem geri alınamaz.",
+    "deleted": "{name} silindi",
+    "deleteError": "Müşteri silinemedi. Biraz sonra tekrar deneyin.",
+    "deleteNotFound": "Bu müşteri artık yok.",
+    "deleteUnauthorized": "Oturumunuz sona ermiş. Yeniden giriş yapın."
   },
   "ClientForm": {
     "title": "Yeni müşteri",
@@ -184,7 +195,8 @@
     "noDate": "Tarih yok",
     "overdue": "Gecikti",
     "assignee": "Sorumlu: {name}",
-    "open": "{title} içeriğini aç"
+    "open": "{title} içeriğini aç",
+    "deleteLabel": "{title} içeriğini sil"
   },
   "ContentForm": {
     "newTitle": "Yeni içerik",
@@ -224,7 +236,12 @@
       "notFound": "Bu içerik artık yok; silinmiş olabilir.",
       "server": "Kaydedilemedi. Biraz sonra tekrar deneyin.",
       "unauthorized": "Oturumunuz sona ermiş. Yeniden giriş yapın."
-    }
+    },
+    "delete": "Sil",
+    "deleteTitle": "İçerik silinsin mi?",
+    "deleteDescription": "“{title}” ve hareket geçmişi kalıcı olarak silinecek. Bu işlem geri alınamaz.",
+    "deleting": "Siliniyor",
+    "toastDeleted": "İçerik silindi"
   },
   "StatusMenu": {
     "label": "Durumu değiştir",

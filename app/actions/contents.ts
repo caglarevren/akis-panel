@@ -4,9 +4,14 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { validateContentForm } from "@/lib/validation/content";
-import type { ContentField, ContentFieldError, ContentInput, SaveContentResult } from "@/app/types/content";
+import type { ContentField, ContentFieldError, ContentInput, DeleteResult, SaveContentResult } from "@/app/types/content";
 
 type FieldErrors = Partial<Record<ContentField, ContentFieldError>>;
+
+// Prisma's "record to delete does not exist".
+function isRecordNotFound(error: unknown): boolean {
+  return typeof error === "object" && error !== null && "code" in error && error.code === "P2025";
+}
 
 // Client and assignee must exist. A new content (or a move to another client)
 // must target an active client; an existing item may stay on its now-inactive
@@ -87,6 +92,21 @@ export async function updateContent(
     return { success: true, data: { id: contentId } };
   } catch (error) {
     console.error("updateContent failed", error);
+    return { success: false, error: "server-error" };
+  }
+}
+
+// Permanent. The content's activity rows go with it (ON DELETE CASCADE).
+export async function deleteContent(contentId: string): Promise<DeleteResult> {
+  if (!(await auth())?.user?.id) return { success: false, error: "unauthorized" };
+
+  try {
+    await prisma.content.delete({ where: { id: contentId } });
+    revalidatePath("/", "layout");
+    return { success: true };
+  } catch (error) {
+    if (isRecordNotFound(error)) return { success: false, error: "not-found" };
+    console.error("deleteContent failed", error);
     return { success: false, error: "server-error" };
   }
 }

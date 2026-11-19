@@ -64,3 +64,7 @@ export type StatusChangeResult =
 export type UndoStatusResult =
   | { success: true }
   | { success: false; error: "unauthorized" | "expired" | "server-error" };
+
+export type DeleteResult =
+  | { success: true }
+  | { success: false; error: "unauthorized" | "not-found" | "server-error" };
