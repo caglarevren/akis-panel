@@ -26,9 +26,33 @@
     "errorInvalidCredentials": "Email or password is incorrect.",
     "errorServer": "Signing in isn't possible right now. Try again in a moment."
   },
-  "Home": {
+  "Nav": {
+    "overview": "Overview",
+    "clients": "Clients",
+    "contents": "Content",
+    "inReview": "{count} items awaiting review",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "menu": "Menu",
+    "toggleTheme": "Toggle theme",
+    "signOut": "Sign out",
+    "role": "Account manager"
+  },
+  "Overview": {
     "greeting": "Hello, {name}",
-    "description": "Setup is complete. Client and content screens arrive in the next phases.",
-    "signOut": "Sign out"
+    "comingSoon": "Summary cards, the next 7 days, items awaiting review and recent activity will appear here."
+  },
+  "Clients": {
+    "title": "Clients",
+    "description": "Brands your agency works with and where their content stands.",
+    "comingSoon": "The client list, search and adding new clients will appear here."
+  },
+  "Contents": {
+    "title": "Content",
+    "description": "Every client's content in one list.",
+    "comingSoon": "The content list, filters and status changes will appear here."
+  },
+  "Placeholder": {
+    "title": "This screen is on its way"
   }
 }

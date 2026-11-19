@@ -26,9 +26,33 @@
     "errorInvalidCredentials": "E-Mail oder Passwort ist falsch.",
     "errorServer": "Die Anmeldung ist gerade nicht möglich. Versuchen Sie es gleich noch einmal."
   },
-  "Home": {
+  "Nav": {
+    "overview": "Übersicht",
+    "clients": "Kunden",
+    "contents": "Inhalte",
+    "inReview": "{count} Inhalte warten auf Freigabe",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen",
+    "menu": "Menü",
+    "toggleTheme": "Design wechseln",
+    "signOut": "Abmelden",
+    "role": "Account Manager"
+  },
+  "Overview": {
     "greeting": "Hallo, {name}",
-    "description": "Die Einrichtung ist abgeschlossen. Kunden- und Inhaltsseiten folgen in den nächsten Phasen.",
-    "signOut": "Abmelden"
+    "comingSoon": "Hier erscheinen Kennzahlen, die nächsten 7 Tage, Inhalte in Freigabe und die letzten Aktivitäten."
+  },
+  "Clients": {
+    "title": "Kunden",
+    "description": "Marken, mit denen Ihre Agentur arbeitet, und der Stand ihrer Inhalte.",
+    "comingSoon": "Hier erscheinen die Kundenliste, die Suche und das Anlegen neuer Kunden."
+  },
+  "Contents": {
+    "title": "Inhalte",
+    "description": "Die Inhalte aller Kunden in einer Liste.",
+    "comingSoon": "Hier erscheinen die Inhaltsliste, Filter und Statusänderungen."
+  },
+  "Placeholder": {
+    "title": "Diese Seite ist in Arbeit"
   }
 }

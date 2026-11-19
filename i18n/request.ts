@@ -10,6 +10,9 @@ export default getRequestConfig(async ({ requestLocale }) => {
 
   return {
     locale,
+    // The agency works in Turkey; dates (publish days, "today", activity
+    // times) must not depend on the server's time zone.
+    timeZone: "Europe/Istanbul",
     messages: (await import(`../messages/${locale}.json`)).default,
   };
 });

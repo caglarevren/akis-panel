@@ -26,9 +26,33 @@
     "errorInvalidCredentials": "E-posta veya şifre hatalı.",
     "errorServer": "Şu anda giriş yapılamıyor. Biraz sonra tekrar deneyin."
   },
-  "Home": {
+  "Nav": {
+    "overview": "Ana ekran",
+    "clients": "Müşteriler",
+    "contents": "İçerikler",
+    "inReview": "{count} içerik onay bekliyor",
+    "openMenu": "Menüyü aç",
+    "closeMenu": "Menüyü kapat",
+    "menu": "Menü",
+    "toggleTheme": "Temayı değiştir",
+    "signOut": "Çıkış yap",
+    "role": "Hesap yöneticisi"
+  },
+  "Overview": {
     "greeting": "Merhaba, {name}",
-    "description": "Kurulum tamamlandı. Müşteri ve içerik ekranları sonraki fazlarda eklenecek.",
-    "signOut": "Çıkış yap"
+    "comingSoon": "Özet kartları, önümüzdeki 7 gün, onay bekleyenler ve son hareketler bu ekranda yer alacak."
+  },
+  "Clients": {
+    "title": "Müşteriler",
+    "description": "Ajansın çalıştığı markalar ve içeriklerinin durumu.",
+    "comingSoon": "Müşteri listesi, arama ve yeni müşteri ekleme bu ekranda yer alacak."
+  },
+  "Contents": {
+    "title": "İçerikler",
+    "description": "Tüm müşterilerin içerikleri tek listede.",
+    "comingSoon": "İçerik listesi, filtreler ve durum değişikliği bu ekranda yer alacak."
+  },
+  "Placeholder": {
+    "title": "Bu ekran hazırlanıyor"
   }
 }

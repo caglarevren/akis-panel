@@ -26,7 +26,10 @@
 
 ## Routing & Auth
 
-- Every page lives under `app/[locale]/`. Route groups: `(auth)` for public pages (login), `(app)` for the authenticated panel.
+- Every page lives under `app/[locale]/`. Route groups: `(auth)` for public pages (login), `(app)` for the authenticated panel. `(app)/layout.tsx` renders the shell (desktop sidebar from `lg`, mobile top bar + sheet below it) and re-checks the session.
+- URL slugs are English and identical in every locale (`/tr/clients`, `/de/contents`); no next-intl `pathnames`.
+- Shell building blocks live in `app/components/shell/`: `PageHeader` (title, optional eyebrow/description/actions) opens every panel page.
+- The language switcher does a full page load on purpose (see `LocaleSwitcher.tsx`); don't switch it back to `router.replace`.
 - `proxy.ts` protects everything except `PUBLIC_PATHS` (currently `/login`, after the locale prefix). Unauthenticated requests are redirected to `/{locale}/login?callbackUrl=...`; signed-in users visiting `/login` go to `/{locale}`.
 - Post-login redirect targets always go through `safeRedirect()` (`lib/safe-redirect.ts`).
 - Auth uses the split config pattern: `auth.config.ts` is Edge-safe (used by `proxy.ts`), `auth.ts` holds the Prisma + bcrypt `authorize()`.
@@ -38,7 +41,7 @@
 - Config: `i18n/routing.ts`, `i18n/navigation.ts` (use its `Link`/`useRouter`/`usePathname` instead of `next/link`/`next/navigation`), `i18n/request.ts`.
 - Strings live in `messages/{locale}.json`, same key structure in all four files. Add every new key to all four in the same change.
 - Only UI strings are translated. User-entered data (client names, content titles, notes) is shown as entered.
-- Format dates, numbers and relative times with next-intl's formatters (`useFormatter` / `getFormatter`), never by hand.
+- Format dates, numbers and relative times with next-intl's formatters (`useFormatter` / `getFormatter`), never by hand. The time zone is fixed to `Europe/Istanbul` in `i18n/request.ts`.
 - German copy is roughly 30-40% longer: check buttons, table headers and the sidebar in `de` before calling a screen done.
 
 ## Tailwind CSS v4
