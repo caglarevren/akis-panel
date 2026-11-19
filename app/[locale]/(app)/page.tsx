@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { auth } from "@/auth";
 import { NewContentButton } from "@/app/components/content/NewContentButton";
@@ -10,6 +11,15 @@ import { StatusBreakdown } from "@/app/components/overview/StatusBreakdown";
 import { WeekList } from "@/app/components/overview/WeekList";
 import { PageHeader } from "@/app/components/shell/PageHeader";
 import { getOverview } from "@/lib/db/overview";
+
+export async function generateMetadata({ params }: PageProps<"/[locale]">): Promise<Metadata> {
+  const { locale } = await params;
+  const [nav, meta] = await Promise.all([
+    getTranslations({ locale, namespace: "Nav" }),
+    getTranslations({ locale, namespace: "Metadata" }),
+  ]);
+  return { title: `${nav("overview")} · ${meta("title")}` };
+}
 
 export default async function OverviewPage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;

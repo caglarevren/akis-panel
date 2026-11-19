@@ -50,7 +50,7 @@ export function DeleteContentButton({ content, variant = "sheet", onDeleted }: D
             className="shrink-0 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
           />
         ) : (
-          <Button type="button" variant="ghost" className="mr-auto h-9 px-3 text-destructive hover:bg-destructive/10 hover:text-destructive" />
+          <Button type="button" variant="ghost" className="h-9 w-full px-3 text-destructive hover:bg-destructive/10 hover:text-destructive sm:mr-auto sm:w-auto" />
         )
       }
       triggerContent={

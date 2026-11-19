@@ -1,5 +1,5 @@
 import { hasLocale } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { MobileTopBar } from "@/app/components/shell/MobileTopBar";
@@ -23,17 +23,27 @@ export default async function AppLayout({ children, params }: LayoutProps<"/[loc
     return redirect({ href: "/login", locale });
   }
   const user = { name: session.user.name, email: session.user.email };
-  const [inReviewCount, contentFormOptions] = await Promise.all([getInReviewCount(), getContentFormOptions(session.user.id)]);
+  const [inReviewCount, contentFormOptions, t] = await Promise.all([
+    getInReviewCount(),
+    getContentFormOptions(session.user.id),
+    getTranslations("Nav"),
+  ]);
 
   return (
     <ContentSheetProvider options={contentFormOptions}>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-3.5 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground focus:shadow-lg focus:outline-none"
+      >
+        {t("skipToContent")}
+      </a>
       <div className="min-h-dvh lg:grid lg:grid-cols-[248px_minmax(0,1fr)]">
         <aside className="sticky top-0 hidden h-dvh flex-col border-r border-border bg-card px-3.5 py-4 lg:flex">
           <SidebarContent user={user} inReviewCount={inReviewCount} />
         </aside>
         <div className="min-w-0">
           <MobileTopBar user={user} inReviewCount={inReviewCount} />
-          <main className="mx-auto w-full max-w-[1240px] px-4 pt-6 pb-16 sm:px-6 lg:px-10 lg:pt-8">{children}</main>
+          <main id="main-content" tabIndex={-1} className="mx-auto w-full outline-none max-w-[1240px] px-4 pt-6 pb-16 sm:px-6 lg:px-10 lg:pt-8">{children}</main>
         </div>
       </div>
     </ContentSheetProvider>

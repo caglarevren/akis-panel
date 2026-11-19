@@ -227,9 +227,11 @@ export function ContentForm({ target, options, onDone }: ContentFormProps) {
         </Field>
       </div>
 
-      <div className="flex flex-wrap items-center justify-end gap-2 border-t border-border px-6 py-4">
+      {/* Phones: stacked and full-width with the main action on top (column-reverse
+          puts the first DOM item, the secondary delete, last). From sm: one row. */}
+      <div className="flex flex-col-reverse gap-2 border-t border-border px-6 py-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-end">
         {editing && <DeleteContentButton content={editing} onDeleted={onDone} />}
-        <SheetClose render={<Button type="button" variant="ghost" className="h-9" />}>{t("ContentForm.cancel")}</SheetClose>
+        <SheetClose render={<Button type="button" variant="ghost" className="h-9 w-full sm:w-auto" />}>{t("ContentForm.cancel")}</SheetClose>
         {editing ? (
           <SubmitButton intent="save" pending={pending} active={intent} onPick={setIntent} primary label={t("ContentForm.saveChanges")} savingLabel={t("ContentForm.saving")} />
         ) : (
@@ -264,7 +266,7 @@ function SubmitButton({ intent, active, pending, primary, label, savingLabel, on
       disabled={pending}
       onClick={() => onPick(intent)}
       aria-label={busy ? savingLabel : undefined}
-      className="h-9 px-3.5"
+      className="h-9 w-full px-3.5 sm:w-auto"
     >
       {busy && <Loader2 className="size-4 animate-spin" aria-hidden />}
       {label}

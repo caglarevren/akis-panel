@@ -25,7 +25,8 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
-  return { title: t("title"), description: t("description") };
+  // An internal tool: keep it out of search results.
+  return { title: t("title"), description: t("description"), robots: { index: false, follow: false } };
 }
 
 export default async function LocaleLayout({ children, params }: LayoutProps<"/[locale]">) {

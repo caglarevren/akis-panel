@@ -11,7 +11,8 @@
       "en": "English",
       "ru": "Русский",
       "de": "Deutsch"
-    }
+    },
+    "loading": "Loading"
   },
   "Login": {
     "title": "Sign in",
@@ -41,7 +42,8 @@
     "menu": "Menu",
     "toggleTheme": "Toggle theme",
     "signOut": "Sign out",
-    "role": "Account manager"
+    "role": "Account manager",
+    "skipToContent": "Skip to main content"
   },
   "Overview": {
     "greeting": "Hello, {name}",
@@ -272,5 +274,17 @@
     "clear": "Clear filters",
     "count": "{count, plural, one {# item} other {# items}}",
     "noResults": "No content matches these filters."
+  },
+  "Error": {
+    "title": "Something went wrong",
+    "description": "An error occurred while loading this page. You can try again; if it keeps happening, retry in a moment.",
+    "retry": "Try again",
+    "home": "Back to overview",
+    "reference": "Error reference"
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or may have moved.",
+    "home": "Back to overview"
   }
 }

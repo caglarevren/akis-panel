@@ -71,7 +71,7 @@
   --secondary-foreground: #111318;
   --muted: #f1f3f6;
   --muted-foreground: #5b6170;
-  --subtle: #8b919d;
+  --subtle: #646b78;
   --accent: #f1f3f6;
   --accent-foreground: #111318;
   --destructive: #c4302a;
@@ -117,7 +117,7 @@
   --secondary-foreground: #eceef3;
   --muted: #181b21;
   --muted-foreground: #9ba1ad;
-  --subtle: #6c7280;
+  --subtle: #8a90a0;
   --accent: #181b21;
   --accent-foreground: #eceef3;
   --destructive: #ff7d74;
@@ -178,3 +178,14 @@
   background-color: var(--auth-card);
 }
 
+/* shadcn's default skeleton tone (muted) disappears on the page background; use the border tone. */
+[data-slot="skeleton"] {
+  background-color: var(--border);
+}
+
+/* Loading skeletons stay still for people who ask for reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="skeleton"] {
+    animation: none;
+  }
+}

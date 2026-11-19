@@ -11,7 +11,8 @@
       "en": "English",
       "ru": "Русский",
       "de": "Deutsch"
-    }
+    },
+    "loading": "Wird geladen"
   },
   "Login": {
     "title": "Anmelden",
@@ -41,7 +42,8 @@
     "menu": "Menü",
     "toggleTheme": "Design wechseln",
     "signOut": "Abmelden",
-    "role": "Account Manager"
+    "role": "Account Manager",
+    "skipToContent": "Zum Hauptinhalt springen"
   },
   "Overview": {
     "greeting": "Hallo, {name}",
@@ -272,5 +274,17 @@
     "clear": "Filter zurücksetzen",
     "count": "{count, plural, one {# Inhalt} other {# Inhalte}}",
     "noResults": "Keine Inhalte passen zu diesen Filtern."
+  },
+  "Error": {
+    "title": "Etwas ist schiefgelaufen",
+    "description": "Beim Laden dieser Seite ist ein Fehler aufgetreten. Sie können es erneut versuchen; falls das Problem bleibt, versuchen Sie es später noch einmal.",
+    "retry": "Erneut versuchen",
+    "home": "Zur Übersicht",
+    "reference": "Fehlerreferenz"
+  },
+  "NotFound": {
+    "title": "Seite nicht gefunden",
+    "description": "Die gesuchte Seite existiert nicht oder wurde verschoben.",
+    "home": "Zur Übersicht"
   }
 }

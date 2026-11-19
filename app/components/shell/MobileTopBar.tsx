@@ -43,7 +43,7 @@ export function MobileTopBar({ user, inReviewCount }: MobileTopBarProps) {
         </SheetContent>
       </Sheet>
       <div className="min-w-0 flex-1">
-        <BrandMark />
+        <BrandMark homeLink />
       </div>
       <ThemeToggle />
     </header>

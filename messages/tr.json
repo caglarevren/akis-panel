@@ -11,7 +11,8 @@
       "en": "English",
       "ru": "Русский",
       "de": "Deutsch"
-    }
+    },
+    "loading": "Yükleniyor"
   },
   "Login": {
     "title": "Giriş yap",
@@ -41,7 +42,8 @@
     "menu": "Menü",
     "toggleTheme": "Temayı değiştir",
     "signOut": "Çıkış yap",
-    "role": "Hesap yöneticisi"
+    "role": "Hesap yöneticisi",
+    "skipToContent": "Ana içeriğe geç"
   },
   "Overview": {
     "greeting": "Merhaba, {name}",
@@ -272,5 +274,17 @@
     "clear": "Filtreleri temizle",
     "count": "{count} içerik",
     "noResults": "Bu filtrelerle eşleşen içerik yok."
+  },
+  "Error": {
+    "title": "Bir şeyler ters gitti",
+    "description": "Sayfa yüklenirken bir hata oluştu. Tekrar deneyebilirsiniz; sorun sürerse biraz sonra yeniden deneyin.",
+    "retry": "Tekrar dene",
+    "home": "Ana ekrana dön",
+    "reference": "Hata kodu"
+  },
+  "NotFound": {
+    "title": "Sayfa bulunamadı",
+    "description": "Aradığınız sayfa yok ya da taşınmış olabilir.",
+    "home": "Ana ekrana dön"
   }
 }

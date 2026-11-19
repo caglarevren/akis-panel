@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -6,6 +7,15 @@ import { LocaleSwitcher } from "@/app/components/layout/LocaleSwitcher";
 import { LoginForm } from "@/app/components/auth/LoginForm";
 import { routing } from "@/i18n/routing";
 import { DEMO_ACCOUNT } from "@/lib/demo-account";
+
+export async function generateMetadata({ params }: PageProps<"/[locale]/login">): Promise<Metadata> {
+  const { locale } = await params;
+  const [t, meta] = await Promise.all([
+    getTranslations({ locale, namespace: "Login" }),
+    getTranslations({ locale, namespace: "Metadata" }),
+  ]);
+  return { title: `${t("title")} · ${meta("title")}` };
+}
 
 export default async function LoginPage({ params, searchParams }: PageProps<"/[locale]/login">) {
   const { locale } = await params;

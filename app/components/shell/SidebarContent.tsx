@@ -28,7 +28,7 @@ export function SidebarContent({ user, inReviewCount, onNavigate }: SidebarConte
   return (
     <div className="flex h-full flex-col gap-6">
       <div className="px-1.5 pt-1">
-        <BrandMark subtitle={t("Common.brandSub")} />
+        <BrandMark subtitle={t("Common.brandSub")} homeLink onNavigate={onNavigate} />
       </div>
 
       <SidebarNav inReviewCount={inReviewCount} onNavigate={onNavigate} />
