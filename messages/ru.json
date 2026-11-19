@@ -24,7 +24,12 @@
     "errorInvalidCredentials": "Неверное имя пользователя или пароль.",
     "errorServer": "Сейчас войти не удаётся. Повторите попытку чуть позже.",
     "identifier": "Имя пользователя или эл. почта",
-    "identifierPlaceholder": "pelin.kilit"
+    "identifierPlaceholder": "pelin.kilit",
+    "demoTitle": "Демо-аккаунт",
+    "demoDescription": "Войдите с этой учётной записью, чтобы попробовать приложение.",
+    "demoUsername": "Имя пользователя",
+    "demoPassword": "Пароль",
+    "demoFill": "Заполнить"
   },
   "Nav": {
     "overview": "Обзор",

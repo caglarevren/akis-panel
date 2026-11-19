@@ -5,6 +5,7 @@ import { BrandMark } from "@/app/components/layout/BrandMark";
 import { LocaleSwitcher } from "@/app/components/layout/LocaleSwitcher";
 import { LoginForm } from "@/app/components/auth/LoginForm";
 import { routing } from "@/i18n/routing";
+import { DEMO_ACCOUNT } from "@/lib/demo-account";
 
 export default async function LoginPage({ params, searchParams }: PageProps<"/[locale]/login">) {
   const { locale } = await params;
@@ -27,7 +28,11 @@ export default async function LoginPage({ params, searchParams }: PageProps<"/[l
             <p className="mt-1.5 text-sm text-muted-foreground">{t("Login.description")}</p>
           </div>
           <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-            <LoginForm locale={locale} callbackUrl={typeof callbackUrl === "string" ? callbackUrl : undefined} />
+            <LoginForm
+              locale={locale}
+              callbackUrl={typeof callbackUrl === "string" ? callbackUrl : undefined}
+              demo={{ username: DEMO_ACCOUNT.username, password: DEMO_ACCOUNT.password }}
+            />
           </div>
         </div>
       </main>

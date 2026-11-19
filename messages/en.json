@@ -24,7 +24,12 @@
     "errorInvalidCredentials": "Username or password is incorrect.",
     "errorServer": "Signing in isn't possible right now. Try again in a moment.",
     "identifier": "Username or email",
-    "identifierPlaceholder": "pelin.kilit"
+    "identifierPlaceholder": "pelin.kilit",
+    "demoTitle": "Demo account",
+    "demoDescription": "Use this account to try the app.",
+    "demoUsername": "Username",
+    "demoPassword": "Password",
+    "demoFill": "Fill in"
   },
   "Nav": {
     "overview": "Overview",

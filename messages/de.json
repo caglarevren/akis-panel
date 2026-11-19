@@ -24,7 +24,12 @@
     "errorInvalidCredentials": "Benutzername oder Passwort ist falsch.",
     "errorServer": "Die Anmeldung ist gerade nicht möglich. Versuchen Sie es gleich noch einmal.",
     "identifier": "Benutzername oder E-Mail",
-    "identifierPlaceholder": "pelin.kilit"
+    "identifierPlaceholder": "pelin.kilit",
+    "demoTitle": "Demo-Konto",
+    "demoDescription": "Mit diesem Konto können Sie die Anwendung ausprobieren.",
+    "demoUsername": "Benutzername",
+    "demoPassword": "Passwort",
+    "demoFill": "Daten einfügen"
   },
   "Nav": {
     "overview": "Übersicht",

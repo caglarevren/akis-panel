@@ -28,7 +28,7 @@ npm run db:seed        # örnek veriyi yeniden yükler (sadece development): mü
 
 ## Demo hesabı
 
-Proje bir iş başvurusu için hazırlanıyor; değerlendiriciler tek bir paylaşılan hesapla giriş yapıyor: **`pelin.kilit` / `123456`** (Pelin Kilit). Hesap `npm run db:seed` ile oluşturulur ve şifresi her seed'de bu değere sıfırlanır (`prisma/seed-data.ts`, `demoPassword`). Giriş kullanıcı adı veya e-postayla yapılabiliyor. Diğer seed kullanıcılarının (Mert Demir, Elif Şahin) kullanılabilir şifresi yok; sadece sorumlu kişi olarak görünüyorlar. Müşteriler kilitgroup.com/faaliyet-alanlari sayfasındaki markalar; iletişim kişileri, e-postalar ve telefonlar uydurmadır.
+Proje bir iş başvurusu için hazırlanıyor; değerlendiriciler tek bir paylaşılan hesapla giriş yapıyor: **`pelin.kilit` / `123456`** (Pelin Kilit). Hesap `npm run db:seed` ile oluşturulur ve şifresi her seed'de bu değere sıfırlanır. Bilgilerin tek kaynağı `lib/demo-account.ts`; hem seed hem giriş ekranındaki "Demo hesabı" notu (tek tıkla doldurma butonuyla) buradan okur. Gerçek kullanıma geçilirse notu kaldırmak için giriş sayfasında `LoginForm`'a `demo` prop'unu vermemek yeterli. Giriş kullanıcı adı veya e-postayla yapılabiliyor. Diğer seed kullanıcılarının (Mert Demir, Elif Şahin) kullanılabilir şifresi yok; sadece sorumlu kişi olarak görünüyorlar. Müşteriler kilitgroup.com/faaliyet-alanlari sayfasındaki markalar; iletişim kişileri, e-postalar ve telefonlar uydurmadır.
 
 ## Notlar
 

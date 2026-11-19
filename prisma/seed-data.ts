@@ -1,4 +1,5 @@
 import type { ContentStatus, ContentType, Platform } from "../generated/prisma/enums";
+import { DEMO_ACCOUNT } from "../lib/demo-account";
 
 // Small, realistic sample data for the development branch. Dates are offsets
 // in days from the day the seed runs, so "next 7 days" and "overdue" stay
@@ -40,7 +41,13 @@ export interface SeedContent {
 }
 
 export const SEED_USERS: SeedUser[] = [
-  { key: "pelin", name: "Pelin Kilit", email: "pelin.kilit@example.com", username: "pelin.kilit", demoPassword: "123456" },
+  {
+    key: "pelin",
+    name: DEMO_ACCOUNT.name,
+    email: DEMO_ACCOUNT.email,
+    username: DEMO_ACCOUNT.username,
+    demoPassword: DEMO_ACCOUNT.password,
+  },
   { key: "mert", name: "Mert Demir", email: "mert@akis.dev" },
   { key: "elif", name: "Elif Şahin", email: "elif@akis.dev" },
 ];

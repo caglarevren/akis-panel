@@ -24,7 +24,12 @@
     "errorInvalidCredentials": "Kullanıcı adı veya şifre hatalı.",
     "errorServer": "Şu anda giriş yapılamıyor. Biraz sonra tekrar deneyin.",
     "identifier": "Kullanıcı adı veya e-posta",
-    "identifierPlaceholder": "pelin.kilit"
+    "identifierPlaceholder": "pelin.kilit",
+    "demoTitle": "Demo hesabı",
+    "demoDescription": "Uygulamayı denemek için bu hesapla giriş yapabilirsiniz.",
+    "demoUsername": "Kullanıcı adı",
+    "demoPassword": "Şifre",
+    "demoFill": "Bilgileri doldur"
   },
   "Nav": {
     "overview": "Ana ekran",
