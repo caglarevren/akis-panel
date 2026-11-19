@@ -16,15 +16,15 @@
   "Login": {
     "title": "Giriş yap",
     "description": "Panele erişmek için ajans hesabınızla giriş yapın.",
-    "email": "E-posta",
-    "emailPlaceholder": "ornek@ajans.com",
     "password": "Şifre",
     "passwordPlaceholder": "Şifrenizi girin",
     "submit": "Giriş yap",
     "submitting": "Giriş yapılıyor",
-    "errorMissingFields": "E-posta ve şifre alanlarını doldurun.",
-    "errorInvalidCredentials": "E-posta veya şifre hatalı.",
-    "errorServer": "Şu anda giriş yapılamıyor. Biraz sonra tekrar deneyin."
+    "errorMissingFields": "Kullanıcı adı ve şifre alanlarını doldurun.",
+    "errorInvalidCredentials": "Kullanıcı adı veya şifre hatalı.",
+    "errorServer": "Şu anda giriş yapılamıyor. Biraz sonra tekrar deneyin.",
+    "identifier": "Kullanıcı adı veya e-posta",
+    "identifierPlaceholder": "pelin.kilit"
   },
   "Nav": {
     "overview": "Ana ekran",

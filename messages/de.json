@@ -16,15 +16,15 @@
   "Login": {
     "title": "Anmelden",
     "description": "Melden Sie sich mit Ihrem Agentur-Konto an, um das Panel zu öffnen.",
-    "email": "E-Mail",
-    "emailPlaceholder": "name@agentur.de",
     "password": "Passwort",
     "passwordPlaceholder": "Passwort eingeben",
     "submit": "Anmelden",
     "submitting": "Anmeldung läuft",
-    "errorMissingFields": "Bitte E-Mail und Passwort ausfüllen.",
-    "errorInvalidCredentials": "E-Mail oder Passwort ist falsch.",
-    "errorServer": "Die Anmeldung ist gerade nicht möglich. Versuchen Sie es gleich noch einmal."
+    "errorMissingFields": "Bitte Benutzername und Passwort ausfüllen.",
+    "errorInvalidCredentials": "Benutzername oder Passwort ist falsch.",
+    "errorServer": "Die Anmeldung ist gerade nicht möglich. Versuchen Sie es gleich noch einmal.",
+    "identifier": "Benutzername oder E-Mail",
+    "identifierPlaceholder": "pelin.kilit"
   },
   "Nav": {
     "overview": "Übersicht",

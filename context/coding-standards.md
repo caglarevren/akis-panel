@@ -43,7 +43,7 @@
 - `proxy.ts` protects everything except `PUBLIC_PATHS` (currently `/login`, after the locale prefix). Unauthenticated requests are redirected to `/{locale}/login?callbackUrl=...`; signed-in users visiting `/login` go to `/{locale}`.
 - Post-login redirect targets always go through `safeRedirect()` (`lib/safe-redirect.ts`).
 - Auth uses the split config pattern: `auth.config.ts` is Edge-safe (used by `proxy.ts`), `auth.ts` holds the Prisma + bcrypt `authorize()`.
-- No self-registration. Accounts are created with `npm run db:create-user`.
+- No self-registration. Accounts are created with `npm run db:create-user` (optional `--username`). Sign-in accepts a username or an email (`identifier`; an "@" means email).
 
 ## Internationalization (i18n)
 

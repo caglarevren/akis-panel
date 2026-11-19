@@ -14,15 +14,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt", maxAge: 60 * 60 * 24 * 30 },
   providers: [
     Credentials({
-      credentials: { email: {}, password: {} },
+      credentials: { identifier: {}, password: {} },
       authorize: async (credentials) => {
-        const email = credentials?.email;
+        const identifier = credentials?.identifier;
         const password = credentials?.password;
-        if (typeof email !== "string" || typeof password !== "string" || !email || !password) {
+        if (typeof identifier !== "string" || typeof password !== "string" || !identifier || !password) {
           return null;
         }
 
-        const user = await prisma.user.findUnique({ where: { email: email.toLowerCase() } });
+        // Either a username or an email; usernames never contain "@".
+        const login = identifier.trim().toLowerCase();
+        const user = await prisma.user.findUnique({
+          where: login.includes("@") ? { email: login } : { username: login },
+        });
         const passwordMatches = await bcrypt.compare(password, user?.password ?? DUMMY_HASH);
         if (!user || !passwordMatches) {
           return null;

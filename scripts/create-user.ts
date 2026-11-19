@@ -11,9 +11,15 @@ async function main() {
   const email = readArg("email")?.trim().toLowerCase();
   const password = readArg("password");
   const name = readArg("name")?.trim();
+  const username = readArg("username")?.trim().toLowerCase() || undefined;
 
   if (!email || !password || !name) {
-    console.error('Usage: npm run db:create-user -- --email=ayse@ajans.com --password=... --name="Ayşe Kaya"');
+    console.error('Usage: npm run db:create-user -- --email=pelin@ajans.com --password=... --name="Pelin Kilit" [--username=pelin.kilit]');
+    process.exitCode = 1;
+    return;
+  }
+  if (username?.includes("@")) {
+    console.error('Username must not contain "@".');
     process.exitCode = 1;
     return;
   }
@@ -26,11 +32,11 @@ async function main() {
   const hashed = await bcrypt.hash(password, 12);
   const user = await prisma.user.upsert({
     where: { email },
-    update: { password: hashed, name },
-    create: { email, password: hashed, name },
+    update: { password: hashed, name, ...(username && { username }) },
+    create: { email, password: hashed, name, username },
   });
 
-  console.log(`Account manager ready: ${user.name} <${user.email}>`);
+  console.log(`Account manager ready: ${user.name} <${user.email}>${user.username ? ` (username: ${user.username})` : ""}`);
 }
 
 main()

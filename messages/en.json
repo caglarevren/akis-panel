@@ -16,15 +16,15 @@
   "Login": {
     "title": "Sign in",
     "description": "Sign in with your agency account to access the panel.",
-    "email": "Email",
-    "emailPlaceholder": "name@agency.com",
     "password": "Password",
     "passwordPlaceholder": "Enter your password",
     "submit": "Sign in",
     "submitting": "Signing in",
-    "errorMissingFields": "Fill in both email and password.",
-    "errorInvalidCredentials": "Email or password is incorrect.",
-    "errorServer": "Signing in isn't possible right now. Try again in a moment."
+    "errorMissingFields": "Fill in both username and password.",
+    "errorInvalidCredentials": "Username or password is incorrect.",
+    "errorServer": "Signing in isn't possible right now. Try again in a moment.",
+    "identifier": "Username or email",
+    "identifierPlaceholder": "pelin.kilit"
   },
   "Nav": {
     "overview": "Overview",

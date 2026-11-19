@@ -33,42 +33,42 @@ describe("login", () => {
   });
 
   it("rejects missing fields without calling signIn", async () => {
-    const result = await login({ success: false }, form({ email: "  ", password: "", locale: "tr" }));
-    expect(result).toEqual({ success: false, error: "missing-fields", email: "  " });
+    const result = await login({ success: false }, form({ identifier: "  ", password: "", locale: "tr" }));
+    expect(result).toEqual({ success: false, error: "missing-fields", identifier: "  " });
     expect(signIn).not.toHaveBeenCalled();
   });
 
-  it("normalizes the email and redirects to a safe callbackUrl", async () => {
-    await login({ success: false }, form({ email: " Ayse@Ajans.com ", password: "secret123", locale: "de", callbackUrl: "/de/inhalte" }));
-    expect(signIn).toHaveBeenCalledWith("credentials", { email: "ayse@ajans.com", password: "secret123", redirectTo: "/de/inhalte" });
+  it("normalizes the identifier and redirects to a safe callbackUrl", async () => {
+    await login({ success: false }, form({ identifier: " Pelin.Kilit ", password: "secret123", locale: "de", callbackUrl: "/de/inhalte" }));
+    expect(signIn).toHaveBeenCalledWith("credentials", { identifier: "pelin.kilit", password: "secret123", redirectTo: "/de/inhalte" });
   });
 
   it("ignores an external callbackUrl and falls back to the locale home", async () => {
-    await login({ success: false }, form({ email: "a@b.co", password: "x", locale: "ru", callbackUrl: "https://evil.example" }));
+    await login({ success: false }, form({ identifier: "a@b.co", password: "x", locale: "ru", callbackUrl: "https://evil.example" }));
     expect(signIn).toHaveBeenCalledWith("credentials", expect.objectContaining({ redirectTo: "/ru" }));
   });
 
   it("falls back to the default locale when the locale field is invalid", async () => {
-    await login({ success: false }, form({ email: "a@b.co", password: "x", locale: "xx" }));
+    await login({ success: false }, form({ identifier: "a@b.co", password: "x", locale: "xx" }));
     expect(signIn).toHaveBeenCalledWith("credentials", expect.objectContaining({ redirectTo: "/tr" }));
   });
 
-  it("maps wrong credentials to invalid-credentials and keeps the email", async () => {
+  it("maps wrong credentials to invalid-credentials and keeps the identifier", async () => {
     signIn.mockRejectedValueOnce(makeAuthError("CredentialsSignin"));
-    const result = await login({ success: false }, form({ email: "a@b.co", password: "wrong", locale: "tr" }));
-    expect(result).toEqual({ success: false, error: "invalid-credentials", email: "a@b.co" });
+    const result = await login({ success: false }, form({ identifier: "a@b.co", password: "wrong", locale: "tr" }));
+    expect(result).toEqual({ success: false, error: "invalid-credentials", identifier: "a@b.co" });
   });
 
   it("maps other auth failures to server-error", async () => {
     signIn.mockRejectedValueOnce(makeAuthError("CallbackRouteError"));
-    const result = await login({ success: false }, form({ email: "a@b.co", password: "x", locale: "tr" }));
+    const result = await login({ success: false }, form({ identifier: "a@b.co", password: "x", locale: "tr" }));
     expect(result.error).toBe("server-error");
   });
 
   it("rethrows non-auth errors such as the redirect signal", async () => {
     const redirect = new Error("NEXT_REDIRECT");
     signIn.mockRejectedValueOnce(redirect);
-    await expect(login({ success: false }, form({ email: "a@b.co", password: "x", locale: "tr" }))).rejects.toBe(redirect);
+    await expect(login({ success: false }, form({ identifier: "a@b.co", password: "x", locale: "tr" }))).rejects.toBe(redirect);
   });
 });
 

@@ -16,15 +16,15 @@
   "Login": {
     "title": "Вход",
     "description": "Войдите с учётной записью агентства, чтобы открыть панель.",
-    "email": "Эл. почта",
-    "emailPlaceholder": "name@agency.com",
     "password": "Пароль",
     "passwordPlaceholder": "Введите пароль",
     "submit": "Войти",
     "submitting": "Выполняется вход",
-    "errorMissingFields": "Заполните эл. почту и пароль.",
-    "errorInvalidCredentials": "Неверная эл. почта или пароль.",
-    "errorServer": "Сейчас войти не удаётся. Повторите попытку чуть позже."
+    "errorMissingFields": "Заполните имя пользователя и пароль.",
+    "errorInvalidCredentials": "Неверное имя пользователя или пароль.",
+    "errorServer": "Сейчас войти не удаётся. Повторите попытку чуть позже.",
+    "identifier": "Имя пользователя или эл. почта",
+    "identifierPlaceholder": "pelin.kilit"
   },
   "Nav": {
     "overview": "Обзор",

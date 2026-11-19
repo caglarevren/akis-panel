@@ -8,18 +8,18 @@ import { safeRedirect } from "@/lib/safe-redirect";
 import type { LoginState } from "@/app/types/auth";
 
 export async function login(_prev: LoginState, formData: FormData): Promise<LoginState> {
-  const email = formData.get("email");
+  const identifier = formData.get("identifier");
   const password = formData.get("password");
   const locale = formData.get("locale");
   const fallback = `/${hasLocale(routing.locales, locale) ? locale : routing.defaultLocale}`;
 
-  if (typeof email !== "string" || typeof password !== "string" || !email.trim() || !password) {
-    return { success: false, error: "missing-fields", email: typeof email === "string" ? email : "" };
+  if (typeof identifier !== "string" || typeof password !== "string" || !identifier.trim() || !password) {
+    return { success: false, error: "missing-fields", identifier: typeof identifier === "string" ? identifier : "" };
   }
 
   try {
     await signIn("credentials", {
-      email: email.trim().toLowerCase(),
+      identifier: identifier.trim().toLowerCase(),
       password,
       redirectTo: safeRedirect(formData.get("callbackUrl"), fallback),
     });
@@ -27,7 +27,7 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
   } catch (error) {
     if (error instanceof AuthError) {
       const code = error.type === "CredentialsSignin" ? "invalid-credentials" : "server-error";
-      return { success: false, error: code, email };
+      return { success: false, error: code, identifier };
     }
     // signIn() signals a successful redirect by throwing; let Next.js handle it.
     throw error;

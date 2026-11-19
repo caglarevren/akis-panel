@@ -3,7 +3,7 @@ export type LoginError = "missing-fields" | "invalid-credentials" | "server-erro
 export interface LoginState {
   success: boolean;
   error?: LoginError;
-  // Echoed back so a failed attempt keeps the email field filled.
+  // Echoed back so a failed attempt keeps the username/email field filled.
   // The password is never echoed.
-  email?: string;
+  identifier?: string;
 }

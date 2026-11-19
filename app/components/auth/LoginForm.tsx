@@ -26,9 +26,9 @@ export function LoginForm({ locale, callbackUrl }: LoginFormProps) {
   const t = useTranslations("Login");
   const [state, formAction, pending] = useActionState(login, INITIAL_STATE);
   // Controlled so React 19's automatic form reset after the action doesn't
-  // clear the email on a failed attempt. The password is left uncontrolled on
-  // purpose: it should be cleared.
-  const [email, setEmail] = useState("");
+  // clear the username on a failed attempt. The password is left uncontrolled
+  // on purpose: it should be cleared.
+  const [identifier, setIdentifier] = useState("");
 
   return (
     <form action={formAction} noValidate className="grid gap-5">
@@ -42,17 +42,18 @@ export function LoginForm({ locale, callbackUrl }: LoginFormProps) {
       )}
 
       <div className="grid gap-2">
-        <Label htmlFor="email">{t("email")}</Label>
+        <Label htmlFor="identifier">{t("identifier")}</Label>
         <Input
-          id="email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          inputMode="email"
-          placeholder={t("emailPlaceholder")}
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          aria-invalid={state.error === "missing-fields" && !email.trim() ? true : undefined}
+          id="identifier"
+          name="identifier"
+          type="text"
+          autoComplete="username"
+          autoCapitalize="none"
+          spellCheck={false}
+          placeholder={t("identifierPlaceholder")}
+          value={identifier}
+          onChange={(event) => setIdentifier(event.target.value)}
+          aria-invalid={state.error === "missing-fields" && !identifier.trim() ? true : undefined}
           className="h-10"
         />
       </div>

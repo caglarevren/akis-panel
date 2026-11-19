@@ -10,7 +10,7 @@ export default {
   },
   providers: [
     Credentials({
-      credentials: { email: {}, password: {} },
+      credentials: { identifier: {}, password: {} },
       authorize: async () => null,
     }),
   ],

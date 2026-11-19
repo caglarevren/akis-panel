@@ -18,19 +18,25 @@ function calendarDay(offsetDays: number): Date {
   return new Date(Date.UTC(local.getFullYear(), local.getMonth(), local.getDate()));
 }
 
-// Existing accounts keep their password. New ones get a random hash nobody
-// knows, so the seed never ships a usable credential; set a real password
-// with `npm run db:create-user`.
+// Accounts are matched by username, then email. Existing accounts keep their
+// password, except the shared demo account, whose password is always reset
+// to its demo value so reviewers can sign in. Other new accounts get a random
+// hash nobody knows; set a real password with `npm run db:create-user`.
 async function seedUsers(): Promise<Map<string, string>> {
   const ids = new Map<string, string>();
   for (const user of SEED_USERS) {
-    const existing = await prisma.user.findUnique({ where: { email: user.email } });
+    const existing =
+      (user.username && (await prisma.user.findUnique({ where: { username: user.username } }))) ||
+      (await prisma.user.findUnique({ where: { email: user.email } }));
+    const password = await bcrypt.hash(user.demoPassword ?? randomBytes(32).toString("hex"), 12);
+    const fields = { name: user.name, email: user.email, username: user.username ?? null };
     const record = existing
-      ? await prisma.user.update({ where: { id: existing.id }, data: { name: user.name } })
-      : await prisma.user.create({
-          data: { name: user.name, email: user.email, password: await bcrypt.hash(randomBytes(32).toString("hex"), 12) },
-        });
-    if (!existing) console.log(`  created ${user.email} (no usable password yet)`);
+      ? await prisma.user.update({
+          where: { id: existing.id },
+          data: { ...fields, ...(user.demoPassword && { password }) },
+        })
+      : await prisma.user.create({ data: { ...fields, password } });
+    if (!existing) console.log(`  created ${user.email}${user.demoPassword ? " (demo password)" : " (no usable password yet)"}`);
     ids.set(user.key, record.id);
   }
   return ids;

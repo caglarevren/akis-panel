@@ -26,6 +26,10 @@ npm run db:create-user -- --email=... --password=... --name="..."   # hesap yön
 npm run db:seed        # örnek veriyi yeniden yükler (sadece development): müşteri/içerik/aktivite silinip baştan oluşturulur
 ```
 
+## Demo hesabı
+
+Proje bir iş başvurusu için hazırlanıyor; değerlendiriciler tek bir paylaşılan hesapla giriş yapıyor: **`pelin.kilit` / `123456`** (Pelin Kilit). Hesap `npm run db:seed` ile oluşturulur ve şifresi her seed'de bu değere sıfırlanır (`prisma/seed-data.ts`, `demoPassword`). Giriş kullanıcı adı veya e-postayla yapılabiliyor. Diğer seed kullanıcılarının (Mert Demir, Elif Şahin) kullanılabilir şifresi yok; sadece sorumlu kişi olarak görünüyorlar. Müşteriler kilitgroup.com/faaliyet-alanlari sayfasındaki markalar; iletişim kişileri, e-postalar ve telefonlar uydurmadır.
+
 ## Notlar
 
 - **npm 10.9.2 hatası:** Bu makinedeki npm sürümü, Vitest'in bağımlılık ağacını çözerken `Cannot read properties of null (reading 'edgesOut')` hatası veriyor (boş bir projede bile). Vitest ile ilgili paket kurulum/güncellemeleri için `npx npm@11.6.2 install ...` kullan.
@@ -35,3 +39,4 @@ npm run db:seed        # örnek veriyi yeniden yükler (sadece development): mü
 - Default branch for all Neon MCP reads/writes: `development` (branch id `br-raspy-credit-bhb0itfs`). Always pass this `branchId` explicitly on `run_sql` / `get_database_tables` / etc. — the project's default branch is `production`.
 - Never run anything against the `production` branch (branch id `br-fragrant-dust-bhl0bsm0`) — reads or writes — unless the user explicitly names "production" in the request. If a task seems like it needs production, ask first.
 - Local `.env` points at `development`. Prisma 7 is pinned on purpose; ignore the CLI's "major update available" banner.
+- `prisma migrate dev` refuses to run in this non-interactive environment. To add a migration: create `prisma/migrations/<timestamp>_<name>/migration.sql` from `npx prisma migrate diff --from-config-datasource --to-schema prisma/schema.prisma --script`, then `npx prisma migrate deploy`.
