@@ -83,6 +83,10 @@ No `src/` directory — `app/` lives at the repo root.
 
 Prisma 7 + Neon Postgres. Schema at `prisma/schema.prisma`, client generated to `generated/prisma` (on `npm install` via `postinstall`). Runtime client singleton at `lib/prisma.ts` (pooled `DATABASE_URL`, `@prisma/adapter-neon`, cached on `globalThis`). Migrations use the unpooled `DIRECT_URL` (`prisma.config.ts`). Use the Neon `development` branch day-to-day; never touch `production` unless explicitly asked.
 
+- Enums (`ContentType`, `ContentStatus`, `Platform`, `ActivityKind`) are imported from `@/generated/prisma/enums` (browser-safe) in shared code; `@/generated/prisma/client` only in server code.
+- Every status change writes an `Activity` row (`STATUS_CHANGED` with `fromStatus`/`toStatus`) in the same transaction as the update. Creating a client or content writes `CLIENT_CREATED` / `CONTENT_CREATED`.
+- `publishDate` is a calendar day (`@db.Date`): store it as UTC midnight of the chosen day and format it without time-zone conversion.
+
 ## Testing
 
 Vitest. Scope: **server actions (`app/actions/**`) and utilities (`lib/**`) only, not components.**

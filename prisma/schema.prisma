@@ -1,6 +1,3 @@
-// Faz 0: only the account-manager login. Client/Content/ContentActivity
-// models arrive in Faz 2 (see context/project-overview.md).
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -19,4 +16,112 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  ownedClients     Client[]
+  assignedContents Content[]
+  activities       Activity[]
+}
+
+// `owner` is the responsible account manager. It is informational and used
+// for filtering only; it does not restrict who can see or edit the client.
+model Client {
+  id           String   @id @default(cuid())
+  name         String   @unique
+  sector       String?
+  contactName  String?
+  contactEmail String?
+  contactPhone String?
+  // Hex color (#RRGGBB) used for the client's avatar and list swatches.
+  brandColor   String
+  isActive     Boolean  @default(true)
+  ownerId      String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  owner      User       @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  contents   Content[]
+  activities Activity[]
+
+  @@index([ownerId])
+  @@index([isActive])
+}
+
+enum ContentType {
+  SOCIAL_POST
+  BLOG_POST
+  WEB_PAGE
+  OTHER
+}
+
+// Which platforms are valid for which type lives in lib/content-options.ts.
+enum Platform {
+  INSTAGRAM
+  LINKEDIN
+  X
+  TIKTOK
+  FACEBOOK
+  BLOG
+  MEDIUM
+  WEBSITE
+  NEWSLETTER
+}
+
+// Transitions are free (any status to any status); see project-overview.md.
+enum ContentStatus {
+  DRAFT
+  IN_REVIEW
+  PUBLISHED
+}
+
+model Content {
+  id          String        @id @default(cuid())
+  title       String
+  type        ContentType
+  platform    Platform
+  notes       String?
+  status      ContentStatus @default(DRAFT)
+  // Planned publish day. Date only, so it never shifts across time zones.
+  publishDate DateTime?     @db.Date
+  // Set when the status becomes PUBLISHED.
+  publishedAt DateTime?
+  clientId    String
+  assigneeId  String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  client     Client     @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  assignee   User       @relation(fields: [assigneeId], references: [id], onDelete: Restrict)
+  activities Activity[]
+
+  @@index([clientId, status])
+  @@index([status, publishDate])
+  @@index([assigneeId])
+}
+
+enum ActivityKind {
+  CLIENT_CREATED
+  CONTENT_CREATED
+  STATUS_CHANGED
+}
+
+// Feed for the overview screen's "recent activity". Every entry belongs to a
+// client; content entries also carry contentId, and STATUS_CHANGED entries
+// carry the transition.
+model Activity {
+  id         String         @id @default(cuid())
+  kind       ActivityKind
+  userId     String
+  clientId   String
+  contentId  String?
+  fromStatus ContentStatus?
+  toStatus   ContentStatus?
+  createdAt  DateTime       @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  client  Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  content Content? @relation(fields: [contentId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt])
+  @@index([clientId, createdAt])
+  @@index([contentId])
 }

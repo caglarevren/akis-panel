@@ -23,6 +23,7 @@ npm run lint           # ESLint (flat config, eslint-config-next)
 npm run test           # unit testler (Vitest): sadece server action'lar ve utility'ler
 npm run test:watch     # unit testler, watch modu
 npm run db:create-user -- --email=... --password=... --name="..."   # hesap yöneticisi oluşturur/şifresini günceller
+npm run db:seed        # örnek veriyi yeniden yükler (sadece development): müşteri/içerik/aktivite silinip baştan oluşturulur
 ```
 
 ## Notlar

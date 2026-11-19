@@ -64,18 +64,25 @@ Referans: `context/prototype/akis-prototip.html` (tıklanabilir HTML prototip, �
 | Tema | next-themes (`class` stratejisi) |
 | Test | Vitest |
 
-## Veri Modeli (plan, Faz 2)
+## Veri Modeli
+
+Kaynak: `prisma/schema.prisma`.
 
 ```
-User            id, name, email, password, createdAt, updatedAt          (Faz 0'da var)
-Client          id, name, sector?, contactName?, contactEmail?, contactPhone?,
-                brandColor, isActive, ownerId → User, createdAt, updatedAt
-Content         id, title, type (SOCIAL_POST | BLOG_POST | WEB_PAGE | OTHER),
-                platform, notes?, status (DRAFT | IN_REVIEW | PUBLISHED),
-                publishDate?, publishedAt?, clientId → Client, assigneeId → User,
-                createdAt, updatedAt
-ContentActivity id, contentId, userId, kind (CREATED | STATUS_CHANGED), fromStatus?, toStatus?, createdAt
+User      id, name, email (unique), password, createdAt, updatedAt
+Client    id, name (unique), sector?, contactName?, contactEmail?, contactPhone?,
+          brandColor (#RRGGBB), isActive, ownerId → User, createdAt, updatedAt
+Content   id, title, type (SOCIAL_POST | BLOG_POST | WEB_PAGE | OTHER),
+          platform (INSTAGRAM | LINKEDIN | X | TIKTOK | FACEBOOK | BLOG | MEDIUM | WEBSITE | NEWSLETTER),
+          notes?, status (DRAFT | IN_REVIEW | PUBLISHED), publishDate? (@db.Date), publishedAt?,
+          clientId → Client, assigneeId → User, createdAt, updatedAt
+Activity  id, kind (CLIENT_CREATED | CONTENT_CREATED | STATUS_CHANGED), userId → User,
+          clientId → Client, contentId? → Content, fromStatus?, toStatus?, createdAt
 ```
+
+- Tür → platform eşlemesi `lib/content-options.ts`'te (`PLATFORMS_BY_TYPE`). Form doğrulaması ve varsayılan platform buradan okunur.
+- Müşteri silinirse içerikleri ve aktiviteleri de silinir (cascade). Bir kullanıcı, müşterisi, içeriği veya aktivitesi varken silinemez (restrict).
+- Seed (`npm run db:seed`, `prisma/seed-data.ts`): 3 hesap yöneticisi, 4 müşteri (1 pasif), 12 içerik, türetilmiş aktivite geçmişi. Tarihler seed'in çalıştığı güne göre göreli. Yeni oluşturulan seed kullanıcılarının kullanılabilir şifresi yoktur; `db:create-user` ile şifre verilir.
 
 ## Yol Haritası
 
@@ -83,7 +90,7 @@ ContentActivity id, contentId, userId, kind (CREATED | STATUS_CHANGED), fromStat
 |---|---|---|
 | 0. Kurulum | Next.js, Tailwind v4, shadcn, next-intl (4 dil), Prisma + Neon, NextAuth, Vitest, context dosyaları | Tamamlandı |
 | 1. Tasarım | Token'lar ve tıklanabilir prototip | Tamamlandı (`context/prototype/`) |
-| 2. Veri | Şema, migration, gerçekçi seed | — |
+| 2. Veri | Şema, migration, gerçekçi seed | Tamamlandı |
 | 3. Uygulama iskeleti | Sidebar, üst bar, dil değiştirici, tema, giriş | — |
 | 4. Müşteriler | Liste, arama, ekleme, detay | — |
 | 5. İçerikler | Ekleme/düzenleme panelleri, doğrulama, testler | — |
