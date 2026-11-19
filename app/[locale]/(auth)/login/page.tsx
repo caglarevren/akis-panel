@@ -16,7 +16,7 @@ export default async function LoginPage({ params, searchParams }: PageProps<"/[l
   const [{ callbackUrl }, t] = await Promise.all([searchParams, getTranslations()]);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-background px-4">
+    <div className="auth-backdrop flex min-h-dvh flex-col px-4">
       <header className="mx-auto flex w-full max-w-5xl items-center justify-between py-5">
         <BrandMark subtitle={t("Common.brandSub")} />
         <LocaleSwitcher />
@@ -27,7 +27,7 @@ export default async function LoginPage({ params, searchParams }: PageProps<"/[l
             <h1 className="text-2xl font-semibold tracking-tight text-balance">{t("Login.title")}</h1>
             <p className="mt-1.5 text-sm text-muted-foreground">{t("Login.description")}</p>
           </div>
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+          <div className="rounded-2xl border border-border bg-(--auth-card) p-6 shadow-lg shadow-black/5">
             <LoginForm
               locale={locale}
               callbackUrl={typeof callbackUrl === "string" ? callbackUrl : undefined}

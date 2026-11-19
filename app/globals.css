@@ -98,6 +98,9 @@
   --sidebar-accent-foreground: #111318;
   --sidebar-border: #e3e6ec;
   --sidebar-ring: #4b45d6;
+  /* Sign-in page: a soft tinted ground instead of the flat app background. */
+  --auth-bg: #eef0fa;
+  --auth-card: #ffffff;
 }
 
 .dark {
@@ -140,6 +143,8 @@
   --sidebar-accent-foreground: #eceef3;
   --sidebar-border: #23272f;
   --sidebar-ring: #8e8bff;
+  --auth-bg: #1a1d2b;
+  --auth-card: #242838;
 }
 
 @layer base {
@@ -149,7 +154,27 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Tailwind v4 resets buttons to the default cursor; enabled ones should show the pointer. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
   html {
     @apply font-sans;
   }
 }
+
+/* Sign-in backdrop: indigo glow from the top plus a faint one in the corner. */
+.auth-backdrop {
+  background-color: var(--auth-bg);
+  background-image:
+    radial-gradient(56rem 30rem at 50% -6rem, color-mix(in oklab, var(--primary) 24%, transparent), transparent 72%),
+    radial-gradient(38rem 26rem at 100% 100%, color-mix(in oklab, var(--primary) 12%, transparent), transparent 70%);
+  background-repeat: no-repeat;
+}
+
+/* The language switcher shares the card tone on the sign-in page. */
+.auth-backdrop select {
+  background-color: var(--auth-card);
+}
+
