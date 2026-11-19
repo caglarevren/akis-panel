@@ -16,3 +16,16 @@ export function isPlatformAllowed(type: ContentType, platform: Platform): boolea
 export function defaultPlatformFor(type: ContentType): Platform {
   return PLATFORMS_BY_TYPE[type][0];
 }
+
+// Short monospace label shown in the platform badge.
+export const PLATFORM_ABBR: Record<Platform, string> = {
+  INSTAGRAM: "IG",
+  LINKEDIN: "in",
+  X: "X",
+  TIKTOK: "TT",
+  FACEBOOK: "FB",
+  BLOG: "BL",
+  MEDIUM: "M",
+  WEBSITE: "WEB",
+  NEWSLETTER: "NL",
+};

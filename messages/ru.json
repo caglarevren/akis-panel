@@ -45,7 +45,26 @@
   "Clients": {
     "title": "Клиенты",
     "description": "Бренды, с которыми работает агентство, и статус их материалов.",
-    "comingSoon": "Здесь появятся список клиентов, поиск и добавление новых клиентов."
+    "newClient": "Новый клиент",
+    "searchPlaceholder": "Поиск клиентов",
+    "searchLabel": "Поиск по клиентам",
+    "filterLabel": "Статус клиента",
+    "filters": {
+      "all": "Все",
+      "active": "Активные",
+      "inactive": "Неактивные"
+    },
+    "inactiveBadge": "Неактивен",
+    "contentCount": "Материалы · {count}",
+    "nothingScheduled": "Ничего не запланировано",
+    "owner": "Ответственный",
+    "statusBreakdown": "Распределение по статусам",
+    "emptyTitle": "Клиентов пока нет",
+    "emptyDescription": "Добавьте первого клиента: материалы привязываются к клиентам.",
+    "noResults": "Нет клиентов по вашему запросу.",
+    "noResultsInFilter": "В этом фильтре клиентов нет.",
+    "clearSearch": "Сбросить поиск",
+    "nextUpLabel": "Следующая публикация"
   },
   "Contents": {
     "title": "Контент",
@@ -54,5 +73,86 @@
   },
   "Placeholder": {
     "title": "Этот экран в разработке"
+  },
+  "Dates": {
+    "today": "Сегодня",
+    "tomorrow": "Завтра",
+    "yesterday": "Вчера"
+  },
+  "Status": {
+    "DRAFT": "Черновик",
+    "IN_REVIEW": "На согласовании",
+    "PUBLISHED": "Опубликовано"
+  },
+  "ContentType": {
+    "SOCIAL_POST": "Соцсети",
+    "BLOG_POST": "Статья в блоге",
+    "WEB_PAGE": "Веб-страница",
+    "OTHER": "Другое"
+  },
+  "Platform": {
+    "INSTAGRAM": "Instagram",
+    "LINKEDIN": "LinkedIn",
+    "X": "X",
+    "TIKTOK": "TikTok",
+    "FACEBOOK": "Facebook",
+    "BLOG": "Блог компании",
+    "MEDIUM": "Medium",
+    "WEBSITE": "Сайт",
+    "NEWSLETTER": "Рассылка"
+  },
+  "ClientDetail": {
+    "back": "Клиенты",
+    "contactName": "Контактное лицо",
+    "contactEmail": "Эл. почта",
+    "contactPhone": "Телефон",
+    "owner": "Ответственный менеджер",
+    "statusTabs": "Статус материалов",
+    "all": "Все",
+    "contents": "Материалы",
+    "emptyContents": "У этого клиента пока нет материалов.",
+    "emptyTab": "Нет материалов с этим статусом.",
+    "columns": {
+      "title": "Название",
+      "type": "Тип",
+      "date": "Дата публикации",
+      "status": "Статус"
+    },
+    "noDate": "Без даты",
+    "overdue": "Просрочено",
+    "notFound": "Клиент не найден",
+    "notFoundDescription": "Возможно, он удалён или ссылка неверна.",
+    "assignee": "Исполнитель: {name}"
+  },
+  "ClientForm": {
+    "title": "Новый клиент",
+    "description": "После добавления к клиенту можно привязывать материалы.",
+    "name": "Название клиента",
+    "namePlaceholder": "Напр. Lumen Kahve",
+    "sector": "Отрасль",
+    "sectorPlaceholder": "Напр. Еда и напитки",
+    "owner": "Ответственный менеджер",
+    "contactName": "Контактное лицо",
+    "contactEmail": "Эл. почта",
+    "contactPhone": "Телефон",
+    "brandColor": "Цвет бренда",
+    "colorOption": "Цвет {index}",
+    "optional": "необязательно",
+    "cancel": "Отмена",
+    "close": "Закрыть",
+    "submit": "Добавить клиента",
+    "submitting": "Добавление",
+    "created": "Клиент {name} добавлен",
+    "errors": {
+      "required": "Обязательное поле.",
+      "tooLong": "Слишком длинное значение.",
+      "duplicate": "Клиент с таким названием уже есть.",
+      "invalidEmail": "Введите корректный адрес эл. почты.",
+      "invalidPhone": "В номере допускаются только цифры, пробелы, +, ( ) и -.",
+      "invalidOwner": "Выбранный менеджер не найден.",
+      "invalidColor": "Выберите цвет из списка.",
+      "server": "Не удалось добавить клиента. Повторите попытку чуть позже.",
+      "unauthorized": "Сессия истекла. Войдите снова."
+    }
   }
 }

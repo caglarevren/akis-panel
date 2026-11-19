@@ -45,7 +45,26 @@
   "Clients": {
     "title": "Clients",
     "description": "Brands your agency works with and where their content stands.",
-    "comingSoon": "The client list, search and adding new clients will appear here."
+    "newClient": "New client",
+    "searchPlaceholder": "Search clients",
+    "searchLabel": "Search clients",
+    "filterLabel": "Client status",
+    "filters": {
+      "all": "All",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "inactiveBadge": "Inactive",
+    "contentCount": "Content · {count}",
+    "nothingScheduled": "Nothing scheduled",
+    "owner": "Owner",
+    "statusBreakdown": "Status breakdown",
+    "emptyTitle": "No clients yet",
+    "emptyDescription": "Add your first client to get started; content is attached to clients.",
+    "noResults": "No clients match your search.",
+    "noResultsInFilter": "No clients in this filter.",
+    "clearSearch": "Clear search",
+    "nextUpLabel": "Next up"
   },
   "Contents": {
     "title": "Content",
@@ -54,5 +73,86 @@
   },
   "Placeholder": {
     "title": "This screen is on its way"
+  },
+  "Dates": {
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "yesterday": "Yesterday"
+  },
+  "Status": {
+    "DRAFT": "Draft",
+    "IN_REVIEW": "In review",
+    "PUBLISHED": "Published"
+  },
+  "ContentType": {
+    "SOCIAL_POST": "Social media",
+    "BLOG_POST": "Blog post",
+    "WEB_PAGE": "Web page",
+    "OTHER": "Other"
+  },
+  "Platform": {
+    "INSTAGRAM": "Instagram",
+    "LINKEDIN": "LinkedIn",
+    "X": "X",
+    "TIKTOK": "TikTok",
+    "FACEBOOK": "Facebook",
+    "BLOG": "Company blog",
+    "MEDIUM": "Medium",
+    "WEBSITE": "Website",
+    "NEWSLETTER": "Newsletter"
+  },
+  "ClientDetail": {
+    "back": "Clients",
+    "contactName": "Contact person",
+    "contactEmail": "Email",
+    "contactPhone": "Phone",
+    "owner": "Account manager",
+    "statusTabs": "Content status",
+    "all": "All",
+    "contents": "Content",
+    "emptyContents": "No content for this client yet.",
+    "emptyTab": "No content in this status.",
+    "columns": {
+      "title": "Title",
+      "type": "Type",
+      "date": "Publish date",
+      "status": "Status"
+    },
+    "noDate": "No date",
+    "overdue": "Overdue",
+    "notFound": "Client not found",
+    "notFoundDescription": "It may have been deleted, or the link is wrong.",
+    "assignee": "Assignee: {name}"
+  },
+  "ClientForm": {
+    "title": "New client",
+    "description": "Once the client is added you can attach content to it.",
+    "name": "Client name",
+    "namePlaceholder": "e.g. Lumen Kahve",
+    "sector": "Industry",
+    "sectorPlaceholder": "e.g. Food & beverage",
+    "owner": "Account manager",
+    "contactName": "Contact person",
+    "contactEmail": "Email",
+    "contactPhone": "Phone",
+    "brandColor": "Brand color",
+    "colorOption": "Color {index}",
+    "optional": "optional",
+    "cancel": "Cancel",
+    "close": "Close",
+    "submit": "Add client",
+    "submitting": "Adding",
+    "created": "{name} added",
+    "errors": {
+      "required": "This field is required.",
+      "tooLong": "This is too long.",
+      "duplicate": "A client with this name already exists.",
+      "invalidEmail": "Enter a valid email address.",
+      "invalidPhone": "Use only digits, spaces, +, ( ) and - in the phone number.",
+      "invalidOwner": "The selected account manager no longer exists.",
+      "invalidColor": "Pick a color from the list.",
+      "server": "The client couldn't be added. Try again in a moment.",
+      "unauthorized": "Your session has expired. Sign in again."
+    }
   }
 }

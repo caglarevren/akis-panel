@@ -45,7 +45,26 @@
   "Clients": {
     "title": "Müşteriler",
     "description": "Ajansın çalıştığı markalar ve içeriklerinin durumu.",
-    "comingSoon": "Müşteri listesi, arama ve yeni müşteri ekleme bu ekranda yer alacak."
+    "newClient": "Yeni müşteri",
+    "searchPlaceholder": "Müşteri ara",
+    "searchLabel": "Müşterilerde ara",
+    "filterLabel": "Müşteri durumu",
+    "filters": {
+      "all": "Tümü",
+      "active": "Aktif",
+      "inactive": "Pasif"
+    },
+    "inactiveBadge": "Pasif",
+    "contentCount": "İçerik · {count}",
+    "nothingScheduled": "Planlı yayın yok",
+    "owner": "Sorumlu",
+    "statusBreakdown": "Durum dağılımı",
+    "emptyTitle": "Henüz müşteri yok",
+    "emptyDescription": "İlk müşteriyi ekleyerek başlayın; içerikler müşterilere bağlanır.",
+    "noResults": "Aramanızla eşleşen müşteri yok.",
+    "noResultsInFilter": "Bu filtrede müşteri yok.",
+    "clearSearch": "Aramayı temizle",
+    "nextUpLabel": "Sıradaki yayın"
   },
   "Contents": {
     "title": "İçerikler",
@@ -54,5 +73,86 @@
   },
   "Placeholder": {
     "title": "Bu ekran hazırlanıyor"
+  },
+  "Dates": {
+    "today": "Bugün",
+    "tomorrow": "Yarın",
+    "yesterday": "Dün"
+  },
+  "Status": {
+    "DRAFT": "Taslak",
+    "IN_REVIEW": "Onayda",
+    "PUBLISHED": "Yayında"
+  },
+  "ContentType": {
+    "SOCIAL_POST": "Sosyal medya",
+    "BLOG_POST": "Blog yazısı",
+    "WEB_PAGE": "Web sayfası",
+    "OTHER": "Diğer"
+  },
+  "Platform": {
+    "INSTAGRAM": "Instagram",
+    "LINKEDIN": "LinkedIn",
+    "X": "X",
+    "TIKTOK": "TikTok",
+    "FACEBOOK": "Facebook",
+    "BLOG": "Şirket blogu",
+    "MEDIUM": "Medium",
+    "WEBSITE": "Web sitesi",
+    "NEWSLETTER": "E-bülten"
+  },
+  "ClientDetail": {
+    "back": "Müşteriler",
+    "contactName": "Yetkili kişi",
+    "contactEmail": "E-posta",
+    "contactPhone": "Telefon",
+    "owner": "Sorumlu yönetici",
+    "statusTabs": "İçerik durumu",
+    "all": "Tümü",
+    "contents": "İçerikler",
+    "emptyContents": "Bu müşteri için henüz içerik yok.",
+    "emptyTab": "Bu durumda içerik yok.",
+    "columns": {
+      "title": "Başlık",
+      "type": "Tür",
+      "date": "Yayın tarihi",
+      "status": "Durum"
+    },
+    "noDate": "Tarih yok",
+    "overdue": "Gecikti",
+    "notFound": "Müşteri bulunamadı",
+    "notFoundDescription": "Silinmiş olabilir ya da bağlantı hatalı.",
+    "assignee": "Sorumlu: {name}"
+  },
+  "ClientForm": {
+    "title": "Yeni müşteri",
+    "description": "Müşteriyi ekledikten sonra ona içerik bağlayabilirsiniz.",
+    "name": "Müşteri adı",
+    "namePlaceholder": "Örn. Lumen Kahve",
+    "sector": "Sektör",
+    "sectorPlaceholder": "Örn. Yiyecek & İçecek",
+    "owner": "Sorumlu yönetici",
+    "contactName": "Yetkili kişi",
+    "contactEmail": "E-posta",
+    "contactPhone": "Telefon",
+    "brandColor": "Marka rengi",
+    "colorOption": "Renk {index}",
+    "optional": "isteğe bağlı",
+    "cancel": "Vazgeç",
+    "close": "Kapat",
+    "submit": "Müşteriyi ekle",
+    "submitting": "Ekleniyor",
+    "created": "{name} eklendi",
+    "errors": {
+      "required": "Bu alan zorunlu.",
+      "tooLong": "Bu alan çok uzun.",
+      "duplicate": "Bu isimde bir müşteri zaten var.",
+      "invalidEmail": "Geçerli bir e-posta adresi girin.",
+      "invalidPhone": "Telefonda yalnızca rakam, boşluk, +, ( ) ve - kullanın.",
+      "invalidOwner": "Seçilen yönetici bulunamadı.",
+      "invalidColor": "Listeden bir renk seçin.",
+      "server": "Müşteri eklenemedi. Biraz sonra tekrar deneyin.",
+      "unauthorized": "Oturumunuz sona ermiş. Yeniden giriş yapın."
+    }
   }
 }

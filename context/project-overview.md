@@ -92,7 +92,7 @@ Activity  id, kind (CLIENT_CREATED | CONTENT_CREATED | STATUS_CHANGED), userId �
 | 1. Tasarım | Token'lar ve tıklanabilir prototip | Tamamlandı (`context/prototype/`) |
 | 2. Veri | Şema, migration, gerçekçi seed | Tamamlandı |
 | 3. Uygulama iskeleti | Sidebar, üst bar, dil değiştirici, tema, giriş | Tamamlandı |
-| 4. Müşteriler | Liste, arama, ekleme, detay | — |
+| 4. Müşteriler | Liste, arama, ekleme, detay | Tamamlandı |
 | 5. İçerikler | Ekleme/düzenleme panelleri, doğrulama, testler | — |
 | 6. Durum ve filtreler | Ana aksiyon + menü, optimistic güncelleme, URL tabanlı filtreler, aktivite kaydı | — |
 | 7. Ana ekran | Özet kartları, 7 gün listesi, onay bekleyenler, son hareketler | — |

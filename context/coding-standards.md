@@ -28,6 +28,9 @@
 
 - Every page lives under `app/[locale]/`. Route groups: `(auth)` for public pages (login), `(app)` for the authenticated panel. `(app)/layout.tsx` renders the shell (desktop sidebar from `lg`, mobile top bar + sheet below it) and re-checks the session.
 - URL slugs are English and identical in every locale (`/tr/clients`, `/de/contents`); no next-intl `pathnames`.
+- List filters live in the URL (`?q=`, `?status=`). Filter tabs are plain links (`SegmentedLinks`); search inputs debounce into `router.replace` and adopt external URL changes during render (see `ClientSearch.tsx`).
+- Shared content building blocks: `app/components/content/` (`StatusPill`, `StatusDot`, `StatusBar`, `PlatformBadge`, `PublishDay`, `status-styles.ts`). Reuse them instead of restyling statuses.
+- "Today", overdue and publish-day math go through `lib/dates.ts` (`today()`, `calendarDay()`, `daysBetween()`); publish days are formatted with `timeZone: "UTC"` because they are stored as UTC midnight.
 - Shell building blocks live in `app/components/shell/`: `PageHeader` (title, optional eyebrow/description/actions) opens every panel page.
 - The language switcher does a full page load on purpose (see `LocaleSwitcher.tsx`); don't switch it back to `router.replace`.
 - `proxy.ts` protects everything except `PUBLIC_PATHS` (currently `/login`, after the locale prefix). Unauthenticated requests are redirected to `/{locale}/login?callbackUrl=...`; signed-in users visiting `/login` go to `/{locale}`.
@@ -104,7 +107,8 @@ Vitest. Scope: **server actions (`app/actions/**`) and utilities (`lib/**`) only
 
 - Fetch data directly in server components (through `lib/db/*`)
 - Client components use Server Actions for mutations
-- Validate all input in the Server Action before use
+- Validate all input in the Server Action before use. Pure form validation lives in `lib/validation/[feature].ts` (testable); checks that need the database (uniqueness, foreign keys) stay in the action.
+- Server Actions re-check the session (`auth()`) themselves; `proxy.ts` is not enough on its own.
 - Status changes use optimistic UI (`useOptimistic`) with an undo toast
 
 ## Error Handling

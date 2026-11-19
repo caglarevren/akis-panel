@@ -45,7 +45,26 @@
   "Clients": {
     "title": "Kunden",
     "description": "Marken, mit denen Ihre Agentur arbeitet, und der Stand ihrer Inhalte.",
-    "comingSoon": "Hier erscheinen die Kundenliste, die Suche und das Anlegen neuer Kunden."
+    "newClient": "Neuer Kunde",
+    "searchPlaceholder": "Kunden suchen",
+    "searchLabel": "In Kunden suchen",
+    "filterLabel": "Kundenstatus",
+    "filters": {
+      "all": "Alle",
+      "active": "Aktiv",
+      "inactive": "Inaktiv"
+    },
+    "inactiveBadge": "Inaktiv",
+    "contentCount": "Inhalte · {count}",
+    "nothingScheduled": "Nichts geplant",
+    "owner": "Verantwortlich",
+    "statusBreakdown": "Statusverteilung",
+    "emptyTitle": "Noch keine Kunden",
+    "emptyDescription": "Legen Sie den ersten Kunden an; Inhalte werden Kunden zugeordnet.",
+    "noResults": "Keine Kunden passen zu Ihrer Suche.",
+    "noResultsInFilter": "In diesem Filter gibt es keine Kunden.",
+    "clearSearch": "Suche zurücksetzen",
+    "nextUpLabel": "Als Nächstes"
   },
   "Contents": {
     "title": "Inhalte",
@@ -54,5 +73,86 @@
   },
   "Placeholder": {
     "title": "Diese Seite ist in Arbeit"
+  },
+  "Dates": {
+    "today": "Heute",
+    "tomorrow": "Morgen",
+    "yesterday": "Gestern"
+  },
+  "Status": {
+    "DRAFT": "Entwurf",
+    "IN_REVIEW": "In Freigabe",
+    "PUBLISHED": "Veröffentlicht"
+  },
+  "ContentType": {
+    "SOCIAL_POST": "Social Media",
+    "BLOG_POST": "Blogartikel",
+    "WEB_PAGE": "Webseite",
+    "OTHER": "Sonstiges"
+  },
+  "Platform": {
+    "INSTAGRAM": "Instagram",
+    "LINKEDIN": "LinkedIn",
+    "X": "X",
+    "TIKTOK": "TikTok",
+    "FACEBOOK": "Facebook",
+    "BLOG": "Firmenblog",
+    "MEDIUM": "Medium",
+    "WEBSITE": "Website",
+    "NEWSLETTER": "Newsletter"
+  },
+  "ClientDetail": {
+    "back": "Kunden",
+    "contactName": "Ansprechpartner",
+    "contactEmail": "E-Mail",
+    "contactPhone": "Telefon",
+    "owner": "Account Manager",
+    "statusTabs": "Inhaltsstatus",
+    "all": "Alle",
+    "contents": "Inhalte",
+    "emptyContents": "Für diesen Kunden gibt es noch keine Inhalte.",
+    "emptyTab": "Keine Inhalte in diesem Status.",
+    "columns": {
+      "title": "Titel",
+      "type": "Typ",
+      "date": "Veröffentlichung",
+      "status": "Status"
+    },
+    "noDate": "Kein Datum",
+    "overdue": "Überfällig",
+    "notFound": "Kunde nicht gefunden",
+    "notFoundDescription": "Er wurde möglicherweise gelöscht, oder der Link ist falsch.",
+    "assignee": "Zuständig: {name}"
+  },
+  "ClientForm": {
+    "title": "Neuer Kunde",
+    "description": "Nach dem Anlegen können Sie dem Kunden Inhalte zuordnen.",
+    "name": "Kundenname",
+    "namePlaceholder": "z. B. Lumen Kahve",
+    "sector": "Branche",
+    "sectorPlaceholder": "z. B. Gastronomie",
+    "owner": "Account Manager",
+    "contactName": "Ansprechpartner",
+    "contactEmail": "E-Mail",
+    "contactPhone": "Telefon",
+    "brandColor": "Markenfarbe",
+    "colorOption": "Farbe {index}",
+    "optional": "optional",
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "submit": "Kunde anlegen",
+    "submitting": "Wird angelegt",
+    "created": "{name} angelegt",
+    "errors": {
+      "required": "Dieses Feld ist erforderlich.",
+      "tooLong": "Dieser Wert ist zu lang.",
+      "duplicate": "Ein Kunde mit diesem Namen existiert bereits.",
+      "invalidEmail": "Geben Sie eine gültige E-Mail-Adresse ein.",
+      "invalidPhone": "Verwenden Sie nur Ziffern, Leerzeichen, +, ( ) und -.",
+      "invalidOwner": "Der ausgewählte Account Manager existiert nicht mehr.",
+      "invalidColor": "Wählen Sie eine Farbe aus der Liste.",
+      "server": "Der Kunde konnte nicht angelegt werden. Versuchen Sie es gleich noch einmal.",
+      "unauthorized": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an."
+    }
   }
 }
